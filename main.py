@@ -81,23 +81,21 @@ def main() -> int:
 
     # 2-4. idea → script → critique loop
     fmt, idea, script, review = produce_script(ctx, memory)
-    text = writer.narration_text(script)
 
-    # 5. narration
+    # 5. the voice cast performs the dialogue
     vlead, vtail = cfg["video"]["lead_in_seconds"], cfg["video"]["tail_seconds"]
-    voice_wav, words, narr_len = voice.narrate(ctx, text)
-    total = round(vlead + narr_len + vtail, 3)
-    if total > 89:
-        log("Orchestrator", f"warning: reel is {total:.0f}s; trimming to 89s")
-        total = 89.0
+    voice_wav, timeline, scenes_abs, dialogue_len = voice.perform(ctx, script)
+    total = round(vlead + dialogue_len + vtail, 3)
+    if total > 600:
+        raise RuntimeError(f"Reel came out at {total:.0f}s, which is far too long; not posting it.")
 
-    # 6. footage, cut to the narration
-    durations = editor.scene_boundaries(script["scenes"], words, total, vlead)
+    # 6. footage, cut to the dialogue
+    durations = editor.scene_durations(scenes_abs, total, vlead)
     clips, video_ids = visual_director.gather(ctx, script["scenes"], durations, memory.used_video_ids())
 
     # 7. edit
     subs = work / "subs.ass"
-    editor.build_subtitles(ctx, words, script["hook"], vlead, subs, script_text=text)
+    editor.build_subtitles(ctx, timeline, script.get("title_card", ""), vlead, subs)
     reel = out_dir / f"reel-{stamp}.mp4"
     editor.render(ctx, clips, durations, voice_wav, subs, total, reel)
 
@@ -106,6 +104,7 @@ def main() -> int:
 
     post = {"title": idea["title"], "format": fmt["id"], "hook": script["hook"],
             "critic_score": review["score"], "video_ids": video_ids,
+            "voice_engine": ctx.notes.get("voice_engine", ""),
             "duration_s": total, "file": reel.name, "caption": cap}
     (out_dir / f"post-{stamp}.json").write_text(
         json.dumps({**post, "script": script, "idea": idea, "review": review}, indent=2, ensure_ascii=False),
