@@ -1,6 +1,6 @@
-"""Editor agent: cuts footage to the narration, adds subtitles, sound design and masters.
+"""Editor agent: cuts footage to the dialogue, adds subtitles, sound design and masters.
 
-Output: 1080x1920, 30 fps, H.264 High (CRF 18, slow preset), AAC 256 kbps 48 kHz stereo,
+Output: 1080x1920, 30 fps, H.264 High (CRF 18), AAC 128 kbps 48 kHz stereo (Instagram's audio spec),
 loudness-normalised to -14 LUFS (Instagram's playback target), faststart for streaming.
 """
 from __future__ import annotations
@@ -17,22 +17,9 @@ XFADE = 0.35  # seconds of crossfade between scenes
 
 
 # ── timing ──────────────────────────────────────────────────────────────
-def _spoken_tokens(text: str) -> list[str]:
-    return [t for t in text.split() if re.search(r"\w", t)]
-
-
-def scene_boundaries(scenes: list[dict], words: list[dict], total: float, lead: float) -> list[float]:
-    """Duration of each scene so cuts land where that scene's narration begins."""
-    counts = [len(_spoken_tokens(s["narration"])) for s in scenes]
-    n_script, n_audio = sum(counts), len(words)
-    starts = [0.0]
-    cum = 0
-    for c in counts[:-1]:
-        cum += c
-        idx = round(cum * n_audio / max(1, n_script))  # tolerant to tokenisation differences
-        idx = min(max(idx, 0), n_audio - 1)
-        starts.append(lead + words[idx]["start"] - 0.15)
-    starts.append(total)
+def scene_durations(scenes_abs: list[tuple[float, float]], total: float, lead: float) -> list[float]:
+    """Duration of each visual scene so every cut lands just before that scene's first line."""
+    starts = [0.0] + [lead + a - 0.15 for a, _ in scenes_abs[1:]] + [total]
     durs = [max(1.2, b - a) for a, b in zip(starts, starts[1:])]
     durs[-1] += total - sum(durs)  # absorb rounding so the cut matches exactly
     return durs
@@ -51,57 +38,47 @@ def _ass_color(hex_rgb: str) -> str:
     return f"&H00{h[4:6]}{h[2:4]}{h[0:2]}".upper()
 
 
-def _norm(t: str) -> str:
-    return re.sub(r"[^\w]", "", t.lower())
+def _esc(text: str) -> str:
+    return text.replace("\\", "").replace("{", "(").replace("}", ")")
 
 
-def align_display(words: list[dict], script_text: str) -> list[dict]:
-    """Put the script's real words (with punctuation) onto the TTS timings.
-
-    The voice engine reports bare words; subtitles read better with "?" and "..." and
-    break more naturally at sentence ends. Falls back to the bare words where they differ.
-    """
-    tokens = _spoken_tokens(script_text)
-    out, j = [], 0
+def _chunks(text: str, max_words: int = 4) -> list[str]:
+    words, out, cur = text.split(), [], []
     for w in words:
-        disp = w["word"]
-        # look a few tokens ahead in case the engine merged/split something
-        for k in range(j, min(j + 4, len(tokens))):
-            if _norm(tokens[k]) == _norm(w["word"]):
-                disp, j = tokens[k], k + 1
-                break
-        out.append({**w, "word": disp})
+        cur.append(w)
+        if len(cur) >= max_words or re.search(r"[.!?,;:…]$", w):
+            out.append(" ".join(cur))
+            cur = []
+    if cur:
+        out.append(" ".join(cur))
     return out
 
 
-def build_subtitles(ctx: Context, words: list[dict], hook: str, lead: float, path: Path,
-                    script_text: str = "") -> None:
+def build_subtitles(ctx: Context, timeline: list[dict], title_card: str, lead: float, path: Path) -> None:
+    """Roman-Hinglish subtitles: each character in their own colour, first line in red."""
     v = ctx.cfg["video"]
-    if script_text:
-        words = align_display(words, script_text)
-    hook_n = len(_spoken_tokens(hook))
-    chunks: list[tuple[int, int]] = []
-    i = 0
-    while i < len(words):
-        j = i
-        while j < len(words) and j - i < 3:
-            j += 1
-            if re.search(r"[.!?,;:]$", words[j - 1]["word"]):
-                break
-        chunks.append((i, j))
-        i = j
+    colors = v.get("speaker_colors", ["#FFFFFF", "#FFD34D"])
+    events = []
+    if title_card:
+        events.append(f"Dialogue: 1,{_ass_time(0.2)},{_ass_time(3.6)},Title,,0,0,0,,"
+                      f"{{\\fad(400,500)}}{_esc(title_card.upper())}")
+    for idx, ln in enumerate(timeline):
+        parts = _chunks(ln["roman"])
+        weights = [len(p) + 3 for p in parts]
+        span = max(0.4, ln["end"] - ln["start"])
+        t = lead + ln["start"]
+        nxt = lead + timeline[idx + 1]["start"] if idx + 1 < len(timeline) else lead + ln["end"] + 0.8
+        for k, (p, wgt) in enumerate(zip(parts, weights)):
+            dur = span * wgt / sum(weights)
+            end = t + dur if k < len(parts) - 1 else max(t + dur, min(nxt, t + dur + 0.6))
+            style = "Hook" if idx == 0 else ("B" if ln["speaker"] == "B" else "A")
+            events.append(f"Dialogue: 0,{_ass_time(t)},{_ass_time(end)},{style},,0,0,0,,"
+                          f"{{\\fscx92\\fscy92\\t(0,120,\\fscx100\\fscy100)}}{_esc(p.upper())}")
+            t += dur
 
-    lines = []
-    for k, (a, b) in enumerate(chunks):
-        start = lead + words[a]["start"]
-        end = lead + (words[chunks[k + 1][0]]["start"] if k + 1 < len(chunks) else words[b - 1]["end"] + 0.6)
-        text = " ".join(w["word"] for w in words[a:b]).upper()
-        text = text.replace("\\", "").replace("{", "(").replace("}", ")")
-        style = "Hook" if a < hook_n else "Main"
-        # tiny pop-in: scale from 92% to 100% over 120 ms
-        lines.append(f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},{style},,0,0,0,,"
-                     f"{{\\fscx92\\fscy92\\t(0,120,\\fscx100\\fscy100)}}{text}")
-
+    fs = v["subtitle_size"]
+    font = v["subtitle_font"]
+    base = "&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,1,0,1,6,3,2,90,90,640,1"
     header = f"""[Script Info]
 ScriptType: v4.00+
 PlayResX: {v['width']}
@@ -111,13 +88,15 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Main,{v['subtitle_font']},{v['subtitle_size']},&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,1,0,1,6,3,2,90,90,640,1
-Style: Hook,{v['subtitle_font']},{int(v['subtitle_size'] * 1.08)},{_ass_color(v['hook_color'])},&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,1,0,1,6,3,2,90,90,640,1
+Style: A,{font},{fs},{_ass_color(colors[0])},{base}
+Style: B,{font},{fs},{_ass_color(colors[1])},{base}
+Style: Hook,{font},{int(fs * 1.08)},{_ass_color(v['hook_color'])},{base}
+Style: Title,{font},{int(fs * 0.62)},&H00E6E6E6,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,6,0,1,4,2,8,90,90,260,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
-    path.write_text(header + "\n".join(lines) + "\n", encoding="utf-8")
+    path.write_text(header + "\n".join(events) + "\n", encoding="utf-8")
 
 
 # ── render ──────────────────────────────────────────────────────────────
@@ -176,10 +155,10 @@ def render(ctx: Context, clips: list[Path], durations: list[float], voice: Path 
 
     args += ["-filter_complex", ";".join(f), "-map", "[vout]", "-map", "[aout]",
              "-t", f"{total:.3f}",
-             "-c:v", "libx264", "-preset", os.getenv("X264_PRESET", "slow"), "-crf", "18",
+             "-c:v", "libx264", "-preset", os.getenv("X264_PRESET", "medium"), "-crf", "18",
              "-maxrate", "20M", "-bufsize", "40M", "-profile:v", "high",
              "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2),
-             "-c:a", "aac", "-b:a", "256k", "-ar", "48000", "-ac", "2",
+             "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
              "-movflags", "+faststart", str(out)]
     log(NAME, f"rendering {n} scenes · {total:.1f}s · 1080x1920 · CRF 18 …")
     subprocess.run(args, check=True)

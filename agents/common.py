@@ -153,5 +153,12 @@ SAFETY_RULES = """Content rules (Instagram-safe, Gen Z audience that may include
 - Suspense, dread and atmosphere over gore. No graphic injuries, torture or body horror detail.
 - No suicide, self-harm, eating disorders, sexual content, or harm to children/animals.
 - No real, named private individuals. No real tragedies or victims used for entertainment.
-- No hate, slurs or stereotypes. No instructions for anything dangerous.
-- Fiction formats are clearly fiction; the 'real mystery' format must be accurate and hedged."""
+- No hate, slurs or stereotypes. No mocking of any religion, caste, region or community;
+  folklore is treated as folklore, never as a slur against real people or practices.
+- No instructions for anything dangerous (no rituals people could copy to "summon" things).
+- All stories are fiction."""
+
+HINGLISH_GUIDE = """Language: natural spoken Hinglish the way Indian Gen Z actually talks — about 75% Hindi,
+with everyday English words mixed in (phone, call, battery, hostel, PG, seriously, sorry, bro, scene, network,
+room, lift, chill, weird). Casual, not textbook or shuddh Hindi, not filmy. Light slang is fine (yaar, bhai,
+abey, kya bakwaas, sach mein?, pagal hai kya). Short lines, interruptions, half-sentences, real reactions."""

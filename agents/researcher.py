@@ -53,25 +53,31 @@ What our analytics say so far:
 Titles we have ALREADY posted (do not repeat or closely imitate):
 {chr(10).join('- ' + t for t in avoid[-60:]) or '- (none yet)'}
 
+The story will be performed as a DIALOGUE between exactly two Indian characters (no narrator),
+so the idea must work through conversation alone: what they say, hear and notice.
+
 Brainstorm 5 distinct ideas internally, then return ONLY the single strongest one.
-Strong = a relatable everyday setting (dorm, night bus, group chat, delivery app, elevator,
-babysitting, gaming lobby, late shift), a concrete creepy detail, and a twist that recontextualises
-everything. Avoid clichés unless you subvert them.
+Strong = a setting every young Indian recognises (hostel/PG, sleeper train, Ola/Uber at night,
+nani's old house in the village, a shaadi at a haveli, night shift, Zomato delivery, college trip to
+Shimla/Rishikesh/Rajasthan, a society lift, a power cut), a concrete creepy detail, and a twist that
+recontextualises everything. Use fresh Indian names (not Rahul/Priya every time). Avoid clichés unless
+you subvert them.
 
 {SAFETY_RULES}
 
 Return JSON:
-{{"title": "short internal title", "setting": "...", "premise": "2 sentences",
-  "creepy_detail": "the one image people will remember", "twist": "the final reveal",
-  "why_it_will_work": "1 sentence"}}"""
+{{"title": "short internal title", "setting": "...", "characters": "who the two people are, 1 line each",
+  "premise": "2 sentences", "creepy_detail": "the one moment people will remember",
+  "twist": "the final reveal", "why_it_will_work": "1 sentence"}}"""
 
     idea = ctx.llm.json(prompt, temperature=1.0, mock={
-        "title": "The Extra Seat on the Night Bus",
-        "setting": "last night bus home after a party",
-        "premise": "A student counts the passengers on the last bus. Every stop, the count goes up by one, but nobody gets on.",
-        "creepy_detail": "the driver's mirror shows one more passenger than the seats",
-        "twist": "the narrator realises they are the one who never got off last night",
-        "why_it_will_work": "Everyone has ridden a near-empty night bus.",
+        "title": "Hostel ka Teesra Bed",
+        "setting": "girls' PG in Pune during a power cut, 3 AM",
+        "characters": "Ishita, 20, sleepy and practical; Tanvi, 21, her roommate, on a call from home",
+        "premise": "Ishita calls Tanvi because she hears someone breathing on the empty third bed. Tanvi keeps telling her to ignore it.",
+        "creepy_detail": "Tanvi describes exactly what Ishita is wearing in the dark",
+        "twist": "Tanvi went home last week — and the third bed has been empty since a girl left it a year ago",
+        "why_it_will_work": "Every PG student knows the empty bed nobody talks about.",
     })
     idea["format"] = fmt["id"]
     log(NAME, f"idea → {idea['title']}")
