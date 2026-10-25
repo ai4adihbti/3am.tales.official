@@ -1,72 +1,89 @@
 # ─────────────────────────────────────────────────────────────
 #  3AM Tales — multi-agent Instagram Reel system
-#  Edit this file to change the niche, voice, look or schedule.
+#  Edit this file to change the niche, voices, look or length.
 #  (The posting time itself lives in .github/workflows/daily-reel.yml)
 # ─────────────────────────────────────────────────────────────
 
 channel:
   name: "3AM Tales"
-  audience: "Gen Z (16-26), watches on phone at night, loves twists, hates slow intros"
-  cta: "Follow for a new story every night 🕯️"
-  language: "English"
+  audience: "Indian Gen Z (16-26), watches reels on phone late at night, speaks Hinglish, loves twists, hates slow intros"
+  cta: "Follow karo, roz raat 3 baje ek nayi kahani 🕯️"
+  language: "Hinglish — mostly Hindi (about 75%), with the English words young Indians naturally use"
 
-# The Researcher agent rotates between these formats and learns which
-# ones perform best once your account has a few posts with insights.
+# Every reel is a two-character DIALOGUE (no narrator). The Researcher rotates
+# between these formats and learns which ones perform best over time.
 formats:
-  - id: creepy_story
-    label: "Original creepy story"
-    brief: "An original first-person horror story with a slow-burn build and a twist in the final line. Fiction."
-  - id: rules_horror
-    label: "Rules horror"
-    brief: "A list of strange rules for a job, place or situation (e.g. night shift at a motel), told by someone who broke one. Fiction."
-  - id: unsettling_fact
-    label: "Unsettling real mystery"
-    brief: "A widely documented real-world mystery, phenomenon or creepy fact, told like a campfire story. Must be factually accurate; no named private individuals; hedge anything uncertain."
+  - id: late_night_call
+    label: "Late-night call"
+    brief: "Two friends/siblings/a couple on a late-night phone or video call. Something is wrong on one end — a sound, a person in the background, a voice that shouldn't be there. Fiction."
+  - id: desi_folklore
+    label: "Desi folklore, modern twist"
+    brief: "Modern Gen Z characters run into Indian folklore (chudail, daayan, pichhal pairi, brahmarakshas, a cursed haveli, a highway spirit) in an everyday setting. Respectful of religion and communities. Fiction."
+  - id: everyday_horror
+    label: "Everyday Indian horror"
+    brief: "Two people in a relatable Indian setting — hostel/PG at night, last metro, sleeper train, highway dhaba, night shift at a call centre, village wedding at an old haveli, food delivery at 3 AM. Slow build, sharp twist. Fiction."
 
 llm:
   # Free-tier Gemini models. If the first one is unavailable or rate-limited
   # the system falls back to the next. Override with the GEMINI_MODEL secret.
-    model: "gemini-3.8-flash"
-    fallback_models: ["gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-flash-latest"]
+  model: "gemini-3.8-flash"
+  fallback_models: ["gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-flash-latest"]
 
 story:
-  min_words: 110          # ~45 s of narration
-  max_words: 150          # ~60 s of narration
+  min_seconds: 95         # target reel length (Instagram allows up to 15 min)
+  max_seconds: 150
+  min_lines: 20           # dialogue lines in the script
+  max_lines: 38
   min_critic_score: 75    # out of 100 — below this the Writer revises
   max_revisions: 2
   max_ideas_per_run: 3    # if a story fails safety/quality, try a fresh idea
 
 voice:
-  # Free Microsoft neural voices via edge-tts. Good deep options:
-  # en-US-ChristopherNeural, en-US-GuyNeural, en-GB-RyanNeural, en-US-AndrewNeural
-  name: "en-US-ChristopherNeural"
-  rate: "-6%"
-  pitch: "-5Hz"
+  # 1st choice: Google Gemini TTS — expressive, acts out emotion, speaks natural Hindi.
+  # Uses your existing GEMINI_API_KEY. If it's unavailable or rate-limited, the
+  # system automatically switches to Microsoft's free Hindi neural voices.
+  engine: "gemini"                      # "gemini" or "edge"
+  gemini_models: ["gemini-3.8-flash-tts", "gemini-3.8-flash-lite-tts"]
+  # Gemini voice cast per character type (first unused voice is picked)
+  gemini_voices:
+    young_male:   ["Puck", "Achird", "Fenrir"]
+    adult_male:   ["Charon", "Orus", "Iapetus"]
+    old_male:     ["Algenib", "Rasalgethi", "Charon"]
+    young_female: ["Leda", "Aoede", "Laomedeia"]
+    adult_female: ["Kore", "Despina", "Erinome"]
+    old_female:   ["Gacrux", "Sulafat", "Kore"]
+  # Microsoft fallback voices (free, no key)
+  edge_male: "hi-IN-MadhurNeural"
+  edge_female: "hi-IN-SwaraNeural"
+  gap_between_scenes: 0.45              # seconds of silence between scenes
 
 video:
   width: 1080
   height: 1920
   fps: 30
   lead_in_seconds: 0.4
-  tail_seconds: 1.2
+  tail_seconds: 1.5
   grade: "eq=brightness=-0.04:contrast=1.08:saturation=0.72"   # moody but still natural-looking
   grain: true
-  drone_volume: 0.07       # eerie background drone (generated, no copyright)
+  drone_volume: 0.06       # eerie background drone (generated, no copyright)
   subtitle_font: "DejaVu Sans"
-  subtitle_size: 84
-  hook_color: "#FF3B3B"    # first line of every reel
+  subtitle_size: 80
+  hook_color: "#FF3B3B"            # first line of every reel
+  speaker_colors: ["#FFFFFF", "#FFD34D"]   # character 1, character 2
   # Fallback stock-footage searches when a scene's keywords return nothing
   fallback_queries:
+    - "india village night"
+    - "old haveli"
+    - "indian street night"
+    - "train night window"
+    - "dark corridor"
+    - "night rain city"
     - "dark forest night"
-    - "abandoned hallway"
-    - "foggy road night"
-    - "flickering light dark room"
     - "old house night"
-    - "empty street night rain"
 
 caption:
   max_hashtags: 8
-  core_hashtags: ["#horrorstories", "#scarystories", "#creepy", "#storytime"]
+  core_hashtags: ["#hindihorror", "#horrorstories", "#bhootiyakahani", "#hinglish"]
 
 instagram:
   # graph.instagram.com  → "Instagram API with Instagram Login" (no Facebook Page needed)
