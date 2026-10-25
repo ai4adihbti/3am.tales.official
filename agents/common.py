@@ -71,40 +71,61 @@ class LLM:
         if not self.key:
             raise LLMError("GEMINI_API_KEY is not set")
 
-        body = {
-            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": temperature,
-                "responseMimeType": "application/json",
-            },
-        }
-        if system:
-            body["systemInstruction"] = {"parts": [{"text": system}]}
-
-        last_err = ""
+        errors: list[str] = []
         for model in self.models:
-            for attempt in range(4):
+            # Cap "thinking" so replies come back quickly; some models don't accept
+            # the setting, in which case it's dropped and the request is retried.
+            use_thinking_cap = True
+            attempt = 0
+            while attempt < 3:
+                body = {
+                    "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": temperature,
+                                         "responseMimeType": "application/json"},
+                }
+                if use_thinking_cap:
+                    body["generationConfig"]["thinkingConfig"] = {"thinkingBudget": 512}
+                if system:
+                    body["systemInstruction"] = {"parts": [{"text": system}]}
+
+                attempt += 1
+                started = time.time()
                 try:
                     r = requests.post(self.URL.format(model=model), params={"key": self.key},
-                                      json=body, timeout=90)
-                except requests.RequestException as e:
-                    last_err = f"{model}: {e}"
-                    time.sleep(5 * (attempt + 1))
+                                      json=body, timeout=(15, 180))
+                except requests.Timeout:
+                    errors.append(f"{model} #{attempt}: no reply after {time.time() - started:.0f}s")
+                    log("Gemini", errors[-1])
                     continue
+                except requests.RequestException as e:
+                    errors.append(f"{model} #{attempt}: network error {type(e).__name__}")
+                    log("Gemini", errors[-1])
+                    time.sleep(5 * attempt)
+                    continue
+
                 if r.status_code == 200:
                     try:
                         return _parse_json(_extract_text(r.json()))
                     except (ValueError, KeyError) as e:
-                        last_err = f"{model}: bad JSON ({e})"
-                        continue  # ask again
-                last_err = f"{model}: HTTP {r.status_code} {r.text[:300]}"
-                if r.status_code in (400, 403):
-                    raise LLMError(last_err)        # bad key or bad request — don't retry
-                if r.status_code == 404:
-                    break                           # model not available → next model
-                # 429 / 5xx → back off, then retry (free tier has per-minute limits)
-                time.sleep(min(60, 15 * (attempt + 1)))
-        raise LLMError(f"All Gemini models failed. Last error: {last_err}")
+                        errors.append(f"{model} #{attempt}: unusable reply ({e})")
+                        log("Gemini", errors[-1])
+                        continue
+
+                msg = r.text[:300].replace("\n", " ")
+                errors.append(f"{model} #{attempt}: HTTP {r.status_code} {msg}")
+                log("Gemini", errors[-1])
+                if r.status_code == 400 and use_thinking_cap and "thinking" in msg.lower():
+                    use_thinking_cap = False
+                    attempt -= 1                     # not a real failure; retry without the cap
+                    continue
+                if r.status_code in (401, 403) or (r.status_code == 400 and "api key" in msg.lower()):
+                    raise LLMError("Gemini rejected the API key. Check the GEMINI_API_KEY secret. "
+                                   f"Details: {msg}")
+                if r.status_code in (400, 404):
+                    break                            # model unavailable or unsupported → next model
+                # 429 rate limit / 5xx overload → wait, then retry
+                time.sleep(min(60, 20 * attempt))
+        raise LLMError("All Gemini models failed:\n  " + "\n  ".join(errors))
 
 
 def _extract_text(data: dict) -> str:
