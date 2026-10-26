@@ -1,12 +1,98 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "title": "Choti Line Ki Akhri Bus — Part 1",
+      "series_title": "Choti Line Ki Akhri Bus",
+      "series_id": "20261026-choti-line-ki-akhri-bus",
+      "part": 1,
+      "total_parts": 3,
+      "format": "family_bond",
+      "hook": "Raat ke dhai baje, Raniganj ki is sunsaan sadak par...",
+      "critic_score": 74,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 116.865,
+      "file": "reel-20261026-182247.mp4",
+      "caption": "Choti Line Ki Akhri Bus | Part 1/3: Dhund mein achanak woh bus kahan se aayi? (fiction)\n\nTum is faaltu bus mein chadhte ya wahin rokte? 👀\n\nFollow karo, agla part jaldi aa raha hai 🕯️\n.\n.\n#hindistory #horrorstories #bhootiyakahani #aistory #chotilinekiakhribus #hindighorror #3amtales",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 116.9,
+        "loudness_lufs": -13.8,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [],
+        "gemini_images": 0,
+        "est_cost_usd": 0.08,
+        "month_spend_usd": 0.16
+      },
+      "media_id": "17914685202542107",
+      "permalink": "https://www.instagram.com/reel/De99HISAvmE/",
+      "posted_at": "2026-10-26T18:45:26+00:00"
+    }
+  ],
   "used_video_ids": [],
   "learnings": "",
   "format_scores": {},
-  "series": null,
+  "series": {
+    "id": "20261026-choti-line-ki-akhri-bus",
+    "title": "Choti Line Ki Akhri Bus",
+    "format": "family_bond",
+    "total_parts": 3,
+    "outline": [
+      "Part 1: College student Kabir is stranded at the foggy Raniganj bus stop with his younger sister, Roshni, after their bike breaks down on their way home from a family wedding; a rusted, ancient bus silently pulls up in the dark, and its headlights reveal that the driver has no eyes—yet the door creaks open.",
+      "Part 2: Panicking, Kabir tries to pull Roshni away, but she walks onto the bus as if hypnotized; Kabir rushes inside to save her, only for the door to slam shut as the conductor asks Kabir for his name while holding a ticket dripping with black ink.",
+      "Part 3: Kabir gives a fake name to protect himself, but the conductor hands the ticket to Roshni instead, revealing that the bus isn't taking people to the underworld—it takes souls who died in road accidents home for one last goodbye, ending on the shocking reveal of Kabir's own body still lying near his crashed bike on the highway."
+    ],
+    "concept": {
+      "setting": "A fog-covered, abandoned bus stop outside a fictitious small town called Raniganj, at 2:30 AM during a sudden power outage.",
+      "legend": "Locals say that on pitch-black winter nights, the defunct 'Choti Line' route bus runs one last time to carry stranded travelers. But if you board it, you must never accept a ticket from the conductor using your real name.",
+      "final_twist": "Kabir didn't survive the bike breakdown; his spirit was frantically trying to guide his surviving sister home, and the bus was actually taking him to his final resting place after Roshni reaches safety."
+    },
+    "voice_style": "narrator",
+    "narrator_gender": "female",
+    "voice_engine": "sarvam",
+    "characters": [
+      {
+        "id": "C1",
+        "name": "Kabir",
+        "gender": "male",
+        "age": 24,
+        "voice_type": "young_male",
+        "look": "slim build, sharp jawline, wheatish skin tone, messy black hair, slight stubble, wearing a dark blue denim jacket over a plain black t-shirt and silver stud earrings",
+        "personality": "protective older brother, tries to stay calm but easily gets anxious when things feel wrong",
+        "is_entity": false
+      },
+      {
+        "id": "C2",
+        "name": "Roshni",
+        "gender": "female",
+        "age": 19,
+        "voice_type": "young_female",
+        "look": "petite build, round face, wheatish skin tone, long straight black hair tied in a loose ponytail, wearing a maroon ethnic kurti with silver jhumkas",
+        "personality": "cheerful college student, gets tired easily, observant and slightly superstitious",
+        "is_entity": false
+      }
+    ],
+    "ref_files": {
+      "C1": "state/series/20261026-choti-line-ki-akhri-bus/C1.png",
+      "C2": "state/series/20261026-choti-line-ki-akhri-bus/C2.png"
+    },
+    "parts_done": 1,
+    "previously": [
+      "Kabir and Roshni get stranded on a foggy highway at night when their bike breaks down, and a strange, ancient bus suddenly pulls up from the mist with a faceless driver."
+    ]
+  },
   "series_done": [],
   "spend": {
     "month": "2026-10",
-    "usd": 0.0755
-  }
+    "usd": 0.1555
+  },
+  "last_voice_style": "narrator",
+  "last_narrator_gender": "female"
 }
