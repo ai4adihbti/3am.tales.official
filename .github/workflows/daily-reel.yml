@@ -2,9 +2,10 @@ name: Daily horror reel
 
 on:
   schedule:
-    # 13:17 UTC = 6:47 PM IST, every day. GitHub may start scheduled runs a few minutes late.
+    # 15:47 UTC = 9:17 PM IST, every day (peak time for Hindi horror). The run takes ~30 min, so the
+    # reel goes live around 9:45 PM. GitHub may start scheduled runs a few minutes late.
     # Change it with https://crontab.guru (times are UTC; IST = UTC + 5:30).
-    - cron: "17 13 * * *"
+    - cron: "47 15 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -59,19 +60,24 @@ jobs:
           RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'post' }}
         run: python main.py
 
-      - name: Keep the reel for 7 days (download from this run's page)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reel-${{ github.run_number }}
-          path: out/
-          retention-days: 7
-          if-no-files-found: ignore
-
+      # Saved first, so a full artifact store can never make the system forget what it posted.
       - name: Save memory
         if: success()
         run: |
           git config user.name "night-stories-bot"
           git config user.email "night-stories-bot@users.noreply.github.com"
           git add state/
-          git diff --cached --quiet || (git commit -m "memory: $(date -u +%F)" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "memory: $(date -u +%F)"
+            for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+          fi
+
+      - name: Keep the reel for 3 days (download from this run's page)
+        if: always()
+        continue-on-error: true      # free accounts have 500 MB of artifact storage
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ github.run_number }}
+          path: out/
+          retention-days: 3
+          if-no-files-found: ignore
