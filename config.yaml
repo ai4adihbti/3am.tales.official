@@ -27,7 +27,8 @@ formats:
 llm:
   # Free-tier Gemini models. If the first one is busy the system moves to the next.
   model: "gemini-3.8-flash"
-  fallback_models: ["gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-flash-latest"]
+  # Order matters: the stronger Flash models write better stories; "lite" models are the last resort.
+  fallback_models: ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.5-flash-lite", "gemini-flash-lite-latest"]
 
 story:
   min_seconds: 90           # reel length target
@@ -73,7 +74,7 @@ voice:
   #  sarvam : Sarvam AI Bulbul v3, native Indian Hindi voices; ₹100 free credit on sign-up (~15-20 reels),
   #           then about ₹5 per reel. Needs SARVAM_API_KEY. Put it first for the most natural Hindi.
   #  edge   : Microsoft Hindi neural voices, always free, less expressive
-  engines: ["gemini", "sarvam", "edge"]
+  engines: ["sarvam", "gemini", "edge"]
   gemini_models: ["gemini-3.8-flash-tts", "gemini-3.8-flash-lite-tts"]
   # Each new series alternates: a single storyteller (male/female alternating) or acted character dialogue.
   style: "mix"                           # "mix", "narrator" or "dialogue"

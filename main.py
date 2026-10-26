@@ -24,7 +24,7 @@ import time
 from datetime import datetime
 
 from agents import analyst, animator, caption, composer, critic, editor, illustrator, publisher, qa, researcher, voice, writer
-from agents.common import ROOT, LLM, Context, load_config, log
+from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
 from agents.memory import Memory
 
 
@@ -33,15 +33,26 @@ def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict
     rejected: list[str] = []
     for _ in range(s["max_ideas_per_run"]):
         series, fmt = researcher.todays_series(ctx, memory, avoid_extra=rejected)
-        script = writer.write(ctx, series, fmt)
-        review = critic.review(ctx, script, series, fmt)
+        try:
+            script = writer.write(ctx, series, fmt)
+            review = critic.review(ctx, script, series, fmt)
+        except LLMBlocked as e:
+            log("Orchestrator", f"{e}; trying a different story")
+            rejected.append(series["title"])
+            continue
         best = (review["score"], script, review)
         rev = 0
         while not review["approved"] and rev < s["max_revisions"]:
             rev += 1
             notes = (review.get("feedback", "") + " " + review.get("safety_issues", "")).strip()
-            script = writer.revise(ctx, script, notes, series, fmt)
-            review = critic.review(ctx, script, series, fmt)
+            try:
+                script = writer.revise(ctx, script, notes, series, fmt)
+                review = critic.review(ctx, script, series, fmt)
+            except LLMError as e:
+                # a blocked or failed revision must not crash the run: keep the best draft so far
+                log("Orchestrator", f"revision stopped ({str(e).splitlines()[0][:120]}); keeping the best draft")
+                score, script, review = best
+                break
             if review.get("safety_ok") and review["score"] > best[0]:
                 best = (review["score"], script, review)
         if review["approved"]:
