@@ -75,7 +75,10 @@ class LLM:
             parts = [{"inline_data": {"mime_type": m, "data": base64.b64encode(b).decode()}} for m, b in (images or [])]
             body = {"contents": [{"role": "user", "parts": parts + [{"text": prompt}]}],
                     "generationConfig": {"temperature": temperature, "responseMimeType": "application/json",
-                                         "maxOutputTokens": 24000}}
+                                         "maxOutputTokens": 24000},
+                    "safetySettings": [{"category": c, "threshold": "BLOCK_ONLY_HIGH"} for c in (
+                        "HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH",
+                        "HARM_CATEGORY_SEXUALLY_EXPLICIT", "HARM_CATEGORY_DANGEROUS_CONTENT")]}
             if model not in self.no_thinking_cap:
                 body["generationConfig"]["thinkingConfig"] = {"thinkingBudget": 512}
             if system:
@@ -95,6 +98,15 @@ class LLM:
                 continue
 
             if r.status_code == 200:
+                try:
+                    data = r.json()
+                except ValueError:
+                    data = {}
+                reason = _block_reason(data)
+                if reason:
+                    errors.append(f"{model}: blocked by Gemini's safety filter ({reason})")
+                    log("Gemini", errors[-1])
+                    return reason, "blocked"
                 try:
                     return _parse_json(_extract_text(r.json())), "ok"
                 except (ValueError, KeyError) as e:
@@ -141,6 +153,8 @@ class LLM:
                     if model != self.models[0]:
                         log("Gemini", f"answered by backup model {model}")
                     return result
+                if kind == "blocked":
+                    raise LLMBlocked(f"Gemini's safety filter blocked this request ({result})")
                 if kind == "key":
                     raise LLMError(f"Gemini rejected the API key. Check the GEMINI_API_KEY secret. Details: {result}")
                 if kind == "gone":
@@ -164,6 +178,25 @@ def is_hard_quota(r: requests.Response) -> bool:
         return False
     t = r.text
     return "PerDay" in t or "per day" in t.lower() or re.search(r"limit:\s*0\b", t) is not None
+
+
+class LLMBlocked(LLMError):
+    """The prompt or reply was blocked by Gemini's safety filter (retrying the same prompt won't help)."""
+
+
+def _block_reason(data: dict) -> str:
+    fb = (data.get("promptFeedback") or {}).get("blockReason")
+    if fb:
+        return str(fb)
+    cands = data.get("candidates")
+    if cands is None and data:
+        return "no reply (blocked)"
+    if cands:
+        fr = cands[0].get("finishReason", "")
+        parts = (cands[0].get("content") or {}).get("parts") or []
+        if fr in ("SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII") and not any(p.get("text") for p in parts):
+            return fr
+    return ""
 
 
 def _extract_text(data: dict) -> str:
