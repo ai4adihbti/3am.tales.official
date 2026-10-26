@@ -1,92 +1,145 @@
 # ─────────────────────────────────────────────────────────────
 #  3AM Tales — multi-agent Instagram Reel system
-#  Edit this file to change the niche, voices, look or length.
+#  Illustrated Hindi horror/emotional stories in parts (Part 1, Part 2 …),
+#  with recurring characters, fast-cut voiced dialogue and an original score.
 #  (The posting time itself lives in .github/workflows/daily-reel.yml)
 # ─────────────────────────────────────────────────────────────
 
 channel:
   name: "3AM Tales"
-  audience: "Indian Gen Z (16-26), watches reels on phone late at night, speaks Hinglish, loves twists, hates slow intros"
-  cta: "Follow karo, roz raat 3 baje ek nayi kahani 🕯️"
-  language: "Hinglish — mostly Hindi (about 75%), with the English words young Indians naturally use"
+  watermark: "@3am.tales.official"       # small text in the bottom-left corner of every reel
+  audience: "Indian Gen Z and young adults (16-30), watch reels late at night, speak Hinglish, love emotional twists and suspense"
+  cta: "Follow karo, agla part jaldi aa raha hai 🕯️"
+  language: "Hindi-heavy Hinglish — natural spoken Hindi with the English words Indians use every day"
 
-# Every reel is a two-character DIALOGUE (no narrator). The Researcher rotates
-# between these formats and learns which ones perform best over time.
+# A new SERIES starts with one of these formats; it then continues over 2-3 daily parts.
 formats:
-  - id: late_night_call
-    label: "Late-night call"
-    brief: "Two friends/siblings/a couple on a late-night phone or video call. Something is wrong on one end — a sound, a person in the background, a voice that shouldn't be there. Fiction."
-  - id: desi_folklore
-    label: "Desi folklore, modern twist"
-    brief: "Modern Gen Z characters run into Indian folklore (chudail, daayan, pichhal pairi, brahmarakshas, a cursed haveli, a highway spirit) in an everyday setting. Respectful of religion and communities. Fiction."
-  - id: everyday_horror
-    label: "Everyday Indian horror"
-    brief: "Two people in a relatable Indian setting — hostel/PG at night, last metro, sleeper train, highway dhaba, night shift at a call centre, village wedding at an old haveli, food delivery at 3 AM. Slow build, sharp twist. Fiction."
+  - id: family_bond
+    label: "Family bond, supernatural twist"
+    brief: "A deeply emotional story between family members (maa-beta, papa-beti, dadi-pota, bhai-behen, a newly married couple) in an everyday Indian situation at night — a lonely highway, a hospital corridor, a village bus stop, a power cut at home. Something is quietly wrong; small details build a mystery; the twist is supernatural AND emotional (love, sacrifice, a promise, a goodbye). Gentle dread, not gore. Fiction."
+  - id: friends_dare
+    label: "Friends and a local legend"
+    brief: "3-4 young friends hear a local legend (a cemetery, an old haveli, a closed hospital, a highway, a forest temple ruin) and go there at night. Banter turns to fear. Fiction."
+  - id: village_secret
+    label: "Village / family secret"
+    brief: "Someone returns to their nani's or dada's village or old family house and uncovers what the elders never talk about. Fiction."
 
 llm:
-  # Free-tier Gemini models. If the first one is unavailable or rate-limited
-  # the system falls back to the next. Override with the GEMINI_MODEL secret.
+  # Free-tier Gemini models. If the first one is busy the system moves to the next.
   model: "gemini-3.8-flash"
   fallback_models: ["gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-flash-latest"]
 
 story:
-  min_seconds: 95         # target reel length (Instagram allows up to 15 min)
-  max_seconds: 150
-  min_lines: 20           # dialogue lines in the script
-  max_lines: 38
-  min_critic_score: 75    # out of 100 — below this the Writer revises
+  min_seconds: 90           # reel length target
+  max_seconds: 140
+  min_cuts: 38              # fast cutting like the references: a new picture every ~2-3 s
+  max_cuts: 60
+  max_images: 34            # unique illustrations per part (close-ups are reused for back-and-forth dialogue)
+  parts_per_series: [2, 3]  # each story is told over 2 or 3 daily parts
+  min_critic_score: 75
   max_revisions: 2
-  max_ideas_per_run: 3    # if a story fails safety/quality, try a fresh idea
+  max_ideas_per_run: 2
+
+visuals:
+  # Free image generation. 1st choice Cloudflare Workers AI (FLUX.2 klein, keeps characters
+  # consistent from reference portraits, ~10,000 free "neurons" a day ≈ 55 images).
+  # Backup: Pollinations (free, no key; characters less consistent).
+  provider: "cloudflare"            # "cloudflare" or "pollinations"
+  cloudflare_model: "@cf/black-forest-labs/flux-2-klein-4b"
+  width: 864                        # generated size (9:16); upscaled to 1080x1920 in the edit
+  height: 1536
+  style: >-
+    Indian 2D animated storybook illustration in the style of a modern Indian animated web series,
+    semi-realistic cartoon characters with clean outlines, smooth soft cel shading, large expressive
+    realistic eyes, natural Indian skin tones and features, detailed believable Indian environments,
+    cinematic framing and lighting, high detail, sharp focus, no text, no letters, no captions,
+    no speech bubbles, no watermark, no logo
+  night_palette: "deep blue moonlit night, soft fog, gentle rim light on faces, warm accents from lamps or lanterns"
+  day_palette: "soft natural light, warm muted colours"
+  motion_strength: 0.10             # camera movement amount (0.06 subtle – 0.16 strong)
+  depth_model: true                 # 3D parallax from a free open-source depth model (estimates if unavailable)
+  atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
+  quality_check: true               # Gemini inspects every illustration and redraws bad ones
+  max_redraws: 6
+  # Nano Banana (Gemini's image model) — best faces and consistency, paid from the Gemini API
+  # (~$0.034 ≈ ₹3 per picture; your Google AI Pro plan includes $10/month of credit for this).
+  gemini_image_model: "gemini-nano-banana-2.1"
+  gemini_portraits: false           # character portraits (≈3-4 per series) with Nano Banana
+  gemini_hero_shots: 0              # the N pictures that stay on screen longest; 0 = none, 40 = every picture
 
 voice:
-  # 1st choice: Google Gemini TTS — expressive, acts out emotion, speaks natural Hindi.
-  # Uses your existing GEMINI_API_KEY. If it's unavailable or rate-limited, the
-  # system automatically switches to Microsoft's free Hindi neural voices.
-  engine: "gemini"                      # "gemini" or "edge"
+  # Engines are tried in this order; any without a key/quota is skipped automatically.
+  #  gemini : Google Gemini TTS, expressive, free if your free tier includes it (uses GEMINI_API_KEY)
+  #  sarvam : Sarvam AI Bulbul v3, native Indian Hindi voices; ₹100 free credit on sign-up (~15-20 reels),
+  #           then about ₹5 per reel. Needs SARVAM_API_KEY. Put it first for the most natural Hindi.
+  #  edge   : Microsoft Hindi neural voices, always free, less expressive
+  engines: ["gemini", "sarvam", "edge"]
   gemini_models: ["gemini-3.8-flash-tts", "gemini-3.8-flash-lite-tts"]
-  # Gemini voice cast per character type (first unused voice is picked)
+  # Each new series alternates: a single storyteller (male/female alternating) or acted character dialogue.
+  style: "mix"                           # "mix", "narrator" or "dialogue"
+  narrator_gemini_voice: {male: "Charon", female: "Sulafat"}
   gemini_voices:
-    young_male:   ["Puck", "Achird", "Fenrir"]
-    adult_male:   ["Charon", "Orus", "Iapetus"]
-    old_male:     ["Algenib", "Rasalgethi", "Charon"]
-    young_female: ["Leda", "Aoede", "Laomedeia"]
+    child_boy:    ["Puck", "Leda"]
+    child_girl:   ["Leda", "Laomedeia"]
+    young_male:   ["Achird", "Puck", "Fenrir", "Zubenelgenubi"]
+    adult_male:   ["Orus", "Iapetus", "Alnilam"]
+    old_male:     ["Algenib", "Rasalgethi", "Gacrux"]
+    young_female: ["Aoede", "Leda", "Laomedeia"]
     adult_female: ["Kore", "Despina", "Erinome"]
-    old_female:   ["Gacrux", "Sulafat", "Kore"]
-  # Microsoft fallback voices (free, no key)
+    old_female:   ["Gacrux", "Sulafat", "Vindemiatrix"]
+  sarvam_model: "bulbul:v3"
+  sarvam_narrator: {male: "varun", female: "ritu"}
+  sarvam_voices:
+    child_boy:    ["aayan", "soham"]
+    child_girl:   ["suhani", "kavya"]
+    young_male:   ["rohan", "aditya", "kabir", "dev", "rehan"]
+    adult_male:   ["shubh", "amit", "manan", "tarun"]
+    old_male:     ["ratan", "anand", "vijay"]
+    young_female: ["ishita", "priya", "simran", "shreya"]
+    adult_female: ["neha", "pooja", "ritu", "tanya"]
+    old_female:   ["roopa", "kavitha", "rupali"]
+  # Microsoft fallback (free, no key)
   edge_male: "hi-IN-MadhurNeural"
   edge_female: "hi-IN-SwaraNeural"
-  gap_between_scenes: 0.45              # seconds of silence between scenes
+  gap_between_lines: 0.22
+  silent_shot_seconds: 1.8               # a cut with no dialogue lingers this long
+
+music:
+  enabled: true                          # original score generated for every reel
+  volume: 0.30                           # music level under the voices (ducks while people talk)
 
 video:
   width: 1080
   height: 1920
   fps: 30
-  lead_in_seconds: 0.4
-  tail_seconds: 1.5
-  grade: "eq=brightness=-0.04:contrast=1.08:saturation=0.72"   # moody but still natural-looking
-  grain: true
-  drone_volume: 0.06       # eerie background drone (generated, no copyright)
+  lead_in_seconds: 0.5
+  tail_seconds: 4.0                      # room for the end card
+  crossfade: 0.12                        # near-hard cuts, like the references
+  grade: "eq=contrast=1.04:saturation=1.04"
+  grain: false
+  subtitles: false                       # the reference style has none; set true for Hinglish subtitles
   subtitle_font: "DejaVu Sans"
-  subtitle_size: 80
-  hook_color: "#FF3B3B"            # first line of every reel
-  speaker_colors: ["#FFFFFF", "#FFD34D"]   # character 1, character 2
-  # Fallback stock-footage searches when a scene's keywords return nothing
-  fallback_queries:
-    - "india village night"
-    - "old haveli"
-    - "indian street night"
-    - "train night window"
-    - "dark corridor"
-    - "night rain city"
-    - "dark forest night"
-    - "old house night"
+  subtitle_size: 68
+  hook_color: "#FF3B3B"
+  speaker_colors: ["#FFFFFF", "#FFD34D", "#9BE7FF", "#FFB4A2", "#C8F7C5"]
+  end_card_font: "DejaVu Serif"
+
+billing:
+  # Estimated paid Gemini spend per calendar month. When it reaches this, the system stops using
+  # Nano Banana and draws with the free providers until next month. Your Pro credit is $10.
+  # Typical: ~$0.25-0.30 per reel → ~$8-9 for daily posting.
+  monthly_budget_usd: 9.0
+
+qa:
+  # The final check before posting. If a reel fails, it is NOT posted (it's still saved for you to see).
+  min_seconds: 60
+  max_seconds: 240
+  max_reused_image_ratio: 0.35           # fail if too many shots had to reuse a picture because drawing failed
 
 caption:
   max_hashtags: 8
-  core_hashtags: ["#hindihorror", "#horrorstories", "#bhootiyakahani", "#hinglish"]
+  core_hashtags: ["#hindistory", "#horrorstories", "#bhootiyakahani", "#aistory"]
 
 instagram:
-  # graph.instagram.com  → "Instagram API with Instagram Login" (no Facebook Page needed)
-  # graph.facebook.com   → "Instagram API with Facebook Login" (account linked to a Page)
   api_host: "graph.instagram.com"
   api_version: "v23.0"

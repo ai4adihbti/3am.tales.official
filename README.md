@@ -1,29 +1,33 @@
-# 🕯️ Night Stories: a free, fully automated multi-agent Instagram Reels system
+# 🕯️ 3AM Tales: a free, fully automated multi-agent Instagram Reels system
 
-Every day, a team of AI agents researches, writes, critiques, narrates, edits and posts a
-horror/mystery story Reel to your Instagram, then studies how it performed and gets better.
-Everything runs for free on GitHub Actions; no computer needs to stay on.
+Every day a team of AI agents makes and posts one part of an **illustrated Hindi story series** (emotional
+family stories with a supernatural twist, friends and local legends, village secrets): animated-storybook
+illustrations with the same Indian characters in every shot, fast cuts between speakers (a new picture every
+~2–3 s), voiced dialogue, an original score, and a "To Be Continued / Follow For Part 2" ending. Each story
+runs 2–3 parts; then a new one begins. It runs on GitHub Actions.
 
 ```
- Analyst ─▶ Researcher ─▶ Writer ⇄ Critic ─▶ Voice ─▶ Visual Director ─▶ Editor ─▶ Caption ─▶ Publisher
-    ▲                                                                                          │
-    └──────────────────────────────── Memory (state/history.json) ◀───────────────────────────┘
+Analyst → Researcher → Writer ⇄ Critic → Voice cast → Illustrator → Composer → Editor → Caption → Publisher
+   ▲        (new series or next part)          (portraits → shots → camera moves)                    │
+   └──────────────────────── Memory (state/: series progress + character portraits) ◀────────────────┘
 ```
 
 | Agent | Job |
 |---|---|
-| **Analyst** | Pulls views, shares, saves and comments for past Reels; writes "what works / what flops" lessons |
-| **Researcher** | Picks today's format (rotates, then favours winners) and a fresh idea that has never been used |
-| **Writer** | Writes a 45–60 s script: scroll-stopping hook, escalating scenes, twist ending |
-| **Critic** | Independent editor: scores hook, tension, twist, flow and safety; sends weak scripts back |
-| **Voice** | Deep neural narrator plus a studio-style mastering chain (EQ, compression, room ambience, 48 kHz) |
-| **Visual Director** | Finds **real camera footage** for every scene: vertical, Full HD or better, never reused |
-| **Editor** | Cuts footage to the narration, crossfades, word-timed subtitles, eerie drone, −14 LUFS master |
-| **Caption** | Caption with a comment-bait question, call to action and niche hashtags |
-| **Publisher** | Posts through the **official** Instagram API (no passwords, no scraping, no bans) |
+| **Analyst** | Reads views, shares, saves and comments of past reels; writes "what works" lessons |
+| **Researcher** | Continues the current series, or plans a fresh 2–3 part series (favouring formats that perform) |
+| **Writer** | Writes the part as a fast-cut screenplay: ~30 illustrations and ~50 cuts, one spoken line per cut, cutting between speaker and listener close-ups |
+| **Critic** | Independent editor: hook, emotional pull, tension, cliffhanger/twist, natural dialogue, visuals, safety |
+| **Voice** | Each series alternates between a single storyteller (female/male alternating) and acted character dialogue; distinct voices for everyone (incl. children): Gemini TTS → Sarvam native Hindi voices → Microsoft Hindi voices, whichever is available; mastered |
+| **Illustrator** | Draws a reference portrait of each character once per series, then every illustration using those portraits; Gemini inspects all drawings and redraws bad ones |
+| **Animator** | Turns each picture into a living 3D shot: an open-source depth model makes near things move more than the background (parallax), plus drifting fog, floating dust/embers, lantern flicker, and flash-and-shake on scares |
+| **Composer** | Writes an original score that follows each shot's mood (calm → uneasy → tense → scare), with booms on scares |
+| **Editor** | Cuts on the dialogue, crossfades, watermark, end card, music ducking under voices, −14 LUFS master |
+| **QA** | Checks the finished reel (length, size, audio, loudness, black or silent gaps, failed drawings) and blocks posting if something's wrong |
+| **Caption** | "Series Title \| Part 1/2" caption, comment-bait question, call to action, hashtags |
+| **Publisher** | Posts through the official Instagram API |
 
-**Output quality:** 1080×1920, 30 fps, H.264 High at CRF 18 (slow preset), AAC 256 kbps 48 kHz stereo,
-loudness-normalised to −14 LUFS, Instagram's playback level.
+**Output:** 1080×1920, 30 fps, H.264 CRF 18, AAC 128 kbps 48 kHz, −14 LUFS, about 1.5–2.5 minutes per part.
 
 ---
 
@@ -31,112 +35,101 @@ loudness-normalised to −14 LUFS, Instagram's playback level.
 
 | Piece | Free option used |
 |---|---|
-| AI brain | Google Gemini API free tier (a few calls a day; far below the limits) |
-| Footage | Pixabay API, free with an instant key; clips are free for commercial use with no attribution needed |
-| Voice | Microsoft neural voices through `edge-tts`, free with no key |
-| Editing | ffmpeg, open source |
-| Posting and analytics | Official Instagram API, free |
-| Scheduler and server | GitHub Actions, free (a private repo gets 2,000 min/month; this uses about 300) |
+| Story writing | Gemini API (free tier, or your Google AI Pro credit) |
+| Illustrations | Cloudflare Workers AI free tier (10,000 "neurons"/day; one reel uses ~6,000–7,000) |
+| Backup illustrations | Pollinations (free, no key; characters less consistent) |
+| Voices | Gemini TTS if your free tier includes it; optional Sarvam (₹100 free credit ≈ 15–20 reels, then ~₹5/reel); Microsoft Hindi voices always free |
+| Music | Generated by the Composer agent, no copyright |
+| Editing | ffmpeg |
+| Posting and analytics | Official Instagram API |
+| Server and scheduler | GitHub Actions (private repo: 2,000 min/month; this uses ~600) |
 
 ---
 
-## Setup (about 30–40 minutes, one time)
+## Setup
 
-### 1. Make your Instagram a Professional account
-Instagram app → **Settings → Account type and tools → Switch to professional account → Creator**.
-It's free and takes a minute. The posting API doesn't work with personal accounts.
+Steps 1–5 are the same as before (Instagram professional account, Meta token, Gemini key, GitHub repo,
+secrets). The new part is **Cloudflare**, for the illustrations:
 
-### 2. Get your Instagram token (Meta developer app)
-1. Go to **developers.facebook.com**, log in, then **My Apps → Create app**.
-2. Choose the use case **"Manage messaging & content on Instagram"** (this is the *Instagram API with Instagram Login*; no Facebook Page needed).
-3. In the app, open **Instagram → API setup with Instagram login**.
-4. Under **Generate access tokens**, click **Add account** and log in with your Instagram account.
-   If asked, also add yourself under **App roles → Roles → Instagram Testers**, then accept the invite in the
-   Instagram app (**Settings → Apps and websites → Tester invites**).
-5. Make sure these permissions are enabled: `instagram_business_basic`,
-   `instagram_business_content_publish`, `instagram_business_manage_insights`.
-6. Click **Generate token** and copy it. This is your **`IG_ACCESS_TOKEN`** (valid 60 days).
-7. Find your **`IG_USER_ID`**: it's shown next to the account on the same page, or run
-   `IG_ACCESS_TOKEN=... python scripts/check_token.py`, which prints it.
-
-> You don't need Meta's App Review: an app in Development mode can post to **your own** account.
-
-### 3. Get the two free API keys
-- **Gemini:** aistudio.google.com → **Get API key** → **Create API key**. This is `GEMINI_API_KEY`.
-- **Pixabay (footage):** sign up free at pixabay.com, then open **pixabay.com/api/docs**. Your key is shown
-  in the *Parameters* section under `key` once you're logged in. This is `PIXABAY_API_KEY`.
-  (Already have a Pexels key? You can add it as `PEXELS_API_KEY` instead. Pexels has paused new keys.)
-
-### 4. Put the project on GitHub
-1. Create a free GitHub account, then **New repository** → name it `night-stories` → choose **Private** → Create.
-2. Upload all the files in this folder, including the hidden **`.github`** folder (it holds the daily schedule).
-   - Easiest: install **GitHub Desktop**, clone the empty repo, copy these files into it, then Commit and Push.
-   - Web upload sometimes skips hidden folders. If `.github/workflows/daily-reel.yml` is missing after uploading,
-     use **Add file → Create new file**, type the path `.github/workflows/daily-reel.yml` and paste in the file's contents.
-
-### 5. Add your secrets
-Repo → **Settings → Secrets and variables → Actions → New repository secret**. Add these four:
+### Cloudflare (free, ~5 minutes)
+1. Sign up at **dash.cloudflare.com** (free plan; no card needed for Workers AI's free allowance).
+2. **Account ID:** on the dashboard home, open **Account home**; the Account ID is shown in the right-hand
+   panel (it's also the long code in the address bar: `dash.cloudflare.com/<account id>/…`). Copy it.
+3. **API token:** click your profile icon → **My Profile → API Tokens → Create Token**. Use the
+   **Workers AI** template → **Continue to summary → Create Token**. Copy the token (it's shown once).
+4. In GitHub: **Settings → Secrets and variables → Actions → New repository secret**, add:
 
 | Name | Value |
 |---|---|
-| `GEMINI_API_KEY` | from step 3 |
-| `PIXABAY_API_KEY` | from step 3 |
-| `IG_ACCESS_TOKEN` | from step 2 |
-| `IG_USER_ID` | from step 2 |
+| `CF_ACCOUNT_ID` | your Cloudflare account ID |
+| `CF_API_TOKEN` | the token from step 3 |
 
-Optional: `GEMINI_MODEL` (to force a specific model) and `IG_API_HOST` (set to `graph.facebook.com`
-only if you used the Facebook-Login version of the API).
+Your full secret list is then: `GEMINI_API_KEY`, `CF_ACCOUNT_ID`, `CF_API_TOKEN`, `IG_ACCESS_TOKEN`,
+`IG_USER_ID`, and optionally `SARVAM_API_KEY`. (`PIXABAY_API_KEY` is no longer used; you can delete it.)
 
-### 6. Test it (nothing gets posted)
-Repo → **Actions** tab → enable workflows if asked → **Daily horror reel** → **Run workflow**.
-Leave **dry run** ticked and click Run. When it finishes (about 8–12 minutes), open the run and download
-**reel-N** under **Artifacts**. It contains the video plus a JSON file with the script, the Critic's score and the caption.
+Optional: a free account at **pollinations.ai** gives a token for faster backup illustrations; add it as
+`POLLINATIONS_TOKEN`.
 
-### 7. Go live
-Run it once more with **dry run unticked**, which posts for real. From then on it posts **every day at
-about 6:47 PM IST** with no input from you. To change the time, edit the `cron` line in
-`.github/workflows/daily-reel.yml` (times are in UTC; IST = UTC + 5:30).
+### Google AI Pro: Nano Banana pictures and reliable Gemini (recommended)
+Your Google AI Pro plan includes **$10 (≈ ₹850) of Google Cloud credit every month** for the Gemini API.
+Linking it unlocks Nano Banana (Gemini's image model: the best faces, consistency and storybook look) and
+removes the free-tier "quota exceeded" errors. The system spends it carefully: Nano Banana draws the character
+portraits and the ~6 pictures that stay on screen longest (≈ $0.30 a reel, ≈ $8–9 a month for daily posts), and
+`billing.monthly_budget_usd` (default $9) stops paid drawing for the rest of the month before the credit runs out.
+1. Open **developers.google.com/profile** (Google Developer Program) → **My Benefits** → activate the monthly
+   Google Cloud credit and choose (or create) a **Cloud billing account**. Tick "always use this billing account".
+2. Open **aistudio.google.com** → **API keys** → on your key's project choose **Set up billing** and pick that
+   billing account. (Your existing `GEMINI_API_KEY` keeps working; nothing to change in GitHub.)
+3. Safety net: **console.cloud.google.com/billing → Budgets & alerts → Create budget** of ₹850/month with email
+   alerts, so you're told if anything ever goes over the credit.
+Without step 2 the system simply skips Nano Banana and draws everything with Cloudflare.
 
-### 8. Once a month: refresh the token
-Instagram tokens expire after 60 days. Monthly, run:
-```
-IG_ACCESS_TOKEN=your_current_token python scripts/check_token.py --refresh
-```
-and paste the new token into the `IG_ACCESS_TOKEN` secret. If you forget, the daily run fails and
-GitHub emails you, so you'll know.
+### Sarvam voices (optional, best Hindi)
+Sign up at **dashboard.sarvam.ai**, create an API key, and add it as the secret `SARVAM_API_KEY`. New accounts
+get ₹100 free credit (~15–20 reels). To always use Sarvam first, change `voice.engines` in `config.yaml` to
+`["sarvam", "gemini", "edge"]`.
+
+### Test, then go live
+**Actions → Daily horror reel → Run workflow** and pick a **mode**:
+- **preview** (default, ~8 min): the first ~12 cuts (~30 s) plus all character portraits and drawings. Cheap
+  (~1,500 Cloudflare neurons), perfect for checking the art style, character consistency and voices.
+- **dry_run** (~25–40 min): the full reel, not posted.
+- **post**: makes the reel and posts it (only if the QA check passes).
+
+Download **reel-N** from the run's Artifacts: the video, `post-….json` (script, caption, QA report) and a
+`pictures-…` folder with every illustration. Preview and dry runs never advance the series.
+Cloudflare's free allowance is ~10,000 neurons a day (resets 5:30 AM IST): a full reel uses ~6,000–7,000, so do
+at most one full dry run and one preview per day. The schedule posts daily at about 6:47 PM IST.
 
 ---
 
-## Customising (edit `config.yaml`)
-- **Niche and audience:** `channel` and `formats`. Add or replace formats, e.g. a true-crime-free "dark history" format.
-- **Voice:** `voice.name`. Try `en-US-GuyNeural`, `en-GB-RyanNeural` or `en-US-AndrewNeural`; adjust `rate` and `pitch`.
-- **Look:** `video.grade` (colour), `subtitle_size`, `hook_color`, `drone_volume`.
-- **Story length and quality bar:** `story.min_words`, `max_words`, `min_critic_score`.
-- **Posting twice a day:** add a second `- cron:` line in the workflow file.
-
-## Running on your own computer (optional)
-Needs Python 3.10+ and ffmpeg.
-```
-pip install -r requirements.txt
-python main.py --mock       # offline test, no keys needed (placeholder footage and tone)
-python main.py --dry-run    # real story, voice and footage, saved to out/ and not posted
-python main.py              # create and post
-```
-Set the keys as environment variables (see `.env.example`).
+## Customising (`config.yaml`)
+- **Watermark:** `channel.watermark` (set it to your Instagram handle).
+- **Story types:** `formats`. **Parts per story:** `story.parts_per_series`. **Length:** `story.min_seconds` / `max_seconds`.
+- **Art style:** `visuals.style`, `night_palette`; camera movement: `visuals.motion_strength`.
+- **Subtitles:** `video.subtitles: true` adds Hinglish subtitles coloured per character (off by default).
+- **Music:** `music.volume`, or `music.enabled: false`.
+- **Voices:** `voice.style` (`mix`, `narrator` or `dialogue`), `voice.gemini_voices`, `voice.narrator_gemini_voice`, `voice.engines` order.
+- **3D motion:** `visuals.motion_strength`, `visuals.depth_model`, `visuals.atmosphere` (fog, dust, flicker).
 
 ## Troubleshooting
-| Problem | Fix |
+| Log message | Meaning / fix |
 |---|---|
-| `missing secrets` | A secret name is misspelled or wasn't added (step 5) |
-| Gemini `HTTP 429` | Free-tier rate limit; the system retries automatically. If it persists, set `GEMINI_MODEL` to `gemini-2.5-flash-lite` |
-| Gemini `HTTP 404` on every model | Google renamed its models: put a current Flash model name from aistudio.google.com into `GEMINI_MODEL` |
-| `create container failed` / `OAuthException` | Token expired or missing a permission; regenerate it (step 2) |
-| `Instagram could not process the video` | Rare; it usually succeeds on the next day's run. Check the run's artifact plays correctly |
-| Voice missing in a reel | The free voice service was briefly down; the reel falls back to subtitles plus ambience |
-| Workflow didn't run on schedule | GitHub can delay scheduled runs by a few minutes; the Actions tab shows every run |
+| `CF_ACCOUNT_ID / CF_API_TOKEN not set` | Add the Cloudflare secrets; until then the backup generator is used |
+| `cloudflare unavailable (… QUOTA …)` | Today's free Cloudflare allowance is used up; the rest of the reel uses the backup generator. Resets 5:30 AM IST |
+| `Cloudflare rejected the token/account` | Re-check `CF_ACCOUNT_ID` and recreate the token with the Workers AI template |
+| `shot N: could not draw … reusing previous image` | One illustration was refused or failed; the previous one is reused with a different camera move |
+| `Gemini TTS unavailable … switching to Microsoft Hindi voices` | Gemini voices aren't on your free tier today; Microsoft voices are used |
+| `The free Gemini quota is used up for today` | Too many runs today; it resets around 1:30 PM IST |
+| `QA FAILED … NOT POSTED` | The finished reel had a problem (listed in the log and in post-….json); nothing was posted. Download the artifact to see it |
+| `quality check: redrew I7 …` | Normal: the inspector found a bad drawing and fixed it |
+| `sarvam voices unavailable (HTTP 403/402)` | Sarvam key wrong or credit used up; the next engine is used |
+| `gemini unavailable (… need billing linked …)` | Nano Banana needs the Pro credit linked (see above); Cloudflare draws instead |
+| `this month's Gemini budget is used` | The monthly cap was reached; free drawing until next month (change `billing.monthly_budget_usd`) |
+| `direct upload not available … using backup route` | Normal for some login types; the reel is posted via a temporary 24-hour link |
 
 ## Ground rules built in
-- Official API only: no passwords stored, no scraping, no follow/like/DM bots, so your account stays safe.
-- The Critic rejects gore, self-harm, real victims, named private people and anything unsafe for a 16+ audience.
-- Fiction is labelled "(fiction)" in captions; the real-mystery format must be accurate.
+- Official Instagram API only: no passwords, no scraping, no follow/like/DM bots.
+- Original stories and characters every time; the Critic blocks gore, self-harm, real victims, named real
+  people and anything mocking a religion or community. Captions mark stories as fiction.
 - Instagram allows up to 100 API posts a day; this posts 1.
