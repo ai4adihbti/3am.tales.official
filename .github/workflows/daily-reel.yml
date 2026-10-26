@@ -7,13 +7,14 @@ on:
     - cron: "17 13 * * *"
   workflow_dispatch:
     inputs:
-      dry_run:
-        description: "Build the reel but don't post it (download it from the run's Artifacts)"
-        type: boolean
-        default: true
+      mode:
+        description: "preview = quick 30 s sample · dry_run = full reel, not posted · post = make and post"
+        type: choice
+        options: [preview, dry_run, post]
+        default: preview
 
 permissions:
-  contents: write   # lets the run save its memory (state/history.json) back to the repo
+  contents: write   # lets the run save its memory (state/: series progress + character portraits)
 
 concurrency:
   group: daily-reel
@@ -22,7 +23,7 @@ concurrency:
 jobs:
   reel:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@v4
 
@@ -37,17 +38,25 @@ jobs:
       - name: Install Python packages
         run: pip install -r requirements.txt
 
+      - name: Cache the depth model (downloaded once, ~25-100 MB)
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: depth-anything-v2-small-v1
+
       - name: Run the agent team
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          POLLINATIONS_TOKEN: ${{ secrets.POLLINATIONS_TOKEN }}
+          SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_API_HOST: ${{ secrets.IG_API_HOST }}
           X264_PRESET: medium
-          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && 'true' || 'false' }}
+          RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'post' }}
         run: python main.py
 
       - name: Keep the reel for 7 days (download from this run's page)
@@ -64,5 +73,5 @@ jobs:
         run: |
           git config user.name "night-stories-bot"
           git config user.email "night-stories-bot@users.noreply.github.com"
-          git add state/history.json
+          git add state/
           git diff --cached --quiet || (git commit -m "memory: $(date -u +%F)" && git push)
