@@ -191,7 +191,7 @@ def _gemini_chunk(model: str, key: str, lines: list[dict], cast_map: dict, dest_
         for item in content:  # single-speaker requests don't take speaker names
             item["annotations"][0].pop("speaker", None)
     else:
-        speech_config = {"mode": "conversational",
+        speech_config = {
                          "speakers": [{"speaker": cast_map[s]["label"], "voice": cast_map[s]["gemini_voice"]}
                                       for s in speakers]}
     body = {"model": model, "input": [{"type": "user_input", "content": content}],

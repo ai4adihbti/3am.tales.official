@@ -74,7 +74,8 @@ class LLM:
         for attempt in (1, 2):
             parts = [{"inline_data": {"mime_type": m, "data": base64.b64encode(b).decode()}} for m, b in (images or [])]
             body = {"contents": [{"role": "user", "parts": parts + [{"text": prompt}]}],
-                    "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"}}
+                    "generationConfig": {"temperature": temperature, "responseMimeType": "application/json",
+                                         "maxOutputTokens": 24000}}
             if model not in self.no_thinking_cap:
                 body["generationConfig"]["thinkingConfig"] = {"thinkingBudget": 512}
             if system:
@@ -113,6 +114,10 @@ class LLM:
                 if r.status_code == 429:
                     self.dead_reasons.append("quota")
                 return None, "gone"
+            if attempt == 1 and model == self.models[0]:
+                log("Gemini", f"{model}: busy (HTTP {r.status_code}) — waiting 20s and trying again")
+                time.sleep(20)
+                continue
             log("Gemini", f"{model}: busy (HTTP {r.status_code}) — trying the next model")
             return None, "busy"  # 429 per-minute limit or 5xx overload
         return None, "busy"
@@ -133,9 +138,8 @@ class LLM:
                 result, kind = self._call(model, prompt, system, temperature, errors, images)
                 if kind == "ok":
                     self.calls += 1
-                    # keep using the model that works first for the rest of the run
-                    self.models.remove(model)
-                    self.models.insert(0, model)
+                    if model != self.models[0]:
+                        log("Gemini", f"answered by backup model {model}")
                     return result
                 if kind == "key":
                     raise LLMError(f"Gemini rejected the API key. Check the GEMINI_API_KEY secret. Details: {result}")
@@ -174,13 +178,21 @@ def _extract_text(data: dict) -> str:
 def _parse_json(text: str):
     text = text.strip()
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text)
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        m = re.search(r"(\{.*\}|\[.*\])", text, re.S)
-        if not m:
-            raise
-        return json.loads(m.group(1))
+    candidates = [text]
+    m = re.search(r"(\{.*\}|\[.*\])", text, re.S)
+    if m:
+        candidates.append(m.group(1))
+    for c in list(candidates):
+        fixed = re.sub(r",\s*([}\]])", r"\1", c)                          # trailing commas
+        fixed = fixed.replace("\u201c", '"').replace("\u201d", '"')      # smart quotes around keys
+        candidates.append(fixed)
+    last = None
+    for c in candidates:
+        try:
+            return json.loads(c)
+        except json.JSONDecodeError as e:
+            last = e
+    raise last
 
 
 SAFETY_RULES = """Content rules (Instagram-safe, Gen Z audience that may include 16-17 year olds):

@@ -216,20 +216,25 @@ class Pollinations:
         params = {"width": w, "height": h, "seed": seed, "model": "flux", "nologo": "true", "enhance": "false"}
         headers = {"Authorization": f"Bearer {self.token}"} if self.token else {}
         last = ""
-        for attempt in range(1, 4):
+        waits = [12, 20, 30, 45, 60, 60]          # the free service is often briefly "at its limit"
+        for attempt, pause in enumerate(waits, 1):
             Pollinations._last_call = time.time()
             try:
                 r = requests.get(f"https://image.pollinations.ai/prompt/{q}", params=params, headers=headers,
                                  timeout=(15, 180))
             except requests.RequestException as e:
                 last = f"network {type(e).__name__}"
-                time.sleep(gap)
+                time.sleep(pause)
                 continue
             if r.status_code == 200 and r.headers.get("content-type", "").startswith("image/"):
                 return _png(r.content)
             last = f"HTTP {r.status_code} {r.text[:200]}"
-            time.sleep(gap * attempt)
-        raise ImageError(last)
+            if r.status_code in (400, 401, 403):
+                break
+            if attempt == 1:
+                log(NAME, f"backup image service busy (HTTP {r.status_code}); retrying for up to ~4 min")
+            time.sleep(pause)
+        raise ImageError(f"BUSY {last}")
 
 
 class Mock:
@@ -355,7 +360,7 @@ class Studio:
                     if msg.startswith("SAFETY"):
                         continue  # retry with softened wording / no refs
                     break
-            fails = len([x for x in errors if x.startswith(p.name)])
+            fails = len([x for x in errors if x.startswith(p.name) and "BUSY" not in x])
             if "QUOTA" in errors[-1] or "rejected the token" in errors[-1] or fails >= 3:
                 if p.name not in self.dead:
                     log(NAME, f"{p.name} unavailable ({errors[-1][:150]}); using the next provider")
@@ -377,8 +382,12 @@ def character_refs(ctx: Context, studio: Studio, series: dict, script: dict) -> 
             continue
         dest = out_dir / f"{c['id']}.png"
         seed = random.randint(1, 2**31 - 1)
-        studio.draw(portrait_prompt(ctx, c), 512, 512, seed, [], dest,
-                    premium=bool(ctx.cfg["visuals"].get("gemini_portraits", True)))
+        try:
+            studio.draw(portrait_prompt(ctx, c), 512, 512, seed, [], dest,
+                        premium=bool(ctx.cfg["visuals"].get("gemini_portraits", True)))
+        except ImageError as e:
+            log(NAME, f"portrait of {c['name']} failed ({str(e)[:100]}); continuing with text descriptions only")
+            continue
         refs[c["id"]] = dest
         log(NAME, f"portrait: {c['name']}")
     return refs
