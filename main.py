@@ -116,6 +116,13 @@ def main() -> int:
             log("Orchestrator", "note: CF_ACCOUNT_ID / CF_API_TOKEN not set — using the backup image "
                                 "generator, so characters will be less consistent (see README.md)")
 
+    if not dry and not args.mock:
+        ok, msg = publisher.check_token(ctx)
+        log("Orchestrator", msg)
+        if not ok:
+            log("Orchestrator", "STOPPED before making the reel: refresh IG_ACCESS_TOKEN (README step 8) and run again.")
+            return 4
+
     # 1. learn from past posts
     analyst.run(ctx, memory)
 
@@ -123,6 +130,7 @@ def main() -> int:
     series, fmt, script, review = produce_script(ctx, memory)
     final = series["part"] >= series["total_parts"]
     script["voice_style"] = series.get("voice_style", "dialogue")
+    script["series_voice_engine"] = series.get("voice_engine")
     script["narrator_gender"] = series.get("narrator_gender", "male")
     if preview:
         script = _trim_for_preview(script)
@@ -207,6 +215,7 @@ def main() -> int:
         result = publisher.publish_reel(ctx, reel, cap)
         post.update(result)
         memory.add_post(post)
+        series["voice_engine"] = series.get("voice_engine") or ctx.notes.get("voice_engine")
         memory.advance_series(series, script, refs)
 
     if not args.mock:

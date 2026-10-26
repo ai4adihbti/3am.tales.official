@@ -99,7 +99,7 @@ get ₹100 free credit (~15–20 reels). To always use Sarvam first, change `voi
 Download **reel-N** from the run's Artifacts: the video, `post-….json` (script, caption, QA report) and a
 `pictures-…` folder with every illustration. Preview and dry runs never advance the series.
 Cloudflare's free allowance is ~10,000 neurons a day (resets 5:30 AM IST): a full reel uses ~6,000–7,000, so do
-at most one full dry run and one preview per day. The schedule posts daily at about 6:47 PM IST.
+at most one full dry run and one preview per day. The schedule posts daily at about 9:17 PM IST (live around 9:45 PM).
 
 ---
 
