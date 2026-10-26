@@ -1,11 +1,11 @@
-"""Voice agent: casts and performs the two-character dialogue.
+"""Voice agent: casts a voice for the narrator and every character, and performs the part.
 
-1st choice: Google Gemini TTS (uses your GEMINI_API_KEY). Each scene is performed in one
-request with both characters, so the acting flows naturally, with emotion, whispers,
-sighs and pauses. Line timings inside a scene are found by detecting the pauses between turns.
+1st choice: Google Gemini TTS (uses your GEMINI_API_KEY). Consecutive lines are performed together
+(max two speakers per request, the API's limit) so the acting flows naturally, with emotion,
+whispers, sighs and pauses. Line timings are found by detecting the pauses between turns.
 
 Fallback: Microsoft's free Hindi neural voices (hi-IN Madhur / Swara via edge-tts), one line at
-a time, with pitch/speed shaping per character and an eerie effect for spirits.
+a time, each character shaped with its own pitch/speed, plus an eerie effect for spirits.
 
 Everything is then mastered: 48 kHz, low-cut, warmth/presence EQ, gentle compression, subtle room.
 """
@@ -21,7 +21,7 @@ from pathlib import Path
 
 import requests
 
-from .common import Context, ffprobe_duration, log
+from .common import Context, ffprobe_duration, is_hard_quota, log
 from .writer import strip_tags
 
 NAME = "Voice"
@@ -37,10 +37,12 @@ MASTER_CHAIN = ",".join([
 ])
 ENTITY_FX = "asetrate=42240,aresample=48000,atempo=1.136,aecho=0.8:0.7:60|120:0.35|0.2,lowpass=f=5000"
 
-EDGE_SHAPE = {  # voice, rate, pitch
-    "young_male": ("edge_male", "+4%", "+0Hz"), "adult_male": ("edge_male", "-2%", "-4Hz"),
-    "old_male": ("edge_male", "-10%", "-10Hz"), "young_female": ("edge_female", "+4%", "+2Hz"),
-    "adult_female": ("edge_female", "+0%", "-3Hz"), "old_female": ("edge_female", "-10%", "-8Hz"),
+EDGE_SHAPE = {  # voice, rate %, pitch Hz
+    "narrator": ("edge_male", -8, -9), "narrator_female": ("edge_female", -6, -3),
+    "child_boy": ("edge_female", 6, 34), "child_girl": ("edge_female", 6, 42),
+    "young_male": ("edge_male", 4, 2), "adult_male": ("edge_male", -2, -4),
+    "old_male": ("edge_male", -12, -14), "young_female": ("edge_female", 4, 3),
+    "adult_female": ("edge_female", 0, -3), "old_female": ("edge_female", -12, -10),
 }
 
 
@@ -70,64 +72,7 @@ def _concat(parts: list[Path], dest: Path, workdir: Path) -> None:
           "-c:a", "pcm_s16le", str(dest)])
 
 
-# ── casting ─────────────────────────────────────────────────────────────
-def cast(ctx: Context, characters: list[dict]) -> dict[str, dict]:
-    v = ctx.cfg["voice"]
-    used: set[str] = set()
-    out = {}
-    for c in characters:
-        pool = v["gemini_voices"].get(c["voice_type"], ["Puck"])
-        voice = next((p for p in pool if p not in used), pool[0])
-        used.add(voice)
-        out[c["id"]] = {**c, "gemini_voice": voice, "label": re.sub(r"[^A-Za-z]", "", c.get("name", "")) or c["id"]}
-    if out.get("A", {}).get("label") == out.get("B", {}).get("label"):
-        out["B"]["label"] += "Two"
-    log(NAME, "cast: " + ", ".join(f"{c['name']} → {c['gemini_voice']}" for c in out.values()))
-    return out
-
-
-# ── Gemini TTS ──────────────────────────────────────────────────────────
-def _gemini_scene(model: str, key: str, scene: dict, cast_map: dict, dest_raw: Path) -> None:
-    content = []
-    for ln in scene["lines"]:
-        ch = cast_map[ln["speaker"]]
-        style = ln.get("style", "")
-        if ch.get("is_entity"):
-            style = (style + ", hollow and otherworldly").strip(", ")
-        content.append({"type": "text", "text": ln["hi"],
-                        "annotations": [{"type": "speech_metadata", "speaker": ch["label"], "style": style}]})
-    body = {
-        "model": model,
-        "input": [{"type": "user_input", "content": content}],
-        "response_format": {"type": "audio"},
-        "generation_config": {"speech_config": {
-            "mode": "conversational",
-            "speakers": [{"speaker": c["label"], "voice": c["gemini_voice"]} for c in cast_map.values()]}},
-    }
-    last = ""
-    for attempt in range(1, 5):
-        try:
-            r = requests.post(TTS_URL, headers={"x-goog-api-key": key, "Content-Type": "application/json"},
-                              json=body, timeout=(15, 240))
-        except requests.RequestException as e:
-            last = f"network {type(e).__name__}"
-            time.sleep(10 * attempt)
-            continue
-        if r.status_code == 200:
-            audio = _extract_audio(r.json())
-            if audio:
-                dest_raw.write_bytes(audio)
-                return
-            last = "reply had no audio"
-            continue
-        last = f"HTTP {r.status_code} {r.text[:200]}"
-        if r.status_code in (429, 500, 502, 503, 504):
-            time.sleep(min(70, 20 * attempt))   # free-tier per-minute limits / busy servers
-            continue
-        break  # 400/401/403/404 → this model won't work
-    raise TTSFailed(f"{model}: {last}")
-
-
+# ── helpers ─────────────────────────────────────────────────────────────
 def _extract_audio(data: dict) -> bytes | None:
     found = None
     for step in data.get("steps", []):
@@ -179,37 +124,210 @@ def _split_scene(lines: list[dict], dur: float, pauses: list[tuple[float, float]
     return list(zip(edges, edges[1:]))
 
 
-def _perform_gemini(ctx: Context, script: dict, cast_map: dict) -> tuple[list[Path], list[list[tuple]]]:
+
+
+# ── casting ─────────────────────────────────────────────────────────────
+def cast(ctx: Context, characters: list[dict], narrator_gender: str = "male") -> dict[str, dict]:
+    """Assign a distinct voice to the narrator ("N") and each character."""
+    v = ctx.cfg["voice"]
+    fem = narrator_gender == "female"
+    nv = v.get("narrator_gemini_voice", "Charon")
+    narrator_voice = (nv.get("female" if fem else "male", "Charon") if isinstance(nv, dict) else nv)
+    used = {narrator_voice}
+    out = {"N": {"id": "N", "name": "Narrator", "voice_type": "narrator", "is_entity": False,
+                 "gemini_voice": narrator_voice, "label": "Narrator"}}
+    edge_used: set[tuple] = set()
+    for c in characters:
+        pool = v["gemini_voices"].get(c["voice_type"], ["Puck"])
+        voice = next((p for p in pool if p not in used), next((p for q in v["gemini_voices"].values()
+                                                                for p in q if p not in used), pool[0]))
+        used.add(voice)
+        label = re.sub(r"[^A-Za-z]", "", c.get("name", "")) or c["id"]
+        out[c["id"]] = {**c, "gemini_voice": voice, "label": label}
+    # Sarvam: a distinct native Hindi voice per speaker
+    sn = v.get("sarvam_narrator", "varun")
+    sn = sn.get("female" if fem else "male", "varun") if isinstance(sn, dict) else sn
+    s_used = {sn}
+    out["N"]["sarvam"] = sn
+    if fem:
+        out["N"]["voice_type"] = "narrator_female"
+    all_sarvam = [x for q in v.get("sarvam_voices", {}).values() for x in q]
+    for cid, c in out.items():
+        if cid == "N":
+            continue
+        pool = v.get("sarvam_voices", {}).get(c["voice_type"], ["shubh"])
+        pick = next((x for x in pool if x not in s_used), next((x for x in all_sarvam if x not in s_used), pool[0]))
+        s_used.add(pick)
+        c["sarvam"] = pick
+    # Microsoft fallback: same two base voices, so push every speaker to a distinct pitch/speed
+    for cid, c in out.items():
+        key, rate, pitch = EDGE_SHAPE[c["voice_type"]]
+        while (key, pitch) in edge_used:
+            pitch -= 6 if pitch <= 0 else -6
+            rate -= 3
+        edge_used.add((key, pitch))
+        c["edge"] = (v[key], f"{rate:+d}%", f"{pitch:+d}Hz")
+    log(NAME, "cast: " + ", ".join(f"{c['name']} → {c['gemini_voice']}" for c in out.values()))
+    return out
+
+
+# ── Gemini TTS ──────────────────────────────────────────────────────────
+def _gemini_chunk(model: str, key: str, lines: list[dict], cast_map: dict, dest_raw: Path) -> None:
+    speakers = list(dict.fromkeys(ln["speaker"] for ln in lines))
+    content = []
+    for ln in lines:
+        ch = cast_map[ln["speaker"]]
+        style = ln.get("style", "")
+        if ch.get("is_entity"):
+            style = (style + ", hollow and otherworldly").strip(", ")
+        if ln["speaker"] == "N":
+            style = (style or "deep, slow, gripping storyteller")
+        if ch.get("voice_type", "").startswith("child"):
+            style = (style + ", voice of a small child").strip(", ")
+        content.append({"type": "text", "text": ln["hi"],
+                        "annotations": [{"type": "speech_metadata", "speaker": ch["label"], "style": style}]})
+    if len(speakers) == 1:
+        speech_config = [{"voice": cast_map[speakers[0]]["gemini_voice"]}]
+        for item in content:  # single-speaker requests don't take speaker names
+            item["annotations"][0].pop("speaker", None)
+    else:
+        speech_config = {"mode": "conversational",
+                         "speakers": [{"speaker": cast_map[s]["label"], "voice": cast_map[s]["gemini_voice"]}
+                                      for s in speakers]}
+    body = {"model": model, "input": [{"type": "user_input", "content": content}],
+            "response_format": {"type": "audio"}, "generation_config": {"speech_config": speech_config}}
+    last = ""
+    for attempt in range(1, 4):
+        try:
+            r = requests.post(TTS_URL, headers={"x-goog-api-key": key, "Content-Type": "application/json"},
+                              json=body, timeout=(15, 240))
+        except requests.RequestException as e:
+            last = f"network {type(e).__name__}"
+            time.sleep(10 * attempt)
+            continue
+        if r.status_code == 200:
+            audio = _extract_audio(r.json())
+            if audio:
+                dest_raw.write_bytes(audio)
+                return
+            last = "reply had no audio"
+            continue
+        last = f"HTTP {r.status_code} {r.text[:200]}"
+        if is_hard_quota(r):
+            break
+        if r.status_code in (429, 500, 502, 503, 504):
+            time.sleep(min(70, 20 * attempt))
+            continue
+        break
+    raise TTSFailed(f"{model}: {last}")
+
+
+def _chunks(shots: list[dict]) -> list:
+    """Group consecutive lines into TTS requests (max 2 speakers, 8 lines); silent shots stand alone."""
+    out, cur = [], []
+    for si, sh in enumerate(shots):
+        if not sh["lines"]:
+            if cur:
+                out.append(("speech", cur))
+                cur = []
+            out.append(("silence", si))
+            continue
+        for ln in sh["lines"]:
+            speakers = {x["speaker"] for _, x in cur} | {ln["speaker"]}
+            if cur and (len(speakers) > 2 or len(cur) >= 8):
+                out.append(("speech", cur))
+                cur = []
+            cur.append((si, ln))
+    if cur:
+        out.append(("speech", cur))
+    return out
+
+
+def _perform_gemini(ctx: Context, script: dict, cast_map: dict) -> list:
     key = os.getenv("GEMINI_API_KEY", "")
     if not key:
         raise TTSFailed("GEMINI_API_KEY not set")
     models = list(ctx.cfg["voice"]["gemini_models"])
-    scene_files, scene_spans = [], []
-    for i, scene in enumerate(script["scenes"]):
-        raw = ctx.workdir / f"g_scene{i}.wav"
-        errors = []
-        while models:
+    pieces, n_req = [], 0
+    for kind, payload in _chunks(script["shots"]):
+        if kind == "silence":
+            pieces.append(_silent_piece(ctx, payload))
+            continue
+        lines = [ln for _, ln in payload]
+        raw = ctx.workdir / f"g_{len(pieces):03d}.wav"
+        while True:
             try:
-                _gemini_scene(models[0], key, scene, cast_map, raw)
+                _gemini_chunk(models[0], key, lines, cast_map, raw)
                 break
             except TTSFailed as e:
-                errors.append(str(e))
-                log(NAME, f"scene {i + 1}: {e}")
-                if i == 0 and len(models) > 1:
-                    models.pop(0)       # try the next TTS model, keep it for the rest
+                log(NAME, f"{e}")
+                if n_req == 0 and len(models) > 1:
+                    models.pop(0)
                     continue
-                raise TTSFailed("; ".join(errors))
-        if not models:
-            raise TTSFailed("; ".join(errors))
-        wav = ctx.workdir / f"scene{i}.wav"
+                raise
+        n_req += 1
+        wav = ctx.workdir / f"g_{len(pieces):03d}_48.wav"
         _to_wav48(raw, wav)
         dur = ffprobe_duration(wav)
-        scene_files.append(wav)
-        scene_spans.append(_split_scene(scene["lines"], dur, _pauses(wav)))
-        if i == 0:
+        spans = _split_scene(lines, dur, _pauses(wav))
+        pieces.append({"wav": wav, "items": [(si, ln, a, b) for (si, ln), (a, b) in zip(payload, spans)]})
+        if n_req == 1:
             log(NAME, f"Gemini TTS ({models[0]}) working")
-        time.sleep(2)  # be gentle with free-tier limits
-    return scene_files, scene_spans
+        time.sleep(2)
+    return pieces
+
+
+# ── Sarvam AI (native Indian voices) ────────────────────────────────────
+SARVAM_PACE = {"narrator": 0.92, "narrator_female": 0.94, "child_boy": 1.05, "child_girl": 1.05, "old_male": 0.88, "old_female": 0.88}
+
+
+def _sarvam_line(key: str, model: str, speaker: str, text: str, pace: float, dest: Path) -> None:
+    body = {"text": text[:2400], "language_code": "hi-IN", "model": model, "speaker": speaker,
+            "pace": pace, "speech_sample_rate": 48000, "output_audio_codec": "wav", "temperature": 0.65}
+    last = ""
+    for attempt in range(1, 4):
+        try:
+            r = requests.post("https://api.sarvam.ai/text-to-speech", json=body, timeout=(15, 120),
+                              headers={"api-subscription-key": key, "Content-Type": "application/json"})
+        except requests.RequestException as e:
+            last = f"network {type(e).__name__}"
+            time.sleep(4 * attempt)
+            continue
+        if r.status_code == 200:
+            audios = (r.json() or {}).get("audios") or []
+            if audios:
+                dest.write_bytes(base64.b64decode(audios[0]))
+                return
+            last = "no audio in reply"
+            continue
+        last = f"HTTP {r.status_code} {r.text[:200]}"
+        if r.status_code in (429, 500, 502, 503):
+            time.sleep(6 * attempt)
+            continue
+        break  # 400/401/403/422: bad key, no credit, or bad request
+    raise TTSFailed(f"sarvam: {last}")
+
+
+def _perform_sarvam(ctx: Context, script: dict, cast_map: dict) -> list:
+    key = os.getenv("SARVAM_API_KEY", "").strip()
+    if not key:
+        raise TTSFailed("SARVAM_API_KEY not set")
+    model = ctx.cfg["voice"].get("sarvam_model", "bulbul:v3")
+    pieces = []
+    for si, sh in enumerate(script["shots"]):
+        if not sh["lines"]:
+            pieces.append(_silent_piece(ctx, si))
+            continue
+        for j, ln in enumerate(sh["lines"]):
+            ch = cast_map[ln["speaker"]]
+            raw = ctx.workdir / f"s_{si:02d}_{j}_raw.wav"
+            wav = ctx.workdir / f"s_{si:02d}_{j}.wav"
+            _sarvam_line(key, model, ch["sarvam"], strip_tags(ln["hi"]), SARVAM_PACE.get(ch["voice_type"], 1.0), raw)
+            fx = ENTITY_FX if ch.get("is_entity") else ""
+            _to_wav48(raw, wav, ("silenceremove=start_periods=1:start_threshold=-50dB," + fx).rstrip(","))
+            pieces.append({"wav": wav, "items": [(si, ln, 0.0, ffprobe_duration(wav))]})
+    log(NAME, f"Sarvam {model} voices used")
+    return pieces
 
 
 # ── Microsoft edge-tts fallback ─────────────────────────────────────────
@@ -218,27 +336,16 @@ async def _edge_line(text: str, voice: str, rate: str, pitch: str, dest: Path) -
     await edge_tts.Communicate(text, voice, rate=rate, pitch=pitch).save(str(dest))
 
 
-def _perform_edge(ctx: Context, script: dict, cast_map: dict) -> tuple[list[Path], list[list[tuple]]]:
-    v = ctx.cfg["voice"]
-    shapes = {}
-    for cid, c in cast_map.items():
-        key, rate, pitch = EDGE_SHAPE[c["voice_type"]]
-        shapes[cid] = [v[key], rate, pitch]
-    if shapes.get("A") and shapes.get("B") and shapes["A"][0] == shapes["B"][0]:
-        # same voice for both → push them apart so they're easy to tell apart
-        hz = int(re.sub(r"[^\d-]", "", shapes["B"][2]) or 0) - 7
-        shapes["B"][2] = f"{hz:+d}Hz"
-        shapes["B"][1] = "-5%" if shapes["B"][1].startswith("+") else shapes["B"][1]
-    gap = ctx.workdir / "gap_line.wav"
-    _silence(gap, 0.32)
-
-    scene_files, scene_spans = [], []
-    for i, scene in enumerate(script["scenes"]):
-        parts, spans, t = [], [], 0.0
-        for j, ln in enumerate(scene["lines"]):
-            voice, rate, pitch = shapes[ln["speaker"]]
-            mp3 = ctx.workdir / f"e_{i}_{j}.mp3"
-            wav = ctx.workdir / f"e_{i}_{j}.wav"
+def _perform_edge(ctx: Context, script: dict, cast_map: dict) -> list:
+    pieces = []
+    for si, sh in enumerate(script["shots"]):
+        if not sh["lines"]:
+            pieces.append(_silent_piece(ctx, si))
+            continue
+        for j, ln in enumerate(sh["lines"]):
+            voice, rate, pitch = cast_map[ln["speaker"]]["edge"]
+            mp3 = ctx.workdir / f"e_{si:02d}_{j}.mp3"
+            wav = ctx.workdir / f"e_{si:02d}_{j}.wav"
             text = strip_tags(ln["hi"])
             for attempt in range(3):
                 try:
@@ -250,82 +357,90 @@ def _perform_edge(ctx: Context, script: dict, cast_map: dict) -> tuple[list[Path
                     time.sleep(3)
             fx = ENTITY_FX if cast_map[ln["speaker"]].get("is_entity") else ""
             _to_wav48(mp3, wav, fx)
-            d = ffprobe_duration(wav)
-            spans.append((t, t + d))
-            parts += [wav, gap]
-            t += d + 0.32
-        out = ctx.workdir / f"scene{i}.wav"
-        _concat(parts[:-1], out, ctx.workdir)
-        scene_files.append(out)
-        scene_spans.append(spans)
+            pieces.append({"wav": wav, "items": [(si, ln, 0.0, ffprobe_duration(wav))]})
     log(NAME, "Microsoft Hindi voices used")
-    return scene_files, scene_spans
+    return pieces
 
 
 # ── mock (offline test) ─────────────────────────────────────────────────
-def _perform_mock(ctx: Context, script: dict) -> tuple[list[Path], list[list[tuple]]]:
-    scene_files, scene_spans = [], []
-    for i, scene in enumerate(script["scenes"]):
-        parts, spans, t = [], [], 0.0
-        for j, ln in enumerate(scene["lines"]):
+def _perform_mock(ctx: Context, script: dict, cast_map: dict) -> list:
+    freqs = {"N": 140, "C1": 200, "C2": 260, "C3": 170, "C4": 300}
+    pieces = []
+    for si, sh in enumerate(script["shots"]):
+        if not sh["lines"]:
+            pieces.append(_silent_piece(ctx, si))
+            continue
+        for j, ln in enumerate(sh["lines"]):
             d = len(ln["roman"].split()) / 2.3 + 0.3
-            f = ctx.workdir / f"m_{i}_{j}.wav"
-            freq = 190 if ln["speaker"] == "A" else 260
+            f = ctx.workdir / f"m_{si:02d}_{j}.wav"
             _run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i",
-                  f"sine=frequency={freq}:duration={d:.2f}:sample_rate=48000", "-af", "volume=0.12",
-                  "-ac", "2", "-c:a", "pcm_s16le", str(f)])
-            g = ctx.workdir / f"m_{i}_{j}_gap.wav"
-            _silence(g, 0.3)
-            spans.append((t, t + d))
-            parts += [f, g]
-            t += d + 0.3
-        out = ctx.workdir / f"scene{i}.wav"
-        _concat(parts[:-1], out, ctx.workdir)
-        scene_files.append(out)
-        scene_spans.append(spans)
-    return scene_files, scene_spans
+                  f"sine=frequency={freqs.get(ln['speaker'], 220)}:duration={d:.2f}:sample_rate=48000",
+                  "-af", "volume=0.12", "-ac", "2", "-c:a", "pcm_s16le", str(f)])
+            pieces.append({"wav": f, "items": [(si, ln, 0.0, d)]})
+    return pieces
+
+
+def _silent_piece(ctx: Context, shot_index: int) -> dict:
+    d = ctx.cfg["voice"]["silent_shot_seconds"]
+    f = ctx.workdir / f"silence_{shot_index:02d}.wav"
+    _silence(f, d)
+    return {"wav": f, "items": [(shot_index, None, 0.0, d)]}
 
 
 # ── main entry ──────────────────────────────────────────────────────────
-def perform(ctx: Context, script: dict) -> tuple[Path, list[dict], list[tuple[float, float]], float]:
-    """Returns (mastered dialogue wav, line timeline, scene spans, total seconds)."""
-    cast_map = cast(ctx, script["characters"])
-
+def perform(ctx: Context, script: dict) -> tuple[Path, list[dict], list[float], float]:
+    """Returns (mastered voice track, line timeline, shot start times, total seconds)."""
+    cast_map = cast(ctx, script["characters"], script.get("narrator_gender", "male"))
     if ctx.mock:
-        scene_files, scene_spans = _perform_mock(ctx, script)
-        engine = "mock"
+        pieces, engine = _perform_mock(ctx, script, cast_map), "mock"
     else:
-        engine = ctx.cfg["voice"].get("engine", "gemini")
-        scene_files = scene_spans = None
-        if engine == "gemini":
+        vcfg = ctx.cfg["voice"]
+        order = vcfg.get("engines") or [vcfg.get("engine", "gemini"), "edge"]
+        if "edge" not in order:
+            order = list(order) + ["edge"]
+        runners = {"gemini": _perform_gemini, "sarvam": _perform_sarvam, "edge": _perform_edge}
+        pieces, engine = None, ""
+        for engine in order:
+            if engine not in runners:
+                continue
             try:
-                scene_files, scene_spans = _perform_gemini(ctx, script, cast_map)
+                pieces = runners[engine](ctx, script, cast_map)
+                break
             except TTSFailed as e:
-                log(NAME, f"Gemini TTS unavailable ({e}); switching to Microsoft Hindi voices")
-                engine = "edge"
-        if scene_files is None:
-            scene_files, scene_spans = _perform_edge(ctx, script, cast_map)
+                log(NAME, f"{engine} voices unavailable ({str(e)[:160]}); trying the next engine")
+        if pieces is None:
+            raise TTSFailed("No voice engine worked")
 
-    # Join scenes with breathing room and build the absolute timeline.
-    gap_s = ctx.cfg["voice"]["gap_between_scenes"]
-    gap = ctx.workdir / "gap_scene.wav"
+    gap_s = ctx.cfg["voice"]["gap_between_lines"]
+    gap = ctx.workdir / "gap.wav"
     _silence(gap, gap_s)
-    parts, timeline, scenes_abs, t = [], [], [], 0.0
-    for i, (f, spans) in enumerate(zip(scene_files, scene_spans)):
-        d = ffprobe_duration(f)
-        for ln, (a, b) in zip(script["scenes"][i]["lines"], spans):
-            timeline.append({"scene": i, "speaker": ln["speaker"], "roman": ln["roman"],
-                             "start": round(t + a, 3), "end": round(t + b, 3)})
-        scenes_abs.append((t, t + d))
-        parts += [f, gap]
-        t += d + gap_s
-    joined = ctx.workdir / "dialogue_raw.wav"
-    _concat(parts[:-1], joined, ctx.workdir)
-
-    mastered = ctx.workdir / "dialogue.wav"
+    parts, timeline, t = [], [], 0.0
+    shot_first: dict[int, float] = {}
+    for k, pc in enumerate(pieces):
+        d = ffprobe_duration(pc["wav"])
+        for si, ln, a, b in pc["items"]:
+            shot_first.setdefault(si, t + a)
+            if ln is not None:
+                timeline.append({"shot": si, "speaker": ln["speaker"], "roman": ln["roman"],
+                                 "start": round(t + a, 3), "end": round(t + b, 3)})
+        parts.append(pc["wav"])
+        t += d
+        if k < len(pieces) - 1:
+            parts.append(gap)
+            t += gap_s
+    joined = ctx.workdir / "voice_raw.wav"
+    _concat(parts, joined, ctx.workdir)
+    mastered = ctx.workdir / "voice.wav"
     _run(["ffmpeg", "-y", "-v", "error", "-i", str(joined), "-af", MASTER_CHAIN,
           "-ar", "48000", "-ac", "2", "-c:a", "pcm_s24le", str(mastered)])
     total = ffprobe_duration(mastered)
-    log(NAME, f"{engine} · {len(timeline)} lines · {total:.1f}s · mastered 48 kHz")
+
+    n = len(script["shots"])
+    starts, prev = [], 0.0
+    for si in range(n):
+        s = max(prev, shot_first.get(si, prev) - 0.12) if si else 0.0
+        starts.append(s)
+        prev = s
+    log(NAME, f"{engine} · {len(timeline)} lines · {n} shots · {total:.1f}s · mastered 48 kHz")
     ctx.notes["voice_engine"] = engine
-    return mastered, timeline, scenes_abs, total
+    return mastered, timeline, starts, total

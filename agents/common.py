@@ -1,6 +1,7 @@
 """Shared helpers: logging, config, the Gemini client, and run context."""
 from __future__ import annotations
 
+import base64
 import json
 import os
 import re
@@ -51,7 +52,9 @@ class LLMError(RuntimeError):
 class LLM:
     """Minimal Gemini REST client that always returns parsed JSON.
 
-    Uses only the free tier. Falls back across models on 404/429/5xx.
+    Uses only the free tier. When a model is rate-limited it immediately moves on to the next
+    one and keeps using whichever model is working for the rest of the run. Models that are
+    retired or have no quota left today are dropped. Only when every model is busy does it wait.
     """
 
     URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
@@ -61,9 +64,62 @@ class LLM:
         self.key = os.getenv("GEMINI_API_KEY", "")
         first = os.getenv("GEMINI_MODEL") or cfg["llm"]["model"]
         self.models = [first] + [m for m in cfg["llm"].get("fallback_models", []) if m != first]
+        self.no_thinking_cap: set[str] = set()
+        self.calls = 0          # successful requests (for the monthly spend estimate)
+        self.dead_reasons: list[str] = []
+
+    def _call(self, model: str, prompt: str, system: str, temperature: float, errors: list[str],
+              images: list | None = None):
+        """One model, at most 2 tries. Returns (result, kind): ok | busy | gone | key."""
+        for attempt in (1, 2):
+            parts = [{"inline_data": {"mime_type": m, "data": base64.b64encode(b).decode()}} for m, b in (images or [])]
+            body = {"contents": [{"role": "user", "parts": parts + [{"text": prompt}]}],
+                    "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"}}
+            if model not in self.no_thinking_cap:
+                body["generationConfig"]["thinkingConfig"] = {"thinkingBudget": 512}
+            if system:
+                body["systemInstruction"] = {"parts": [{"text": system}]}
+            started = time.time()
+            try:
+                r = requests.post(self.URL.format(model=model), params={"key": self.key},
+                                  json=body, timeout=(15, 180))
+            except requests.Timeout:
+                errors.append(f"{model}: no reply after {time.time() - started:.0f}s")
+                log("Gemini", errors[-1])
+                return None, "busy"
+            except requests.RequestException as e:
+                errors.append(f"{model}: network error {type(e).__name__}")
+                log("Gemini", errors[-1])
+                time.sleep(5)
+                continue
+
+            if r.status_code == 200:
+                try:
+                    return _parse_json(_extract_text(r.json())), "ok"
+                except (ValueError, KeyError) as e:
+                    errors.append(f"{model}: unusable reply ({e})")
+                    log("Gemini", errors[-1])
+                    continue  # ask once more
+
+            msg = r.text[:240].replace("\n", " ")
+            errors.append(f"{model}: HTTP {r.status_code} {msg}")
+            if r.status_code == 400 and "thinking" in msg.lower() and model not in self.no_thinking_cap:
+                self.no_thinking_cap.add(model)
+                continue  # retry without the thinking cap
+            if r.status_code in (401, 403) or (r.status_code == 400 and "api key" in msg.lower()):
+                return msg, "key"
+            if r.status_code in (400, 404) or is_hard_quota(r):
+                log("Gemini", f"{model}: not usable today (HTTP {r.status_code}) — dropped for this run")
+                if r.status_code == 429:
+                    self.dead_reasons.append("quota")
+                return None, "gone"
+            log("Gemini", f"{model}: busy (HTTP {r.status_code}) — trying the next model")
+            return None, "busy"  # 429 per-minute limit or 5xx overload
+        return None, "busy"
 
     def json(self, prompt: str, *, system: str = "", temperature: float = 0.9,
-             mock: dict | list | None = None) -> dict | list:
+             mock: dict | list | None = None, images: list | None = None) -> dict | list:
+        """`images`: optional list of (mime_type, bytes) sent along with the prompt."""
         if self.mock:
             if mock is None:
                 raise LLMError("No mock response supplied")
@@ -72,60 +128,38 @@ class LLM:
             raise LLMError("GEMINI_API_KEY is not set")
 
         errors: list[str] = []
-        for model in self.models:
-            # Cap "thinking" so replies come back quickly; some models don't accept
-            # the setting, in which case it's dropped and the request is retried.
-            use_thinking_cap = True
-            attempt = 0
-            while attempt < 3:
-                body = {
-                    "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                    "generationConfig": {"temperature": temperature,
-                                         "responseMimeType": "application/json"},
-                }
-                if use_thinking_cap:
-                    body["generationConfig"]["thinkingConfig"] = {"thinkingBudget": 512}
-                if system:
-                    body["systemInstruction"] = {"parts": [{"text": system}]}
+        for rnd in range(4):
+            for model in list(self.models):
+                result, kind = self._call(model, prompt, system, temperature, errors, images)
+                if kind == "ok":
+                    self.calls += 1
+                    # keep using the model that works first for the rest of the run
+                    self.models.remove(model)
+                    self.models.insert(0, model)
+                    return result
+                if kind == "key":
+                    raise LLMError(f"Gemini rejected the API key. Check the GEMINI_API_KEY secret. Details: {result}")
+                if kind == "gone":
+                    self.models.remove(model)
+            if not self.models:
+                break
+            wait = 30 * (rnd + 1)
+            log("Gemini", f"all models busy — waiting {wait}s before trying again")
+            time.sleep(wait)
 
-                attempt += 1
-                started = time.time()
-                try:
-                    r = requests.post(self.URL.format(model=model), params={"key": self.key},
-                                      json=body, timeout=(15, 180))
-                except requests.Timeout:
-                    errors.append(f"{model} #{attempt}: no reply after {time.time() - started:.0f}s")
-                    log("Gemini", errors[-1])
-                    continue
-                except requests.RequestException as e:
-                    errors.append(f"{model} #{attempt}: network error {type(e).__name__}")
-                    log("Gemini", errors[-1])
-                    time.sleep(5 * attempt)
-                    continue
+        if not self.models and self.dead_reasons:
+            raise LLMError("The free Gemini quota is used up for today on every model. It resets around "
+                           "1:30 PM IST (midnight US Pacific). Nothing is wrong with your setup; "
+                           "run it again after that.\n  " + "\n  ".join(errors[-6:]))
+        raise LLMError("All Gemini models failed:\n  " + "\n  ".join(errors[-8:]))
 
-                if r.status_code == 200:
-                    try:
-                        return _parse_json(_extract_text(r.json()))
-                    except (ValueError, KeyError) as e:
-                        errors.append(f"{model} #{attempt}: unusable reply ({e})")
-                        log("Gemini", errors[-1])
-                        continue
 
-                msg = r.text[:300].replace("\n", " ")
-                errors.append(f"{model} #{attempt}: HTTP {r.status_code} {msg}")
-                log("Gemini", errors[-1])
-                if r.status_code == 400 and use_thinking_cap and "thinking" in msg.lower():
-                    use_thinking_cap = False
-                    attempt -= 1                     # not a real failure; retry without the cap
-                    continue
-                if r.status_code in (401, 403) or (r.status_code == 400 and "api key" in msg.lower()):
-                    raise LLMError("Gemini rejected the API key. Check the GEMINI_API_KEY secret. "
-                                   f"Details: {msg}")
-                if r.status_code in (400, 404):
-                    break                            # model unavailable or unsupported → next model
-                # 429 rate limit / 5xx overload → wait, then retry
-                time.sleep(min(60, 20 * attempt))
-        raise LLMError("All Gemini models failed:\n  " + "\n  ".join(errors))
+def is_hard_quota(r: requests.Response) -> bool:
+    """A 429 that won't clear by waiting a minute: a daily cap, or a model with no free quota."""
+    if r.status_code != 429:
+        return False
+    t = r.text
+    return "PerDay" in t or "per day" in t.lower() or re.search(r"limit:\s*0\b", t) is not None
 
 
 def _extract_text(data: dict) -> str:
@@ -158,7 +192,9 @@ SAFETY_RULES = """Content rules (Instagram-safe, Gen Z audience that may include
 - No instructions for anything dangerous (no rituals people could copy to "summon" things).
 - All stories are fiction."""
 
-HINGLISH_GUIDE = """Language: natural spoken Hinglish the way Indian Gen Z actually talks — about 75% Hindi,
-with everyday English words mixed in (phone, call, battery, hostel, PG, seriously, sorry, bro, scene, network,
-room, lift, chill, weird). Casual, not textbook or shuddh Hindi, not filmy. Light slang is fine (yaar, bhai,
-abey, kya bakwaas, sach mein?, pagal hai kya). Short lines, interruptions, half-sentences, real reactions."""
+HINGLISH_GUIDE = """Language: natural spoken Hindi the way real Indians talk — Hindi-heavy, with the everyday English
+words people actually use (phone, network, battery, hospital, bus, sorry, please, seriously). Not textbook or
+shuddh Hindi, not filmy dialogue-baazi. Match each character: young friends use light slang (yaar, bhai, abey,
+pagal hai kya); a mother speaks warm, simple Hindi (beta, chal, darr mat); a child speaks in short innocent
+sentences; an elder speaks slowly with old-fashioned words. Short lines, interruptions, half-sentences, real
+reactions."""
