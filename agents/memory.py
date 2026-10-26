@@ -72,7 +72,7 @@ class Memory:
                 shutil.copy(p, dest)
             ref_files[cid] = str(dest.relative_to(ROOT))
         s = {k: series[k] for k in ("id", "title", "format", "total_parts", "outline", "concept",
-                                    "voice_style", "narrator_gender") if k in series}
+                                    "voice_style", "narrator_gender", "voice_engine") if k in series}
         if series.get("part") == 1:
             self.data["last_voice_style"] = series.get("voice_style")
             if series.get("voice_style") == "narrator":

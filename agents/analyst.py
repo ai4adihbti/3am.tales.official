@@ -22,15 +22,19 @@ METRIC_SETS = [
 
 
 def _fetch_insights(graph: str, media_id: str, token: str) -> dict | None:
+    last = ""
     for metrics in METRIC_SETS:
         r = requests.get(f"{graph}/{media_id}/insights",
                          params={"metric": metrics, "access_token": token}, timeout=30)
+        last = f"HTTP {r.status_code} {r.text[:160]}"
         if r.status_code == 200:
             out = {}
             for item in r.json().get("data", []):
                 vals = item.get("values") or [{}]
                 out[item["name"]] = vals[0].get("value", item.get("total_value", {}).get("value", 0)) or 0
             return out
+    log(NAME, f"couldn't read insights for {media_id} ({last}); check the token has "
+              "instagram_business_manage_insights")
     return None
 
 

@@ -395,7 +395,11 @@ def perform(ctx: Context, script: dict) -> tuple[Path, list[dict], list[float], 
         pieces, engine = _perform_mock(ctx, script, cast_map), "mock"
     else:
         vcfg = ctx.cfg["voice"]
-        order = vcfg.get("engines") or [vcfg.get("engine", "gemini"), "edge"]
+        order = list(vcfg.get("engines") or [vcfg.get("engine", "gemini"), "edge"])
+        keep = script.get("series_voice_engine")
+        if keep in order:   # later parts of a series use the engine Part 1 used, so voices stay the same
+            order.remove(keep)
+            order.insert(0, keep)
         if "edge" not in order:
             order = list(order) + ["edge"]
         runners = {"gemini": _perform_gemini, "sarvam": _perform_sarvam, "edge": _perform_edge}

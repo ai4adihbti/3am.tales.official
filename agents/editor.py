@@ -169,7 +169,7 @@ def render(ctx: Context, clips: list[Path], durations: list[float], voice: Path,
              "-maxrate", "20M", "-bufsize", "40M", "-profile:v", "high",
              "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2),
              "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
-             "-movflags", "+faststart", str(out)]
+             "-use_editlist", "0", "-movflags", "+faststart", str(out)]   # Instagram: no edit lists, moov first
     log(NAME, f"rendering {n} shots · {total:.1f}s · 1080x1920 · CRF 18 …")
     subprocess.run(args, check=True)
     log(NAME, f"rendered → {out.name} ({out.stat().st_size / 1e6:.1f} MB)")
