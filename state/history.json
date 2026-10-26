@@ -2,5 +2,11 @@
   "posts": [],
   "used_video_ids": [],
   "learnings": "",
-  "format_scores": {}
+  "format_scores": {},
+  "series": null,
+  "series_done": [],
+  "spend": {
+    "month": "2026-10",
+    "usd": 0.0755
+  }
 }
