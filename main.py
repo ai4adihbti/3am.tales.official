@@ -23,7 +23,7 @@ import sys
 import time
 from datetime import datetime
 
-from agents import analyst, animator, caption, composer, critic, editor, illustrator, publisher, qa, researcher, voice, writer
+from agents import analyst, animator, caption, composer, critic, editor, illustrator, publisher, qa, researcher, upscaler, voice, writer
 from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
 from agents.memory import Memory
 
@@ -100,6 +100,12 @@ def main() -> int:
 
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
+    if mode == "style_test":
+        from agents import style_test
+        log("Orchestrator", "STYLE TEST — drawing the same scenes in every art style (nothing is posted)")
+        style_test.run(ctx, out_dir)
+        shutil.rmtree(work, ignore_errors=True)
+        return 0
     memory = Memory()
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
@@ -157,6 +163,7 @@ def main() -> int:
     heroes = illustrator.hero_images(ctx, script, durations)
     image_paths = illustrator.illustrate(ctx, studio, script, refs, heroes)
     illustrator.quality_check(ctx, studio, script, refs, image_paths)
+    image_paths = upscaler.upscale(ctx, image_paths)
     clips = animator.animate(ctx, image_paths, script["shots"], durations)
 
     # 7. original score

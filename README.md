@@ -160,3 +160,27 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
   three in region of India, setting, kind of legend and hero; after 9 stories the agent is pushed to experiment more.
 - **Always for an Indian audience:** Indian places, names, families, beliefs and folk legends, in Hindi-heavy Hinglish.
 - **Learns from results:** once views/shares/saves data exists, better-performing story types are chosen more often.
+
+## Choosing the art style (v7.2)
+
+Run the workflow once with mode **style_test** (Actions → Daily horror reel → Run workflow → style_test).
+It draws the same two characters and four scenes in five styles on the real image model, asks Gemini to rate
+them like an art director, and saves `style-test.jpg` (all styles side by side) + `style-test.json` (ratings) in the
+run's Artifacts. Nothing is posted; it uses ~4,500 of the 10,000 free daily Cloudflare neurons, so run it on a
+day you don't need many redraws, or right after the daily post.
+
+Then set `visuals.style_preset` in config.yaml to the one you like:
+`storybook` (closest to the reference reels), `flat_cartoon`, `anime`, `graphic_novel`, `shadow`.
+
+## v8 — the anime look
+
+The channel's style is now **anime** (`visuals.style_preset: anime`): a cinematic anime-film look with Indian
+characters, clothes and places.
+- **Art direction** for the writer: every character gets a recognisable anime design (hairstyle, one signature
+  colour, one accessory) and scenes use anime cinematography (big emotional close-ups, looming low angles,
+  silhouettes against the moon, wind, light particles, marigold petals).
+- **Anime upscaler:** every picture is sharpened with Real-ESRGAN's anime model before animation, so line art
+  stays crisp at 1080x1920. It runs on the GitHub machine's CPU (~15-30 s a picture, adds ~8-12 min per run) and
+  falls back to the original pictures automatically if anything goes wrong.
+- **Anime effects on scares:** a 3-frame manga-style impact flash, then speed lines rushing into the frame.
+- The picture inspector now also checks that each character keeps the same hairstyle and outfit colours.

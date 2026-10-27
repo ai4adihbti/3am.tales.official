@@ -82,6 +82,72 @@ visuals:
   hq_hero_shots: 3
   width: 864                        # generated size (9:16); upscaled to 1080x1920 in the edit
   height: 1536
+  # The art style. Pick one of the presets below (run the workflow in "style_test" mode to compare them
+  # side by side on the real image model). "custom" uses the style / night_palette written further down.
+  style_preset: "anime"
+  style_presets:
+    storybook:
+      label: "Semi-realistic Indian storybook (closest to the reference reels)"
+      style: >-
+        Highly detailed Indian 2D digital illustration, the look of premium Indian animated horror-story reels:
+        bold clean dark ink outlines, rich cel shading with soft painted gradients, semi-realistic Indian
+        characters with large glossy expressive brown eyes, natural brown Indian skin tones, emotions clearly
+        readable, richly painted village backgrounds, cinematic composition, crisp sharp lines, vibrant
+        saturated colours, no text, no letters, no captions, no speech bubbles, no watermark, no logo
+      night_palette: >-
+        deep cobalt-blue moonlit night, huge glowing full moon, soft moonbeams and low ground mist, cool blue rim
+        light on faces, contrasted with warm golden-orange light from oil lamps, lanterns and doorways
+    flat_cartoon:
+      label: "Flat 2D Indian cartoon / comic"
+      style: >-
+        Flat 2D Indian cartoon illustration like a modern Indian animated TV series: thick uniform dark outlines,
+        flat solid colour fills with one simple shadow tone, simplified clean shapes, cute but expressive
+        characters with big simple eyes, Indian faces and clothes, uncluttered backgrounds with few large shapes,
+        bold readable silhouettes, no gradients, no texture noise, no text, no letters, no watermark, no logo
+      night_palette: >-
+        limited night palette of navy blue, teal and black with a big pale-yellow moon, warm orange lantern light
+        as the only bright accent
+    anime:
+      label: "Anime (cinematic anime film look, Indian stories)"
+      style: >-
+        Masterpiece-quality modern anime film still, the look of a big-budget Japanese animated movie: crisp
+        clean confident line art, precise cel shading with soft gradient highlights, beautiful detailed anime
+        faces with large luminous expressive eyes, glossy irises with catchlights, detailed hair strands with
+        highlights; the characters are Indian: warm brown skin, Indian features, Indian clothes (salwar kameez,
+        saree, kurta, dupatta, lungi), Indian jewellery; lush painterly anime backgrounds of real Indian places
+        drawn in rich detail; cinematic lighting, depth of field, atmospheric perspective, dramatic composition,
+        consistent character design, no text, no letters, no subtitles, no speech bubbles, no watermark, no logo,
+        no signature
+      night_palette: >-
+        cinematic anime night: deep indigo and teal sky with glowing clouds and a huge luminous moon, moonlight
+        rim light on hair and faces, volumetric light beams through mist, drifting light particles, warm amber
+        glow from lanterns, diyas and windows as contrast; in frightening moments cold desaturated shadows and a
+        sickly pale glow
+      day_palette: "anime golden-hour light, warm saturated sky, soft bloom, long shadows"
+      art_direction: >-
+        ANIME ART DIRECTION. Every character gets an instantly recognisable anime design: a distinctive
+        hairstyle (long braid, short bob, messy hair, bun with flowers, ponytail), ONE signature outfit colour and
+        one accessory, all fixed in "look". Use anime cinematography in the image descriptions: big emotional
+        close-ups (eyes trembling, pupils shrinking in fear, tears catching the light), low-angle shots of
+        something looming, silhouettes against the huge moon, a dupatta or hair blowing in the wind, light
+        particles, rain, falling marigold petals, an empty train platform or village lane at night. Keep scenes
+        uncluttered: one strong subject per picture.
+    graphic_novel:
+      label: "Dark graphic novel (ink horror comic)"
+      style: >-
+        Dark horror graphic-novel illustration: heavy black ink lines and deep shadows, cross-hatching, limited
+        muted colour palette, dramatic high-contrast lighting, gritty paper texture, Indian characters and
+        setting drawn with strong expressive faces, cinematic comic-panel composition, eerie atmosphere,
+        no text, no letters, no speech bubbles, no watermark, no logo
+      night_palette: "near-monochrome blue-black night, a single sickly yellow moon, one warm lantern accent, heavy fog"
+    shadow:
+      label: "Shadow puppet / paper cut-out silhouettes"
+      style: >-
+        Layered paper cut-out silhouette art like Indian shadow puppetry (tholu bommalata): characters and trees
+        as solid black silhouettes with intricate cut-out patterns, layered paper depth, glowing backlit
+        background, folk-art shapes, Indian clothes and village shapes in silhouette, no text, no letters,
+        no watermark, no logo
+      night_palette: "glowing deep red-orange and indigo backlight, a large pale moon disc, mist layers between paper planes"
   style: >-
     Highly detailed Indian 2D digital illustration, the look of premium Indian animated horror-story reels:
     bold clean dark ink outlines, rich cel shading with soft painted gradients, semi-realistic Indian
@@ -99,6 +165,8 @@ visuals:
   depth_model: true                 # 3D parallax from a free open-source depth model (estimates if unavailable)
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
   quality_check: true               # Gemini inspects every illustration and redraws bad ones
+  upscale: true                     # Real-ESRGAN anime model sharpens every picture before animation (free, CPU)
+  anime_effects: true               # impact frames + speed lines on scare cuts
   max_redraws: 6
   # Nano Banana (Gemini's image model) — best faces and consistency, paid from the Gemini API
   # (~$0.034 ≈ ₹3 per picture; your Google AI Pro plan includes $10/month of credit for this).

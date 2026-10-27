@@ -6,3 +6,4 @@ scipy>=1.11
 Pillow>=10.0
 opencv-python-headless>=4.9
 onnxruntime>=1.17
+realesrgan-ncnn-py==2.0.0; python_version == "3.12" and platform_system == "Linux"   # anime upscaler (models bundled)
