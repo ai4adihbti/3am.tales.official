@@ -307,6 +307,8 @@ Format: {fmt['label']} — {fmt['brief']}
 {chars_part}
 {craft(series)}
 
+{ctx.cfg['visuals'].get('art_direction', '')}
+
 {HINGLISH_GUIDE}
 
 {SAFETY_RULES}
@@ -333,6 +335,8 @@ Editor feedback:
 {feedback}
 
 {craft(series)}
+
+{ctx.cfg['visuals'].get('art_direction', '')}
 
 {HINGLISH_GUIDE}
 

@@ -20,9 +20,24 @@ def log(agent: str, msg: str) -> None:
     print(f"[{time.strftime('%H:%M:%S')}] {agent:<16} {msg}", flush=True)
 
 
+def apply_style(cfg: dict, name: str) -> dict:
+    """Copies the chosen art-style preset into visuals.style / night_palette (unknown or "custom" = unchanged)."""
+    v = cfg["visuals"]
+    preset = (v.get("style_presets") or {}).get(name)
+    if preset:
+        v["style"] = " ".join(str(preset["style"]).split())
+        v["night_palette"] = " ".join(str(preset.get("night_palette", v.get("night_palette", ""))).split())
+        v["style_label"] = preset.get("label", name)
+        for k in ("day_palette", "art_direction"):
+            if preset.get(k):
+                v[k] = " ".join(str(preset[k]).split())
+    return cfg
+
+
 def load_config() -> dict:
     with open(ROOT / "config.yaml", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        cfg = yaml.safe_load(f)
+    return apply_style(cfg, os.getenv("STYLE_PRESET") or cfg["visuals"].get("style_preset", "custom"))
 
 
 def ffprobe_duration(path: str | Path) -> float:

@@ -548,8 +548,10 @@ Flag ONLY serious problems a viewer would notice:
 - deformed faces, eyes, hands or extra limbs
 - visible text, letters, captions, watermarks or logos
 - photographic or 3D render instead of the 2D illustrated style, or very blurry
-- flat, dull or washed-out pictures: the target look is bold clean outlines, rich detail, a deep blue moonlit night
-  contrasted with warm lantern light, and large expressive eyes on emotional close-ups
+- off-style pictures: the target look is "{v.get('style_label', 'the channel style')}" — clean crisp line art,
+  rich detail, cinematic night light, large expressive eyes on emotional close-ups; flag flat, dull, muddy or
+  half-realistic pictures
+- the same character drawn with a different hairstyle, hair colour or outfit colour than in their portrait
 - anything gory or unsafe
 
 Return JSON: {{"redraw": [{{"id": "I4", "problem": "short", "fix": "one sentence to add to the drawing prompt"}}]}}
