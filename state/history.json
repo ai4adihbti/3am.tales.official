@@ -34,6 +34,48 @@
       "media_id": "17914685202542107",
       "permalink": "https://www.instagram.com/reel/De99HISAvmE/",
       "posted_at": "2026-10-26T18:45:26+00:00"
+    },
+    {
+      "title": "Choti Line Ki Akhri Bus — Part 2",
+      "series_title": "Choti Line Ki Akhri Bus",
+      "series_id": "20261026-choti-line-ki-akhri-bus",
+      "part": 2,
+      "total_parts": 3,
+      "format": "family_bond",
+      "hook": "Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.",
+      "critic_score": 62,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare",
+        "cloudflare_hq"
+      ],
+      "duration_s": 114.971,
+      "file": "reel-20261027-135045.mp4",
+      "caption": "Choti Line Ki Akhri Bus | Part 2/3: Ticket par naam likha toh khattam. (fiction)\n\nAgar conductor tumse tumhara asli naam maange, toh kya bataoge? 👀\n\nFollow karo, agla part jaldi aa raha hai 🕯️\n.\n.\n#hindistory #horrorstories #bhootiyakahani #aistory #chotilinekibus #hindihorrorreels #ghostbustales #hinglishhorror",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 115.0,
+        "loudness_lufs": -14.2,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare",
+          "cloudflare_hq"
+        ],
+        "redrawn": [
+          "I5",
+          "I7"
+        ],
+        "gemini_images": 0,
+        "cloudflare_neurons": 6370,
+        "hq_images": 3,
+        "est_cost_usd": 0.07,
+        "month_spend_usd": 0.23
+      },
+      "media_id": "18131550643793615",
+      "permalink": "https://www.instagram.com/reel/DfAE91JDjj-/",
+      "posted_at": "2026-10-27T14:32:28+00:00"
     }
   ],
   "used_video_ids": [],
@@ -83,16 +125,18 @@
       "C1": "state/series/20261026-choti-line-ki-akhri-bus/C1.png",
       "C2": "state/series/20261026-choti-line-ki-akhri-bus/C2.png"
     },
-    "parts_done": 1,
+    "parts_done": 2,
     "previously": [
-      "Kabir and Roshni get stranded on a foggy highway at night when their bike breaks down, and a strange, ancient bus suddenly pulls up from the mist with a faceless driver."
+      "Kabir and Roshni get stranded on a foggy highway at night when their bike breaks down, and a strange, ancient bus suddenly pulls up from the mist with a faceless driver.",
+      "Kabir and Roshni are trapped inside the moving ghost bus, where an eyeless conductor demands Kabir's name on a bleeding ink ticket, reminding Kabir of the fatal village warning."
     ]
   },
   "series_done": [],
   "spend": {
     "month": "2026-10",
-    "usd": 0.1555
+    "usd": 0.2255
   },
   "last_voice_style": "narrator",
-  "last_narrator_gender": "female"
+  "last_narrator_gender": "female",
+  "story_log": []
 }
