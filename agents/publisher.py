@@ -33,10 +33,11 @@ def _check(r: requests.Response, step: str) -> dict:
 
 
 # ── route 1: direct upload ──────────────────────────────────────────────
-def _container_resumable(graph: str, ver: str, user_id: str, token: str, video: Path, caption: str) -> str:
+def _container_resumable(graph: str, ver: str, user_id: str, token: str, video: Path, caption: str,
+                         extra: dict | None = None) -> str:
     r = requests.post(f"{graph}/{user_id}/media", data={
         "media_type": "REELS", "upload_type": "resumable", "caption": caption,
-        "share_to_feed": "true", "access_token": token}, timeout=60)
+        "share_to_feed": "true", "access_token": token, **(extra or {})}, timeout=60)
     container = _check(r, "create container (direct upload)")["id"]
     size = video.stat().st_size
     with open(video, "rb") as fh:
@@ -112,7 +113,8 @@ def _serves_mp4(url: str, size: int) -> str:
     return ""
 
 
-def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, caption: str):
+def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, caption: str,
+                          extra: dict | None = None):
     """Yields container ids, one per host that works (the caller waits and moves on if processing fails)."""
     errors = []
     size = video.stat().st_size
@@ -132,7 +134,7 @@ def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, cap
         log(NAME, f"video hosted temporarily via {name}")
         r = requests.post(f"{graph}/{user_id}/media", data={
             "media_type": "REELS", "video_url": url, "caption": caption,
-            "share_to_feed": "true", "access_token": token}, timeout=120)
+            "share_to_feed": "true", "access_token": token, **(extra or {})}, timeout=120)
         try:
             yield name, _check(r, "create container (video_url)")["id"]
         except PublishError as e:
@@ -160,6 +162,41 @@ def _wait(graph: str, container: str, token: str) -> None:
     raise ProcessingError("Timed out waiting for Instagram to process the video")
 
 
+def followers(ctx: Context) -> int | None:
+    """The account's follower count (None if it can't be read)."""
+    token = os.getenv("IG_ACCESS_TOKEN", "")
+    if not token or ctx.mock:
+        return None
+    ig = ctx.cfg["instagram"]
+    host = os.getenv("IG_API_HOST") or ig["api_host"]
+    try:
+        r = requests.get(f"https://{host}/{ig['api_version']}/me",
+                         params={"fields": "followers_count", "access_token": token}, timeout=30)
+        n = r.json().get("followers_count") if r.status_code == 200 else None
+        return int(n) if n is not None else None
+    except (requests.RequestException, ValueError, TypeError):
+        return None
+
+
+def _host_cover(cover: Path) -> str:
+    """Puts the cover image on a temporary public host (Instagram downloads it from there)."""
+    for name, url_, data in (("catbox", "https://catbox.moe/user/api.php", {"reqtype": "fileupload"}),
+                             ("litterbox", "https://litterbox.catbox.moe/resources/internals/api.php",
+                              {"reqtype": "fileupload", "time": "72h"})):
+        try:
+            with open(cover, "rb") as fh:
+                r = requests.post(url_, data=data, files={"fileToUpload": (cover.name, fh, "image/jpeg")}, timeout=120)
+            url = r.text.strip()
+            if r.status_code == 200 and url.startswith("https://"):
+                head = requests.get(url, headers={"Range": "bytes=0-3"}, timeout=60).content[:3]
+                if head == b"\xff\xd8\xff":
+                    return url
+        except requests.RequestException:
+            pass
+        log(NAME, f"cover upload via {name} failed; trying the next host")
+    return ""
+
+
 def check_token(ctx: Context) -> tuple[bool, str]:
     """Quick check that the Instagram token still works (they expire after 60 days)."""
     ig = ctx.cfg["instagram"]
@@ -175,7 +212,18 @@ def check_token(ctx: Context) -> tuple[bool, str]:
     return False, f"Instagram token problem: HTTP {r.status_code} {r.text[:200]}"
 
 
-def publish_reel(ctx: Context, video: Path, caption: str) -> dict:
+def _via_hosts(graph: str, user_id: str, token: str, video: Path, caption: str, extra: dict) -> str:
+    for name, cid in _containers_via_hosts(graph, user_id, token, video, caption, extra):
+        log(NAME, f"container {cid} — waiting for Instagram to process the video")
+        try:
+            _wait(graph, cid, token)
+            return cid
+        except ProcessingError as e:
+            log(NAME, f"Instagram couldn't process the video from {name} ({str(e)[:120]}); trying the next host")
+    raise PublishError("no host worked")
+
+
+def publish_reel(ctx: Context, video: Path, caption: str, cover: Path | None = None) -> dict:
     ig = ctx.cfg["instagram"]
     token = os.getenv("IG_ACCESS_TOKEN", "")
     user_id = os.getenv("IG_USER_ID", "")
@@ -185,25 +233,32 @@ def publish_reel(ctx: Context, video: Path, caption: str) -> dict:
     ver = ig["api_version"]
     graph = f"https://{host}/{ver}"
 
+    extra = {}
+    if cover and cover.exists():
+        cover_url = _host_cover(cover)
+        if cover_url:
+            extra["cover_url"] = cover_url
+            log(NAME, "custom cover attached")
+        else:
+            extra["thumb_offset"] = str(int(ctx.notes.get("cover_offset_ms", 1500)))
     container = None
     direct = host.endswith("facebook.com")  # direct upload only works with the Facebook-Login API
     if direct:
         try:
-            container = _container_resumable(graph, ver, user_id, token, video, caption)
+            container = _container_resumable(graph, ver, user_id, token, video, caption, extra)
             log(NAME, f"container {container} — waiting for Instagram to process the video")
             _wait(graph, container, token)
         except (PublishError, requests.RequestException) as e:
             log(NAME, f"direct upload didn't work ({str(e)[:140]}); using public-link upload")
             container = None
     if container is None:
-        for name, cid in _containers_via_hosts(graph, user_id, token, video, caption):
-            log(NAME, f"container {cid} — waiting for Instagram to process the video")
-            try:
-                _wait(graph, cid, token)
-                container = cid
-                break
-            except ProcessingError as e:
-                log(NAME, f"Instagram couldn't process the video from {name} ({str(e)[:120]}); trying the next host")
+        try:
+            container = _via_hosts(graph, user_id, token, video, caption, extra)
+        except PublishError as e:
+            if not extra:
+                raise
+            log(NAME, f"posting with the custom cover failed ({str(e)[:120]}); retrying without it")
+            container = _via_hosts(graph, user_id, token, video, caption, {})
     r = requests.post(f"{graph}/{user_id}/media_publish",
                       data={"creation_id": container, "access_token": token}, timeout=60)
     media_id = _check(r, "publish")["id"]

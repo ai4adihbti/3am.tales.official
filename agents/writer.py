@@ -76,7 +76,10 @@ RULES = """Rules:
   Numbers as words. At most one vocal tag per line, only from: <whisper>, <sigh>, <gasp>, <short pause>,
   <laugh>, <long pause>, <crying>, in English angle brackets.
 - "roman": the same line in natural Roman Hinglish, no tags.
-- The first 2 cuts must hook in under 4 seconds. {ending_rule}"""
+- COLD OPEN (the first 3 seconds decide everything): cuts 1-2 flash FORWARD to the most frightening or
+  emotional moment of THIS part — a shocking close-up and one gripping line (e.g. "Us raat Meera ne jo dekha,
+  woh aaj tak koi nahi bhool paaya…") — then cut 3 goes back: "Par ye sab shuru kaise hua…" (vary the wording).
+  Never open on a calm establishing shot. {ending_rule}"""
 
 
 DIALOGUE_RULE = ("At least 80% of lines are CHARACTER dialogue. The narrator \"N\" only opens the part (one or two "
@@ -88,9 +91,9 @@ NARRATOR_RULE = ("STORYTELLER STYLE: one {g} storyteller \"N\" tells the whole k
                  "moments (a scream, a warning, a whispered question, a final sting).")
 
 STORYTELLER_CRAFT = """How the reference reels are built (copy this rhythm exactly):
-- OPEN on a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a few lit windows. The storyteller
-  sets the scene over it in 1-2 calm sentences ("Ye kahani hai Rampur gaon ki…"). This motif image comes back 3-5
-  times as a breathing space between chapters of the story (same image id, different camera motion).
+- After the cold open, SET THE SCENE on a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a
+  few lit windows, with 1-2 calm sentences ("Ye kahani hai Rampur gaon ki…"). This motif image comes back 2-4 times
+  as a breathing space between chapters of the story (same image id, different camera motion).
 - INTRODUCE the heroine/hero with a medium shot and a close-up of their face; make us love them in 15 seconds
   (who they live with, what they long for, a small sweet detail).
 - RHYTHM: calm narration sits on long holds (one 12-25 word sentence on a wide or medium shot, motion zoom_in or

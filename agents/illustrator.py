@@ -427,6 +427,10 @@ def character_refs(ctx: Context, studio: Studio, series: dict, script: dict) -> 
     out_dir.mkdir(parents=True, exist_ok=True)
     refs: dict[str, Path] = {}
     saved = series.get("ref_files") or {}
+    style = ctx.cfg["visuals"].get("style_preset", "custom")
+    if saved and series.get("art_style", "custom") != style:
+        log(NAME, f"art style changed ({series.get('art_style', 'old')} → {style}); redrawing the character portraits")
+        saved = {}
     for c in script["characters"]:
         p = ROOT / saved[c["id"]] if c["id"] in saved else None
         if p and p.exists():
