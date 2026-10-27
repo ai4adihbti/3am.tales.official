@@ -23,9 +23,11 @@ import sys
 import time
 from datetime import datetime
 
-from agents import analyst, animator, caption, composer, critic, editor, illustrator, publisher, qa, researcher, upscaler, voice, writer
+from agents import analyst, animator, caption, composer, cover, critic, editor, illustrator, publisher, qa, researcher, upscaler, voice, writer
 from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
 from agents.memory import Memory
+
+VERSION = "v9"
 
 
 def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict]:
@@ -109,7 +111,8 @@ def main() -> int:
     memory = Memory()
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label}")
+    log("Orchestrator", f"run {stamp} · {label} · code {VERSION} · art style: "
+                        f"{cfg['visuals'].get('style_label', cfg['visuals'].get('style_preset', 'custom'))}")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -132,9 +135,25 @@ def main() -> int:
     # 1. learn from past posts
     analyst.run(ctx, memory)
 
+    # growth phase: single complete, shorter stories until the account has enough followers
+    g = cfg.get("growth") or {}
+    fl = publisher.followers(ctx)
+    if fl is not None:
+        memory.data["followers"] = fl
+    fl = memory.data.get("followers", 0) if fl is None else fl
+    if g.get("enabled") and (fl or 0) < int(g.get("until_followers", 1000)):
+        for k in ("parts_per_series", "min_seconds", "max_seconds", "min_cuts", "max_cuts", "max_images"):
+            if k in g:
+                cfg["story"][k] = g[k]
+        log("Orchestrator", f"growth phase ({fl} followers < {g.get('until_followers', 1000)}): one complete "
+                            f"{g.get('min_seconds')}-{g.get('max_seconds')} s story per reel")
+    else:
+        log("Orchestrator", f"{fl} followers: series and full-length reels enabled")
+
     # 2-4. today's part → script → critique loop
     series, fmt, script, review = produce_script(ctx, memory)
     final = series["part"] >= series["total_parts"]
+    series["art_style_now"] = cfg["visuals"].get("style_preset", "custom")
     script["voice_style"] = series.get("voice_style", "dialogue")
     script["series_voice_engine"] = series.get("voice_engine")
     script["narrator_gender"] = series.get("narrator_gender", "male")
@@ -199,8 +218,15 @@ def main() -> int:
     log("Orchestrator", f"Gemini usage this run ≈ ${run_cost:.2f} ({studio.gemini_images} Nano Banana images); "
                         f"this month ≈ ${memory.month_spend():.2f} of ${budget:.2f}")
 
-    # 10. caption
+    # 10. caption + cover
     cap = caption.write_caption(ctx, script, series, fmt)
+    cover_path = None
+    try:
+        cover_path = cover.make(ctx, script, series, image_paths, out_dir / f"cover-{stamp}.jpg")
+        _, cut = cover.pick_image(script, image_paths)
+        ctx.notes["cover_offset_ms"] = int((v["lead_in_seconds"] + shot_starts[cut] + 0.4) * 1000)
+    except Exception as e:  # noqa: BLE001 — a cover problem must never stop the post
+        log("Orchestrator", f"cover skipped ({str(e)[:120]})")
 
     post = {"title": f"{series['title']} — Part {series['part']}", "series_title": series["title"],
             "series_id": series["id"], "part": series["part"], "total_parts": series["total_parts"],
@@ -225,7 +251,7 @@ def main() -> int:
         shutil.rmtree(work, ignore_errors=True)
         return 3
     else:
-        result = publisher.publish_reel(ctx, reel, cap)
+        result = publisher.publish_reel(ctx, reel, cap, cover_path)
         post.update(result)
         memory.add_post(post)
         series["voice_engine"] = series.get("voice_engine") or ctx.notes.get("voice_engine")

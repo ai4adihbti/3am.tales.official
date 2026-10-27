@@ -184,3 +184,15 @@ characters, clothes and places.
   falls back to the original pictures automatically if anything goes wrong.
 - **Anime effects on scares:** a 3-frame manga-style impact flash, then speed lines rushing into the frame.
 - The picture inspector now also checks that each character keeps the same hairstyle and outfit colours.
+
+## v9 — growth fixes (from the channel audit)
+
+- **Growth phase:** until the account has 1,000 followers (`growth.until_followers`), every new story is ONE
+  complete 80-110 s reel. Series and 2.5-3.3 minute reels switch on automatically after that.
+- **Cold open:** every reel opens on its most frightening or emotional moment, then goes back ("Par ye sab shuru
+  kaise hua…"). No more slow openings.
+- **Custom covers:** the most emotional close-up, brightened, with the title in big letters and a red
+  "HINDI HORROR STORY" / "PART n" tag, kept inside the 3:4 grid crop. Saved as out/cover-*.jpg too.
+- **Captions:** words people search for ("Hindi horror story", "bhoot ki kahani"); #aistory removed.
+- **Run log** starts with the code version and the art style, so you can confirm which version ran.
+- If the art style changes during a series, the character portraits are redrawn in the new style.
