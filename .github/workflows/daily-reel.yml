@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "preview = quick 30 s sample · dry_run = full reel, not posted · post = make and post"
+        description: "preview = quick 30 s sample · dry_run = full reel, not posted · post = make and post · style_test = compare art styles"
         type: choice
-        options: [preview, dry_run, post]
+        options: [preview, dry_run, post, style_test]
         default: preview
 
 permissions:
@@ -34,7 +34,8 @@ jobs:
           cache: pip
 
       - name: Install ffmpeg and fonts
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+        # libomp5 + Mesa's CPU Vulkan driver let the anime upscaler (Real-ESRGAN, ncnn) run without a GPU
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core libomp5 libvulkan1 mesa-vulkan-drivers
 
       - name: Install Python packages
         run: pip install -r requirements.txt
