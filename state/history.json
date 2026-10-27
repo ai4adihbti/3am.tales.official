@@ -128,9 +128,14 @@
   ],
   "spend": {
     "month": "2026-10",
-    "usd": 0.2955
+    "usd": 0.3355
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
-  "story_log": []
+  "story_log": [],
+  "followers": 1,
+  "format_block": {
+    "format": "lok_katha",
+    "target": 3
+  }
 }
