@@ -30,6 +30,7 @@ class Memory:
         self.data.setdefault("series", None)
         self.data.setdefault("series_done", [])
         self.data.setdefault("spend", {"month": "", "usd": 0.0})
+        self.data.setdefault("story_log", [])      # region/setting/entity/hero of every story, for diversity
 
     # ── reads ────────────────────────────────────────────────
     @property
@@ -72,8 +73,11 @@ class Memory:
                 shutil.copy(p, dest)
             ref_files[cid] = str(dest.relative_to(ROOT))
         s = {k: series[k] for k in ("id", "title", "format", "total_parts", "outline", "concept",
-                                    "voice_style", "narrator_gender", "voice_engine") if k in series}
+                                    "voice_style", "narrator_gender", "voice_engine", "profile") if k in series}
         if series.get("part") == 1:
+            self.data["story_log"] = (self.data["story_log"] + [{
+                "title": series["title"], "format": series.get("format"), "parts": series.get("total_parts"),
+                **(series.get("profile") or {})}])[-40:]
             self.data["last_voice_style"] = series.get("voice_style")
             if series.get("voice_style") == "narrator":
                 self.data["last_narrator_gender"] = series.get("narrator_gender")

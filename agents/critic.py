@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 
 from .common import HINGLISH_GUIDE, SAFETY_RULES, Context, log
-from .writer import CRAFT, all_lines, estimate_seconds, to_screenplay, voice_rule
+from .writer import all_lines, craft, estimate_seconds, to_screenplay, voice_rule
 
 NAME = "Critic"
 
@@ -30,7 +30,7 @@ Screenplay: {cuts} cuts, {images} images, {len(lines)} lines ({narr} narrator), 
 (target {s['min_cuts']}-{s['max_cuts']} cuts, {s['min_seconds']}-{s['max_seconds']} seconds):
 {json.dumps(to_screenplay(script), indent=1, ensure_ascii=False)}
 
-{CRAFT}
+{craft(series)}
 
 The language should be: {HINGLISH_GUIDE}
 
@@ -41,7 +41,8 @@ Score each 0-10:
 - ending: {'does the twist land emotionally and pay off earlier parts?' if final else 'is the cliffhanger strong enough to make people follow for the next part?'}
 - dialogue: natural spoken Hindi for each character's age? short one-breath lines? distinct voices?
   does it follow this voice style: {voice_rule(series)} "hi" Devanagari + English words in English letters?
-- visuals: drawable, varied framing, shot/reverse-shot on dialogue, clue inserts, no text in images?
+- visuals: drawable, varied framing, vivid image descriptions (light, expression, props), a recurring motif shot,
+  emotional close-ups, clue inserts, no text in images?
 - desi_feel: authentically Indian, fresh setting and details?
 
 Safety check against these rules:
@@ -70,10 +71,10 @@ Return JSON:
                          "cutting between speaker and listener close-ups.")
         ratio = narr / len(lines) if lines else 0
         if series.get("voice_style") == "narrator":
-            if lines and not 0.6 <= ratio <= 0.92:
+            if lines and not 0.78 <= ratio <= 0.98:
                 total -= 8
-                notes.append("STYLE: this series is told by a storyteller: make 70-85% of lines narration, "
-                             "with only short key character lines.")
+                notes.append("STYLE: this series is told by a storyteller: make 85-95% of lines narration, "
+                             "with only 2-5 short key character lines.")
         elif lines and ratio > 0.25:
             total -= 8
             notes.append("NARRATOR: too much narration; turn it into character dialogue.")

@@ -63,13 +63,15 @@ BODY_SPEC = """"images": [
   ],"""
 
 RULES = """Rules:
-- {min_cuts}-{max_cuts} cuts, at most {max_images} images. A cut lasts as long as its line (~2-3 s) or ~1.8 s if
-  silent (use 3-6 silent cuts for suspense: a reaction, an empty road, a clue). Reuse close-up images for
-  back-and-forth dialogue; every image must be used at least once.
+- {min_cuts}-{max_cuts} cuts, at most {max_images} images. A cut lasts as long as its line (1.5-8 s) or ~1.6 s if
+  silent (use 4-8 silent cuts for suspense: a reaction, an empty lane, a clue). Reuse images (motif wide shots,
+  close-ups); every image must be used at least once.
 - Total spoken length {min_s}-{max_s} seconds: roughly {min_w}-{max_w} words in total.
 - {voice_rule}
 - Images: mostly single-character close-ups and medium shots (they draw best), plus establishing, two-shots and
   object inserts. "characters" lists only who is VISIBLE (max 3). Children are drawn as clearly young kids.
+  Each "image" description is 25-50 words: where, light source (moonlight / lantern / diya), pose, exact facial
+  expression, one or two vivid props. Never a crowd.
 - "hi": Devanagari for Hindi words, English words in English letters (e.g. "माँ, phone में network नहीं है").
   Numbers as words. At most one vocal tag per line, only from: <whisper>, <sigh>, <gasp>, <short pause>,
   <laugh>, <long pause>, <crying>, in English angle brackets.
@@ -79,11 +81,34 @@ RULES = """Rules:
 
 DIALOGUE_RULE = ("At least 80% of lines are CHARACTER dialogue. The narrator \"N\" only opens the part (one or two "
                  "lines), bridges a time jump, or delivers the final sting.")
-NARRATOR_RULE = ("STORYTELLER STYLE: one {g} narrator \"N\" tells the story like a gripping late-night Hindi horror "
-                 "kahani — intimate, vivid, in short spoken sentences, describing what the characters feel, see and hear. "
-                 "70-85% of lines are narration (one sentence per cut). Characters speak only short, key lines at the "
-                 "most dramatic moments (a scream, a warning, a whispered question). Keep cutting between close-ups, "
-                 "reactions and clue inserts so the picture changes every ~2-3 s.")
+NARRATOR_RULE = ("STORYTELLER STYLE: one {g} storyteller \"N\" tells the whole kahani like the best late-night Hindi "
+                 "horror-story reels — warm, intimate, emotional, in simple spoken Hindi, describing what the characters "
+                 "feel, see and hear, and quoting what they say (\"Maa ne dheere se kaha, 'beta, darwaza mat kholna'\"). "
+                 "85-95% of lines are narration. Characters speak in their own voice only 2-5 times, at the biggest "
+                 "moments (a scream, a warning, a whispered question, a final sting).")
+
+STORYTELLER_CRAFT = """How the reference reels are built (copy this rhythm exactly):
+- OPEN on a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a few lit windows. The storyteller
+  sets the scene over it in 1-2 calm sentences ("Ye kahani hai Rampur gaon ki…"). This motif image comes back 3-5
+  times as a breathing space between chapters of the story (same image id, different camera motion).
+- INTRODUCE the heroine/hero with a medium shot and a close-up of their face; make us love them in 15 seconds
+  (who they live with, what they long for, a small sweet detail).
+- RHYTHM: calm narration sits on long holds (one 12-25 word sentence on a wide or medium shot, motion zoom_in or
+  pan); as fear rises, the cuts get short — 4-8 words per cut, alternating extreme close-ups of the frightened eyes,
+  the thing she sees, her running feet, a lantern, the tree. Peaks use 2-4 silent cuts in a row (no line) for
+  a heartbeat of pure picture.
+- EMOTIONAL CLOSE-UPS are the signature: describe the face precisely — wide glistening eyes, tears rolling down,
+  trembling lips, a hand over the mouth. Reuse the best close-ups 2-3 times.
+- LIGHT tells the mood: warm lantern/diya light = safety and family; cold blue moonlight and mist = danger. Write it
+  into every image description.
+- Concrete, creepy, Indian details: payal ki chhan-chhan, ulte pair, a voice calling her name from the peepal tree,
+  a lantern going out, a dog howling, a broken bangle, dadi's rudraksha mala.
+- End on the image and the line that gives goosebumps. Don't ask viewers to follow or comment — the end card
+  does that."""
+
+
+def craft(series: dict) -> str:
+    return STORYTELLER_CRAFT if series.get("voice_style") == "narrator" else CRAFT
 
 
 def voice_rule(series: dict) -> str:
@@ -274,13 +299,13 @@ def write(ctx: Context, series: dict, fmt: dict) -> dict:
             + '\n  "next_part_hook": "1 sentence: what the next part is about (empty if final)"\n}}')
     prompt = f"""You write viral illustrated Hindi story reels for "{ctx.cfg['channel']['name']}"
 (audience: {ctx.cfg['channel']['audience']}). Each reel is a fast-cut sequence of illustrations with voiced dialogue,
-like an animated short.
+like an animated short, with a continuous emotional score underneath.
 Format: {fmt['label']} — {fmt['brief']}
 
 {_series_block(series)}
 
 {chars_part}
-{CRAFT}
+{craft(series)}
 
 {HINGLISH_GUIDE}
 
@@ -307,7 +332,7 @@ Current screenplay:
 Editor feedback:
 {feedback}
 
-{CRAFT}
+{craft(series)}
 
 {HINGLISH_GUIDE}
 

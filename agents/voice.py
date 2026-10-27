@@ -283,7 +283,7 @@ SARVAM_PACE = {"narrator": 0.92, "narrator_female": 0.94, "child_boy": 1.05, "ch
 
 def _sarvam_line(key: str, model: str, speaker: str, text: str, pace: float, dest: Path) -> None:
     body = {"text": text[:2400], "language_code": "hi-IN", "model": model, "speaker": speaker,
-            "pace": pace, "speech_sample_rate": 48000, "output_audio_codec": "wav", "temperature": 0.65}
+            "pace": pace, "speech_sample_rate": 48000, "output_audio_codec": "wav", "temperature": 0.72}
     last = ""
     for attempt in range(1, 4):
         try:
@@ -322,7 +322,10 @@ def _perform_sarvam(ctx: Context, script: dict, cast_map: dict) -> list:
             ch = cast_map[ln["speaker"]]
             raw = ctx.workdir / f"s_{si:02d}_{j}_raw.wav"
             wav = ctx.workdir / f"s_{si:02d}_{j}.wav"
-            _sarvam_line(key, model, ch["sarvam"], strip_tags(ln["hi"]), SARVAM_PACE.get(ch["voice_type"], 1.0), raw)
+            pace = SARVAM_PACE.get(ch["voice_type"], 1.0)
+            if ln["speaker"] == "N":
+                pace = float(ctx.cfg["voice"].get("sarvam_narrator_pace", pace))
+            _sarvam_line(key, model, ch["sarvam"], strip_tags(ln["hi"]), pace, raw)
             fx = ENTITY_FX if ch.get("is_entity") else ""
             _to_wav48(raw, wav, ("silenceremove=start_periods=1:start_threshold=-50dB," + fx).rstrip(","))
             pieces.append({"wav": wav, "items": [(si, ln, 0.0, ffprobe_duration(wav))]})

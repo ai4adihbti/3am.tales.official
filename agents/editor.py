@@ -156,7 +156,8 @@ def render(ctx: Context, clips: list[Path], durations: list[float], voice: Path,
         mv = ctx.cfg["music"]["volume"]
         f.append(f"[{vi}:a]adelay={ms}|{ms},apad,aformat=channel_layouts=stereo,asplit=2[vo][key]")
         f.append(f"[{vi + 1}:a]aformat=channel_layouts=stereo,volume={mv}[mus]")
-        f.append("[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=40:release=400:makeup=1[duck]")
+        f.append(f"[mus][key]sidechaincompress=threshold=0.04:ratio={ctx.cfg['music'].get('duck_ratio', 3)}:"
+                 "attack=60:release=600:makeup=1[duck]")
         f.append("[vo][duck]amix=inputs=2:duration=longest:normalize=0,"
                  "loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[aout]")
     else:

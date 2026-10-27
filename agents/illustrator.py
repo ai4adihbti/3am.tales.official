@@ -32,12 +32,15 @@ from .common import Context, log
 NAME = "Illustrator"
 
 FRAMING = {
-    "establishing": "wide establishing shot of the location, cinematic, characters small in frame or absent",
+    "establishing": "wide establishing shot of the location seen from slightly above, cinematic depth, rich detail, "
+                    "characters small in frame or absent",
     "wide": "wide shot, full bodies visible, environment clearly shown",
     "two_shot": "two-shot framing both characters from the waist up, facing each other or the camera",
     "medium": "medium shot from the waist up",
-    "closeup": "close-up shot of the face and shoulders, emotional expression clearly readable",
-    "extreme_closeup": "dramatic extreme close-up on the face and eyes",
+    "closeup": "close-up of the face and shoulders filling the frame, large glossy expressive eyes with catchlights, "
+               "emotion clearly readable, detailed hair strands",
+    "extreme_closeup": "dramatic extreme close-up on the face and wide glistening eyes filling the frame, "
+                       "every eyelash and tear drawn in detail",
     "object": "close-up insert shot of an object or detail, shallow depth of field",
     "over_shoulder": "over-the-shoulder shot",
 }
@@ -68,13 +71,23 @@ def _ref_bytes(path: Path, size: int = 448) -> bytes:
     return buf.getvalue()
 
 
+def neurons(model: str, w: int, h: int, n_refs: int = 0) -> float:
+    """Cloudflare's published price of one image in neurons (10,000 free per day)."""
+    mp = w * h / 1048576
+    if "klein-9b" in model:
+        return 1363.64 + max(0.0, mp - 1) * 181.82 + n_refs * 0.2 * 181.82
+    tiles = math.ceil(w / 512) * math.ceil(h / 512)
+    return tiles * 26.05 + n_refs * 5.37
+
+
 class Cloudflare:
     name = "cloudflare"
 
-    def __init__(self, cfg: dict):
+    def __init__(self, cfg: dict, model: str | None = None, name: str = "cloudflare"):
         self.acct = os.getenv("CF_ACCOUNT_ID", "").strip()
         self.token = os.getenv("CF_API_TOKEN", "").strip()
-        self.model = cfg["visuals"]["cloudflare_model"]
+        self.model = model or cfg["visuals"]["cloudflare_model"]
+        self.name = name
 
     @property
     def ready(self) -> bool:
@@ -311,23 +324,31 @@ def shot_prompt(ctx: Context, shot: dict, chars: dict, ref_ids: list[str]) -> st
 class Studio:
     """Picks the provider for each drawing and switches to backups when one fails.
 
-    premium=True (character portraits, the most on-screen pictures) → Nano Banana first, if enabled and
-    within this month's budget; everything else → Cloudflare → Pollinations.
+    premium=True (character portraits and the pictures that stay on screen longest) → the high-quality
+    Cloudflare model (FLUX.2 klein 9B) while today's free neurons allow it, or Nano Banana if enabled;
+    everything else → Cloudflare klein 4B → Pollinations.
     """
 
     def __init__(self, ctx: Context, gemini_budget_usd: float = 0.0):
         self.ctx = ctx
         self.used: set[str] = set()
         self.dead: set[str] = set()
+        self.neurons = 0.0
+        self.hq_allowance = 0.0          # neurons main.py lets the high-quality model spend this run
+        self.hq_count = 0
         v = ctx.cfg["visuals"]
         if ctx.mock:
-            self.base, self.premium = [Mock()], None
+            self.base, self.premium, self.hq = [Mock()], None, None
             return
         base = [Cloudflare(ctx.cfg), Pollinations(ctx.cfg)]
         if v.get("provider") == "pollinations":
             base.reverse()
         self.base = [p for p in base if p.ready]
-        use_gemini = v.get("gemini_portraits", True) or v.get("gemini_hero_shots", 0) > 0
+        hq_model = v.get("cloudflare_hq_model")
+        self.hq = Cloudflare(ctx.cfg, hq_model, "cloudflare_hq") if hq_model else None
+        if self.hq and not self.hq.ready:
+            self.hq = None
+        use_gemini = v.get("gemini_portraits", False) or v.get("gemini_hero_shots", 0) > 0
         self.premium = NanoBanana(ctx.cfg, gemini_budget_usd) if use_gemini else None
         if not self.base and not (self.premium and self.premium.ready):
             raise ImageError("No image provider configured")
@@ -336,8 +357,25 @@ class Studio:
     def gemini_images(self) -> int:
         return self.premium.count if self.premium else 0
 
-    def _order(self, premium: bool) -> list:
+    def plan(self, n_images: int, n_portraits: int) -> None:
+        """Share today's free Cloudflare neurons: every picture and redraw on the 4B model first,
+        whatever is left goes to the high-quality 9B model (portraits first, then hero shots)."""
+        v = self.ctx.cfg["visuals"]
+        if not self.hq:
+            return
+        daily = float(v.get("cloudflare_daily_neurons", 10000)) * 0.95
+        per = neurons(v["cloudflare_model"], v["width"], v["height"], 2)
+        need = (n_images + n_portraits + int(v.get("max_redraws", 6))) * per
+        self.hq_allowance = max(0.0, daily - need)
+        log(NAME, f"neuron plan: ~{need:.0f} for {n_images} pictures + redraws; "
+                  f"{self.hq_allowance:.0f} for high-quality drawings (~{int(self.hq_allowance // 1460)})")
+
+    def _order(self, premium: bool, w: int, h: int) -> list:
         order = list(self.base)
+        if premium and self.hq and self.hq.name not in self.dead:
+            cost = neurons(self.hq.model, w, h, 2)
+            if self.hq_allowance - cost >= 0:
+                order.insert(0, self.hq)
         if premium and self.premium and self.premium.ready:
             order.insert(0, self.premium)
         return [p for p in order if p.name not in self.dead]
@@ -345,23 +383,37 @@ class Studio:
     def draw(self, prompt: str, w: int, h: int, seed: int, refs: list[Path], dest: Path,
              premium: bool = False) -> None:
         errors = []
-        for p in self._order(premium):
-            use_refs = refs if p.name in ("cloudflare", "gemini") else []
+        for p in self._order(premium, w, h):
+            use_refs = refs if p.name in ("cloudflare", "cloudflare_hq", "gemini") else []
             for attempt in range(3):
                 try:
                     pr = prompt if attempt == 0 else _soften(prompt)
                     rf = use_refs if attempt < 2 else []   # last try: without reference images
                     dest.write_bytes(p.generate(pr, w, h, seed + attempt * 7919, rf))
                     self.used.add(p.name)
+                    if p.name.startswith("cloudflare"):
+                        cost = neurons(p.model, w, h, len(rf))
+                        self.neurons += cost
+                        if p.name == "cloudflare_hq":
+                            self.hq_allowance -= cost
+                            self.hq_count += 1
                     return
                 except ImageError as e:
                     msg = str(e)
                     errors.append(f"{p.name}: {msg[:160]}")
+                    if p.name.startswith("cloudflare"):
+                        self.neurons += neurons(p.model, w, h, len(rf)) * 0.5   # failures may still be billed
                     if msg.startswith("SAFETY"):
                         continue  # retry with softened wording / no refs
                     break
-            fails = len([x for x in errors if x.startswith(p.name) and "BUSY" not in x])
-            if "QUOTA" in errors[-1] or "rejected the token" in errors[-1] or fails >= 3:
+            fails = len([x for x in errors if x.startswith(p.name + ":") and "BUSY" not in x])
+            if "QUOTA" in errors[-1] and p.name.startswith("cloudflare"):
+                # both Cloudflare models share one daily allowance
+                for q in ("cloudflare", "cloudflare_hq"):
+                    self.dead.add(q)
+                log(NAME, f"Cloudflare daily allowance used up; using the next provider")
+            elif "QUOTA" in errors[-1] or "rejected the token" in errors[-1] or fails >= 3 or \
+                    (p.name == "cloudflare_hq" and fails >= 1):
                 if p.name not in self.dead:
                     log(NAME, f"{p.name} unavailable ({errors[-1][:150]}); using the next provider")
                 self.dead.add(p.name)
@@ -383,8 +435,7 @@ def character_refs(ctx: Context, studio: Studio, series: dict, script: dict) -> 
         dest = out_dir / f"{c['id']}.png"
         seed = random.randint(1, 2**31 - 1)
         try:
-            studio.draw(portrait_prompt(ctx, c), 512, 512, seed, [], dest,
-                        premium=bool(ctx.cfg["visuals"].get("gemini_portraits", True)))
+            studio.draw(portrait_prompt(ctx, c), 768, 768, seed, [], dest, premium=True)
         except ImageError as e:
             log(NAME, f"portrait of {c['name']} failed ({str(e)[:100]}); continuing with text descriptions only")
             continue
@@ -395,7 +446,8 @@ def character_refs(ctx: Context, studio: Studio, series: dict, script: dict) -> 
 
 def hero_images(ctx: Context, script: dict, durations: list[float]) -> set[str]:
     """The pictures that stay on screen longest (usually the reused dialogue close-ups)."""
-    n = int(ctx.cfg["visuals"].get("gemini_hero_shots", 0))
+    v = ctx.cfg["visuals"]
+    n = max(int(v.get("gemini_hero_shots", 0)), int(v.get("hq_hero_shots", 0)))
     if n <= 0:
         return set()
     screen: dict[str, float] = {}
@@ -496,6 +548,8 @@ Flag ONLY serious problems a viewer would notice:
 - deformed faces, eyes, hands or extra limbs
 - visible text, letters, captions, watermarks or logos
 - photographic or 3D render instead of the 2D illustrated style, or very blurry
+- flat, dull or washed-out pictures: the target look is bold clean outlines, rich detail, a deep blue moonlit night
+  contrasted with warm lantern light, and large expressive eyes on emotional close-ups
 - anything gory or unsafe
 
 Return JSON: {{"redraw": [{{"id": "I4", "problem": "short", "fix": "one sentence to add to the drawing prompt"}}]}}
