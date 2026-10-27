@@ -12,17 +12,44 @@ channel:
   cta: "Follow karo, agla part jaldi aa raha hai 🕯️"
   language: "Hindi-heavy Hinglish — natural spoken Hindi with the English words Indians use every day"
 
-# A new SERIES starts with one of these formats; it then continues over 2-3 daily parts.
+# STORY TYPES. The Researcher agent picks a story type and keeps it for a run of 2-3 reels ("block"),
+# then switches to a different one. New types unlock gradually as the channel grows ("unlock_after" = number of
+# reels posted), so the channel starts close to the reference style and diversifies step by step.
+# Inside a type, every story must differ from the recent ones in region, setting, kind of legend and hero.
+# Once there are views/shares data, better-performing types are picked more often.
+main_format: lok_katha            # gets a bonus when choosing the next type (the reference style)
+format_block_reels: [2, 3]        # reels per story-type run
 formats:
+  - id: lok_katha
+    label: "Village folk-horror kahani, told by a storyteller"
+    brief: "A storyteller's kahani set in a small North-Indian village of mud-and-brick houses with tiled roofs, narrow lanes, fields, an old peepal or banyan tree at the edge of the village, a stepwell or kuan, a canal, a lonely crossroads, under a huge full moon. A young village girl (or a newly-wed bahu, or a boy) and her family (maa, dadi, chhota bhai, papa working in the city) live an ordinary life until a local legend breaks in: a chudail under the peepal tree, a pichhal-pairi who calls people by name at night, the spirit of the old well, a dayan who asks for something. The heart of the story is family love and sacrifice (a mother's promise, a dadi's secret, a sister protecting her brother), with tears and goosebumps together. Recurring images: the village under the full moon, the peepal tree, the girl's tearful face, dadi with a lantern. Eerie, emotional, no gore. Fiction."
   - id: family_bond
     label: "Family bond, supernatural twist"
     brief: "A deeply emotional story between family members (maa-beta, papa-beti, dadi-pota, bhai-behen, a newly married couple) in an everyday Indian situation at night — a lonely highway, a hospital corridor, a village bus stop, a power cut at home. Something is quietly wrong; small details build a mystery; the twist is supernatural AND emotional (love, sacrifice, a promise, a goodbye). Gentle dread, not gore. Fiction."
-  - id: friends_dare
-    label: "Friends and a local legend"
-    brief: "3-4 young friends hear a local legend (a cemetery, an old haveli, a closed hospital, a highway, a forest temple ruin) and go there at night. Banter turns to fear. Fiction."
   - id: village_secret
+    unlock_after: 4
     label: "Village / family secret"
-    brief: "Someone returns to their nani's or dada's village or old family house and uncovers what the elders never talk about. Fiction."
+    brief: "Someone returns to their nani's or dada's village or old family house and uncovers what the elders never talk about: a locked room, a name nobody says, a ritual done every amavas. Emotional reveal about the family's past. Fiction."
+  - id: friends_dare
+    unlock_after: 8
+    label: "Friends and a local legend"
+    brief: "3-4 young friends hear a local legend (a cemetery, an old haveli, a closed hospital, a highway, a forest temple ruin) and go there at night. Banter turns to fear; friendship and loyalty are tested. Fiction."
+  - id: safar
+    unlock_after: 12
+    label: "Night journey"
+    brief: "A night journey somewhere in India — a sleeper train, an overnight bus through the ghats, a truck on a desert highway, a lonely ferry — and a fellow passenger or a stop that isn't what it seems. Emotional twist about who they really are. Fiction."
+  - id: shehar
+    unlock_after: 16
+    label: "City night mystery"
+    brief: "A young person alone in a big Indian city at night — a PG room, a girls' hostel, a hospital night shift, a call centre, the last metro, an old chawl — and something that slowly doesn't add up. Modern, relatable, lonely, with an emotional sting. Fiction."
+  - id: purani_haveli
+    unlock_after: 22
+    label: "Old haveli / royal legend"
+    brief: "A legend from the past — a Rajasthani haveli, a Bengal zamindar bari, a hill-station British bungalow, a ruined fort — told across two timelines (then and now), with a love, a betrayal or a promise that never ended. Fiction."
+  - id: rahasya
+    unlock_after: 30
+    label: "Mind-bending mystery"
+    brief: "A psychological mystery where the scare may not be a ghost at all — a time loop, a missing day, a person nobody else remembers, a message from the future — with a clever twist that makes viewers rewatch. Fiction."
 
 llm:
   # Free-tier Gemini models. If the first one is busy the system moves to the next.
@@ -31,12 +58,12 @@ llm:
   fallback_models: ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.5-flash-lite", "gemini-flash-lite-latest"]
 
 story:
-  min_seconds: 90           # reel length target
-  max_seconds: 140
-  min_cuts: 38              # fast cutting like the references: a new picture every ~2-3 s
-  max_cuts: 60
-  max_images: 34            # unique illustrations per part (close-ups are reused for back-and-forth dialogue)
-  parts_per_series: [2, 3]  # each story is told over 2 or 3 daily parts
+  min_seconds: 150          # reel length target (the reference reel is 3 min 20 s)
+  max_seconds: 200
+  min_cuts: 40              # like the reference: slow 6-8 s holds on wide shots, fast 1-2 s cuts at the peaks
+  max_cuts: 56
+  max_images: 24            # unique illustrations per part; motif shots and close-ups are reused like the reference
+  parts_per_series: [1, 3]  # the Researcher decides how many daily parts each story needs (1 = a single reel)
   min_critic_score: 75
   max_revisions: 2
   max_ideas_per_run: 2
@@ -47,16 +74,27 @@ visuals:
   # Backup: Pollinations (free, no key; characters less consistent).
   provider: "cloudflare"            # "cloudflare" or "pollinations"
   cloudflare_model: "@cf/black-forest-labs/flux-2-klein-4b"
+  # Higher-quality model for the character portraits and the pictures that stay on screen longest.
+  # It is paid from the same free daily allowance; the system only uses what's left after every picture
+  # is covered (typically: the portraits on Part 1 days, 2 hero shots on later parts).
+  cloudflare_hq_model: "@cf/black-forest-labs/flux-2-klein-9b"
+  cloudflare_daily_neurons: 10000
+  hq_hero_shots: 3
   width: 864                        # generated size (9:16); upscaled to 1080x1920 in the edit
   height: 1536
   style: >-
-    Indian 2D animated storybook illustration in the style of a modern Indian animated web series,
-    semi-realistic cartoon characters with clean outlines, smooth soft cel shading, large expressive
-    realistic eyes, natural Indian skin tones and features, detailed believable Indian environments,
-    cinematic framing and lighting, high detail, sharp focus, no text, no letters, no captions,
-    no speech bubbles, no watermark, no logo
-  night_palette: "deep blue moonlit night, soft fog, gentle rim light on faces, warm accents from lamps or lanterns"
-  day_palette: "soft natural light, warm muted colours"
+    Highly detailed Indian 2D digital illustration, the look of premium Indian animated horror-story reels:
+    bold clean dark ink outlines, rich cel shading with soft painted gradients, semi-realistic Indian
+    characters with large glossy expressive brown eyes, detailed eyelashes and eyebrows, natural brown
+    Indian skin tones, beautiful faces, emotions clearly readable, fabric folds and embroidery drawn in
+    detail, richly painted village backgrounds with textured mud walls, tiled roofs, trees and fields,
+    cinematic composition with depth, crisp sharp lines, vibrant saturated colours, masterpiece quality,
+    no text, no letters, no captions, no speech bubbles, no watermark, no logo
+  night_palette: >-
+    deep cobalt-blue moonlit night, a huge glowing full moon with silver-edged clouds, soft moonbeams and
+    low drifting ground mist, cool blue moonlight rim light on hair and faces, contrasted with warm
+    golden-orange light from oil lamps, lanterns, diyas and open doorways
+  day_palette: "soft warm evening light, golden hour, warm muted colours"
   motion_strength: 0.10             # camera movement amount (0.06 subtle – 0.16 strong)
   depth_model: true                 # 3D parallax from a free open-source depth model (estimates if unavailable)
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
@@ -77,7 +115,9 @@ voice:
   engines: ["sarvam", "gemini", "edge"]
   gemini_models: ["gemini-3.8-flash-tts", "gemini-3.8-flash-lite-tts"]
   # Each new series alternates: a single storyteller (male/female alternating) or acted character dialogue.
-  style: "mix"                           # "mix", "narrator" or "dialogue"
+  # The reference reels are told by ONE female storyteller (~98% narration) with a few character lines.
+  style: "narrator"                      # "narrator", "dialogue" or "mix" (alternate per series)
+  narrator_gender: "female"              # "female", "male" or "alternate"
   narrator_gemini_voice: {male: "Charon", female: "Sulafat"}
   gemini_voices:
     child_boy:    ["Puck", "Leda"]
@@ -89,7 +129,8 @@ voice:
     adult_female: ["Kore", "Despina", "Erinome"]
     old_female:   ["Gacrux", "Sulafat", "Vindemiatrix"]
   sarvam_model: "bulbul:v3"
-  sarvam_narrator: {male: "varun", female: "ritu"}
+  sarvam_narrator: {male: "varun", female: "ritu"}   # try "priya", "neha" or "simran" for a different storyteller
+  sarvam_narrator_pace: 0.9
   sarvam_voices:
     child_boy:    ["aayan", "soham"]
     child_girl:   ["suhani", "kavya"]
@@ -103,11 +144,12 @@ voice:
   edge_male: "hi-IN-MadhurNeural"
   edge_female: "hi-IN-SwaraNeural"
   gap_between_lines: 0.22
-  silent_shot_seconds: 1.8               # a cut with no dialogue lingers this long
+  silent_shot_seconds: 1.6               # a cut with no dialogue lingers this long (fast reaction cuts)
 
 music:
   enabled: true                          # original score generated for every reel
-  volume: 0.30                           # music level under the voices (ducks while people talk)
+  volume: 0.42                           # the reference keeps a clearly audible score under the storyteller
+  duck_ratio: 3                          # how much the music dips under the voice (higher = more)
 
 video:
   width: 1080
@@ -134,7 +176,7 @@ billing:
 qa:
   # The final check before posting. If a reel fails, it is NOT posted (it's still saved for you to see).
   min_seconds: 60
-  max_seconds: 240
+  max_seconds: 230
   max_reused_image_ratio: 0.35           # fail if too many shots had to reuse a picture because drawing failed
 
 caption:

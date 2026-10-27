@@ -27,7 +27,7 @@ Analyst → Researcher → Writer ⇄ Critic → Voice cast → Illustrator → 
 | **Caption** | "Series Title \| Part 1/2" caption, comment-bait question, call to action, hashtags |
 | **Publisher** | Posts through the official Instagram API |
 
-**Output:** 1080×1920, 30 fps, H.264 CRF 18, AAC 128 kbps 48 kHz, −14 LUFS, about 1.5–2.5 minutes per part.
+**Output:** 1080×1920, 30 fps, H.264 CRF 18, AAC 128 kbps 48 kHz, −14 LUFS, about 2.5–3.5 minutes per part.
 
 ---
 
@@ -105,11 +105,11 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
 
 ## Customising (`config.yaml`)
 - **Watermark:** `channel.watermark` (set it to your Instagram handle).
-- **Story types:** `formats`. **Parts per story:** `story.parts_per_series`. **Length:** `story.min_seconds` / `max_seconds`.
+- **Story types:** `formats`. **Parts per story:** `story.parts_per_series` (the agent decides within it). **Type run length:** `format_block_reels`. **Length:** `story.min_seconds` / `max_seconds`.
 - **Art style:** `visuals.style`, `night_palette`; camera movement: `visuals.motion_strength`.
 - **Subtitles:** `video.subtitles: true` adds Hinglish subtitles coloured per character (off by default).
 - **Music:** `music.volume`, or `music.enabled: false`.
-- **Voices:** `voice.style` (`mix`, `narrator` or `dialogue`), `voice.gemini_voices`, `voice.narrator_gemini_voice`, `voice.engines` order.
+- **Voices:** `voice.style` (`narrator` by default, like the reference reels; `mix` or `dialogue`), `voice.narrator_gender`, `voice.sarvam_narrator` (try priya / neha / simran), `voice.gemini_voices`, `voice.narrator_gemini_voice`, `voice.engines` order.
 - **3D motion:** `visuals.motion_strength`, `visuals.depth_model`, `visuals.atmosphere` (fog, dust, flicker).
 
 ## Troubleshooting
@@ -133,3 +133,30 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
 - Original stories and characters every time; the Critic blocks gore, self-harm, real victims, named real
   people and anything mocking a religion or community. Captions mark stories as fiction.
 - Instagram allows up to 100 API posts a day; this posts 1.
+
+
+## v7 — the reference-reel style
+
+- **Story:** a new main format, *village folk-horror kahani told by a storyteller* (girl + maa/dadi, peepal tree,
+  full moon, a local legend, family love and sacrifice). It's used for every other new series; the others rotate.
+  Once the Analyst has data, the best-performing formats get chosen more often.
+- **Rhythm:** 2.5–3.5 minute parts, a recurring "motif" wide shot (the village under the moon) as chapter breaks,
+  slow 6–8 s holds during calm narration and fast 1–2 s emotional close-up cuts at the peaks.
+- **Voice:** one female storyteller (85–95% narration), characters speak only at the big moments.
+- **Pictures:** a style prompt tuned to the reference (bold outlines, glossy expressive eyes, cobalt moonlight vs warm
+  lantern light). Character portraits and the longest-on-screen shots use Cloudflare's higher-quality FLUX.2 klein 9B
+  model, inside the same free 10,000 daily neurons (the log line "Cloudflare ≈ N of 10,000" shows the day's use).
+- **Music:** a melancholic piano theme generated fresh for each reel (repeated and varied like a film score) over
+  the dark pad, louder in the mix and dipping less under the voice.
+
+## How stories and story types change (v7.1)
+
+- **The agent decides everything itself:** each new story (title, region, legend, characters, twist) and how many
+  daily parts it needs (1-3). A story continues part by part every day until its last part, then a new one starts.
+- **Story type changes every 2-3 reels** (`format_block_reels`), so the channel never feels repetitive.
+- **Gradual diversification:** the channel starts with the reference style (village kahani, family horror). New
+  story types unlock as it grows: village secrets (after 4 reels), friends and a legend (8), night journeys (12),
+  city night mysteries (16), old havelis (22), mind-bending mysteries (30). Every new story must differ from the last
+  three in region of India, setting, kind of legend and hero; after 9 stories the agent is pushed to experiment more.
+- **Always for an Indian audience:** Indian places, names, families, beliefs and folk legends, in Hindi-heavy Hinglish.
+- **Learns from results:** once views/shares/saves data exists, better-performing story types are chosen more often.

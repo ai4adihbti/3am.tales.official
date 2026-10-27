@@ -151,6 +151,8 @@ def main() -> int:
         log("Orchestrator", f"this month's Gemini budget is used (${spent:.2f} of ${budget:.2f}); drawing with free providers")
     studio = illustrator.Studio(ctx, gemini_budget_usd=image_budget)
     durations = editor.shot_durations(shot_starts, total, v["lead_in_seconds"])
+    saved = series.get("ref_files") or {}
+    studio.plan(len(script["images"]), sum(1 for c in script["characters"] if c["id"] not in saved))
     refs = illustrator.character_refs(ctx, studio, series, script)
     heroes = illustrator.hero_images(ctx, script, durations)
     image_paths = illustrator.illustrate(ctx, studio, script, refs, heroes)
@@ -181,6 +183,10 @@ def main() -> int:
     if not args.mock:
         memory.add_spend(run_cost)
     report["gemini_images"] = studio.gemini_images
+    report["cloudflare_neurons"] = round(studio.neurons)
+    report["hq_images"] = studio.hq_count
+    log("Orchestrator", f"Cloudflare ≈ {studio.neurons:.0f} of 10,000 free neurons today "
+                        f"({studio.hq_count} high-quality drawings)")
     report["est_cost_usd"] = round(run_cost, 3)
     report["month_spend_usd"] = round(memory.month_spend(), 2)
     log("Orchestrator", f"Gemini usage this run ≈ ${run_cost:.2f} ({studio.gemini_images} Nano Banana images); "
