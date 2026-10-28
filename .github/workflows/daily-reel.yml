@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "preview = quick 30 s sample · dry_run = full reel, not posted · post = make and post · style_test = compare art styles"
+        description: "preview = quick 30 s sample · dry_run = full reel, not posted · post = make and post · gpu_setup = download the GPU models once + test them"
         type: choice
-        options: [preview, dry_run, post, style_test]
+        options: [preview, dry_run, post, gpu_setup]
         default: preview
 
 permissions:
@@ -24,7 +24,10 @@ concurrency:
 jobs:
   reel:
     runs-on: ubuntu-latest
-    timeout-minutes: 80
+    timeout-minutes: 120
+    env:
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -34,7 +37,7 @@ jobs:
           cache: pip
 
       - name: Install ffmpeg and fonts
-        # libomp5 + Mesa's CPU Vulkan driver let the anime upscaler (Real-ESRGAN, ncnn) run without a GPU
+        # libomp5 + Mesa's CPU Vulkan driver let the Real-ESRGAN upscaler run without a GPU
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core libomp5 libvulkan1 mesa-vulkan-drivers
 
       - name: Install Python packages
@@ -46,6 +49,11 @@ jobs:
           path: .cache
           key: depth-anything-v2-small-v1
 
+      - name: Deploy the GPU engine (only if Modal is set up)
+        if: env.MODAL_TOKEN_ID != ''
+        continue-on-error: true      # without it the reel is still made the normal way
+        run: pip install -q "modal>=1.6,<2" && modal deploy gpu_app.py
+
       - name: Run the agent team
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -53,6 +61,10 @@ jobs:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           POLLINATIONS_TOKEN: ${{ secrets.POLLINATIONS_TOKEN }}
+          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+          AIHORDE_API_KEY: ${{ secrets.AIHORDE_API_KEY }}
+          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
           SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
