@@ -161,38 +161,15 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
 - **Always for an Indian audience:** Indian places, names, families, beliefs and folk legends, in Hindi-heavy Hinglish.
 - **Learns from results:** once views/shares/saves data exists, better-performing story types are chosen more often.
 
-## Choosing the art style (v7.2)
+## v7.1.3 — sharper pictures, working backups, optional free GPU engine
 
-Run the workflow once with mode **style_test** (Actions → Daily horror reel → Run workflow → style_test).
-It draws the same two characters and four scenes in five styles on the real image model, asks Gemini to rate
-them like an art director, and saves `style-test.jpg` (all styles side by side) + `style-test.json` (ratings) in the
-run's Artifacts. Nothing is posted; it uses ~4,500 of the 10,000 free daily Cloudflare neurons, so run it on a
-day you don't need many redraws, or right after the daily post.
-
-Then set `visuals.style_preset` in config.yaml to the one you like:
-`storybook` (closest to the reference reels), `flat_cartoon`, `anime`, `graphic_novel`, `shadow`.
-
-## v8 — the anime look
-
-The channel's style is now **anime** (`visuals.style_preset: anime`): a cinematic anime-film look with Indian
-characters, clothes and places.
-- **Art direction** for the writer: every character gets a recognisable anime design (hairstyle, one signature
-  colour, one accessory) and scenes use anime cinematography (big emotional close-ups, looming low angles,
-  silhouettes against the moon, wind, light particles, marigold petals).
-- **Anime upscaler:** every picture is sharpened with Real-ESRGAN's anime model before animation, so line art
-  stays crisp at 1080x1920. It runs on the GitHub machine's CPU (~15-30 s a picture, adds ~8-12 min per run) and
-  falls back to the original pictures automatically if anything goes wrong.
-- **Anime effects on scares:** a 3-frame manga-style impact flash, then speed lines rushing into the frame.
-- The picture inspector now also checks that each character keeps the same hairstyle and outfit colours.
-
-## v9 — growth fixes (from the channel audit)
-
-- **Growth phase:** until the account has 1,000 followers (`growth.until_followers`), every new story is ONE
-  complete 80-110 s reel. Series and 2.5-3.3 minute reels switch on automatically after that.
-- **Cold open:** every reel opens on its most frightening or emotional moment, then goes back ("Par ye sab shuru
-  kaise hua…"). No more slow openings.
-- **Custom covers:** the most emotional close-up, brightened, with the title in big letters and a red
-  "HINDI HORROR STORY" / "PART n" tag, kept inside the 3:4 grid crop. Saved as out/cover-*.jpg too.
-- **Captions:** words people search for ("Hindi horror story", "bhoot ki kahani"); #aistory removed.
-- **Run log** starts with the code version and the art style, so you can confirm which version ran.
-- If the art style changes during a series, the character portraits are redrawn in the new style.
+- **Upscaler:** every picture is sharpened by Real-ESRGAN on the GitHub machine before animation (free).
+- **18 pictures per part** (reused like the reference), so more of the free Cloudflare allowance goes to the
+  higher-quality model for the most important shots.
+- **Backups:** Pollinations' free tier ended, so the backup is now **AI Horde** (free, no account; optional secret
+  `AIHORDE_API_KEY` for faster queues). **ModelScope** Qwen-Image is used if you add `MODELSCOPE_API_KEY`.
+- **GPU engine (Modal, free $30/month):** with the secrets `MODAL_TOKEN_ID` + `MODAL_TOKEN_SECRET`, shots with
+  characters are drawn by Qwen-Image-Edit from the character portraits, and the 6 most important cuts get real
+  character movement (Wan 2.2). Monthly cap `gpu.monthly_cap_usd` (default $27). Run the workflow once in
+  **gpu_setup** mode first: it downloads the models and benchmarks the real cost per reel.
+  Without the secrets, or if anything fails, reels are made exactly as before.

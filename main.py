@@ -23,11 +23,9 @@ import sys
 import time
 from datetime import datetime
 
-from agents import analyst, animator, caption, composer, cover, critic, editor, illustrator, publisher, qa, researcher, upscaler, voice, writer
+from agents import analyst, animator, caption, composer, cover, critic, editor, gpu, illustrator, publisher, qa, researcher, upscaler, voice, writer
 from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
 from agents.memory import Memory
-
-VERSION = "v9"
 
 
 def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict]:
@@ -102,17 +100,17 @@ def main() -> int:
 
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
-    if mode == "style_test":
-        from agents import style_test
-        log("Orchestrator", "STYLE TEST — drawing the same scenes in every art style (nothing is posted)")
-        style_test.run(ctx, out_dir)
+    if mode == "gpu_setup":
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.3 (nothing is posted)")
+        mem = Memory()
+        gpu.setup_and_benchmark(ctx, mem.data, out_dir)
+        mem.save()
         shutil.rmtree(work, ignore_errors=True)
         return 0
     memory = Memory()
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code {VERSION} · art style: "
-                        f"{cfg['visuals'].get('style_label', cfg['visuals'].get('style_preset', 'custom'))}")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.1.3")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -135,25 +133,9 @@ def main() -> int:
     # 1. learn from past posts
     analyst.run(ctx, memory)
 
-    # growth phase: single complete, shorter stories until the account has enough followers
-    g = cfg.get("growth") or {}
-    fl = publisher.followers(ctx)
-    if fl is not None:
-        memory.data["followers"] = fl
-    fl = memory.data.get("followers", 0) if fl is None else fl
-    if g.get("enabled") and (fl or 0) < int(g.get("until_followers", 1000)):
-        for k in ("parts_per_series", "min_seconds", "max_seconds", "min_cuts", "max_cuts", "max_images"):
-            if k in g:
-                cfg["story"][k] = g[k]
-        log("Orchestrator", f"growth phase ({fl} followers < {g.get('until_followers', 1000)}): one complete "
-                            f"{g.get('min_seconds')}-{g.get('max_seconds')} s story per reel")
-    else:
-        log("Orchestrator", f"{fl} followers: series and full-length reels enabled")
-
     # 2-4. today's part → script → critique loop
     series, fmt, script, review = produce_script(ctx, memory)
     final = series["part"] >= series["total_parts"]
-    series["art_style_now"] = cfg["visuals"].get("style_preset", "custom")
     script["voice_style"] = series.get("voice_style", "dialogue")
     script["series_voice_engine"] = series.get("voice_engine")
     script["narrator_gender"] = series.get("narrator_gender", "male")
@@ -174,7 +156,8 @@ def main() -> int:
     image_budget = max(0.0, budget - spent - 0.15)   # keep a little for this run's voices and writing
     if not args.mock and image_budget < 0.05 and cfg["visuals"].get("gemini_hero_shots", 0):
         log("Orchestrator", f"this month's Gemini budget is used (${spent:.2f} of ${budget:.2f}); drawing with free providers")
-    studio = illustrator.Studio(ctx, gemini_budget_usd=image_budget)
+    engine = gpu.Engine(ctx, memory.data)
+    studio = illustrator.Studio(ctx, gemini_budget_usd=image_budget, first=engine.picture_provider())
     durations = editor.shot_durations(shot_starts, total, v["lead_in_seconds"])
     saved = series.get("ref_files") or {}
     studio.plan(len(script["images"]), sum(1 for c in script["characters"] if c["id"] not in saved))
@@ -183,7 +166,9 @@ def main() -> int:
     image_paths = illustrator.illustrate(ctx, studio, script, refs, heroes)
     illustrator.quality_check(ctx, studio, script, refs, image_paths)
     image_paths = upscaler.upscale(ctx, image_paths)
-    clips = animator.animate(ctx, image_paths, script["shots"], durations)
+    motion = engine.motion_clips(script["shots"], image_paths, durations)
+    clips = animator.animate(ctx, image_paths, script["shots"], durations, motion)
+    engine.finish()
 
     # 7. original score
     score = None
@@ -209,6 +194,8 @@ def main() -> int:
     if not args.mock:
         memory.add_spend(run_cost)
     report["gemini_images"] = studio.gemini_images
+    report["gpu_motion_clips"] = len(motion)
+    report["modal_usd"] = round(engine.run_cost, 3)
     report["cloudflare_neurons"] = round(studio.neurons)
     report["hq_images"] = studio.hq_count
     log("Orchestrator", f"Cloudflare ≈ {studio.neurons:.0f} of 10,000 free neurons today "
@@ -218,7 +205,7 @@ def main() -> int:
     log("Orchestrator", f"Gemini usage this run ≈ ${run_cost:.2f} ({studio.gemini_images} Nano Banana images); "
                         f"this month ≈ ${memory.month_spend():.2f} of ${budget:.2f}")
 
-    # 10. caption + cover
+    # 10. caption
     cap = caption.write_caption(ctx, script, series, fmt)
     cover_path = None
     try:

@@ -62,26 +62,11 @@ story:
   max_seconds: 200
   min_cuts: 40              # like the reference: slow 6-8 s holds on wide shots, fast 1-2 s cuts at the peaks
   max_cuts: 56
-  max_images: 24            # unique illustrations per part; motif shots and close-ups are reused like the reference
+  max_images: 18            # unique illustrations per part (reused like the reference); fewer, better pictures
   parts_per_series: [1, 3]  # the Researcher decides how many daily parts each story needs (1 = a single reel)
   min_critic_score: 75
-
   max_revisions: 2
   max_ideas_per_run: 2
-
-# GROWTH PHASE: until the account has this many followers, every new story is ONE complete reel (new viewers
-# meet the account through a single reel, so it must work on its own) and reels are shorter, because a new
-# account is judged mostly on how many people watch to the end. Series and longer reels switch on by themselves
-# once the follower count passes the mark. Set enabled: false to always use the story settings above.
-growth:
-  enabled: true
-  until_followers: 1000
-  parts_per_series: [1, 1]
-  min_seconds: 80
-  max_seconds: 110
-  min_cuts: 28
-  max_cuts: 42
-  max_images: 20
 
 visuals:
   # Free image generation. 1st choice Cloudflare Workers AI (FLUX.2 klein, keeps characters
@@ -97,72 +82,6 @@ visuals:
   hq_hero_shots: 3
   width: 864                        # generated size (9:16); upscaled to 1080x1920 in the edit
   height: 1536
-  # The art style. Pick one of the presets below (run the workflow in "style_test" mode to compare them
-  # side by side on the real image model). "custom" uses the style / night_palette written further down.
-  style_preset: "anime"
-  style_presets:
-    storybook:
-      label: "Semi-realistic Indian storybook (closest to the reference reels)"
-      style: >-
-        Highly detailed Indian 2D digital illustration, the look of premium Indian animated horror-story reels:
-        bold clean dark ink outlines, rich cel shading with soft painted gradients, semi-realistic Indian
-        characters with large glossy expressive brown eyes, natural brown Indian skin tones, emotions clearly
-        readable, richly painted village backgrounds, cinematic composition, crisp sharp lines, vibrant
-        saturated colours, no text, no letters, no captions, no speech bubbles, no watermark, no logo
-      night_palette: >-
-        deep cobalt-blue moonlit night, huge glowing full moon, soft moonbeams and low ground mist, cool blue rim
-        light on faces, contrasted with warm golden-orange light from oil lamps, lanterns and doorways
-    flat_cartoon:
-      label: "Flat 2D Indian cartoon / comic"
-      style: >-
-        Flat 2D Indian cartoon illustration like a modern Indian animated TV series: thick uniform dark outlines,
-        flat solid colour fills with one simple shadow tone, simplified clean shapes, cute but expressive
-        characters with big simple eyes, Indian faces and clothes, uncluttered backgrounds with few large shapes,
-        bold readable silhouettes, no gradients, no texture noise, no text, no letters, no watermark, no logo
-      night_palette: >-
-        limited night palette of navy blue, teal and black with a big pale-yellow moon, warm orange lantern light
-        as the only bright accent
-    anime:
-      label: "Anime (cinematic anime film look, Indian stories)"
-      style: >-
-        Masterpiece-quality modern anime film still, the look of a big-budget Japanese animated movie: crisp
-        clean confident line art, precise cel shading with soft gradient highlights, beautiful detailed anime
-        faces with large luminous expressive eyes, glossy irises with catchlights, detailed hair strands with
-        highlights; the characters are Indian: warm brown skin, Indian features, Indian clothes (salwar kameez,
-        saree, kurta, dupatta, lungi), Indian jewellery; lush painterly anime backgrounds of real Indian places
-        drawn in rich detail; cinematic lighting, depth of field, atmospheric perspective, dramatic composition,
-        consistent character design, no text, no letters, no subtitles, no speech bubbles, no watermark, no logo,
-        no signature
-      night_palette: >-
-        cinematic anime night: deep indigo and teal sky with glowing clouds and a huge luminous moon, moonlight
-        rim light on hair and faces, volumetric light beams through mist, drifting light particles, warm amber
-        glow from lanterns, diyas and windows as contrast; in frightening moments cold desaturated shadows and a
-        sickly pale glow
-      day_palette: "anime golden-hour light, warm saturated sky, soft bloom, long shadows"
-      art_direction: >-
-        ANIME ART DIRECTION. Every character gets an instantly recognisable anime design: a distinctive
-        hairstyle (long braid, short bob, messy hair, bun with flowers, ponytail), ONE signature outfit colour and
-        one accessory, all fixed in "look". Use anime cinematography in the image descriptions: big emotional
-        close-ups (eyes trembling, pupils shrinking in fear, tears catching the light), low-angle shots of
-        something looming, silhouettes against the huge moon, a dupatta or hair blowing in the wind, light
-        particles, rain, falling marigold petals, an empty train platform or village lane at night. Keep scenes
-        uncluttered: one strong subject per picture.
-    graphic_novel:
-      label: "Dark graphic novel (ink horror comic)"
-      style: >-
-        Dark horror graphic-novel illustration: heavy black ink lines and deep shadows, cross-hatching, limited
-        muted colour palette, dramatic high-contrast lighting, gritty paper texture, Indian characters and
-        setting drawn with strong expressive faces, cinematic comic-panel composition, eerie atmosphere,
-        no text, no letters, no speech bubbles, no watermark, no logo
-      night_palette: "near-monochrome blue-black night, a single sickly yellow moon, one warm lantern accent, heavy fog"
-    shadow:
-      label: "Shadow puppet / paper cut-out silhouettes"
-      style: >-
-        Layered paper cut-out silhouette art like Indian shadow puppetry (tholu bommalata): characters and trees
-        as solid black silhouettes with intricate cut-out patterns, layered paper depth, glowing backlit
-        background, folk-art shapes, Indian clothes and village shapes in silhouette, no text, no letters,
-        no watermark, no logo
-      night_palette: "glowing deep red-orange and indigo backlight, a large pale moon disc, mist layers between paper planes"
   style: >-
     Highly detailed Indian 2D digital illustration, the look of premium Indian animated horror-story reels:
     bold clean dark ink outlines, rich cel shading with soft painted gradients, semi-realistic Indian
@@ -180,14 +99,24 @@ visuals:
   depth_model: true                 # 3D parallax from a free open-source depth model (estimates if unavailable)
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
   quality_check: true               # Gemini inspects every illustration and redraws bad ones
-  upscale: true                     # Real-ESRGAN anime model sharpens every picture before animation (free, CPU)
-  anime_effects: true               # impact frames + speed lines on scare cuts
+  upscale: true                     # Real-ESRGAN sharpens every picture before animation (free, runs on the CPU)
+  modelscope_model: "Qwen/Qwen-Image"   # used only if MODELSCOPE_API_KEY is set
   max_redraws: 6
   # Nano Banana (Gemini's image model) — best faces and consistency, paid from the Gemini API
   # (~$0.034 ≈ ₹3 per picture; your Google AI Pro plan includes $10/month of credit for this).
   gemini_image_model: "gemini-nano-banana-2.1"
   gemini_portraits: false           # character portraits (≈3-4 per series) with Nano Banana
   gemini_hero_shots: 0              # the N pictures that stay on screen longest; 0 = none, 40 = every picture
+
+# GPU ENGINE (Modal, free $30/month of GPU time). Used only when the GitHub secrets MODAL_TOKEN_ID and
+# MODAL_TOKEN_SECRET exist. Anything that fails here falls back to the normal free pipeline automatically.
+gpu:
+  enabled: true
+  pictures: true               # shots with characters drawn by Qwen-Image-Edit from the character portraits
+  motion: true                 # real character movement (Wan 2.2) on the most important cuts
+  motion_clips: 6              # how many cuts per reel get real movement (more = more GPU time)
+  monthly_cap_usd: 27          # stop using Modal for the month at this estimate (free credit is $30)
+  est_seconds_per_clip: 90     # used for the budget check; the benchmark run measures the real number
 
 voice:
   # Engines are tried in this order; any without a key/quota is skipped automatically.
@@ -264,7 +193,7 @@ qa:
 
 caption:
   max_hashtags: 8
-  core_hashtags: ["#hindihorrorstory", "#horrorstories", "#bhootiyakahani", "#hindistory"]
+  core_hashtags: ["#hindistory", "#horrorstories", "#bhootiyakahani", "#hindihorrorstory"]
   cover: true                            # custom cover: the most emotional close-up + big title (grid + Explore)
 
 instagram:
