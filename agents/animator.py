@@ -171,33 +171,21 @@ ALT = {"zoom_in": "zoom_out", "zoom_out": "zoom_in", "pan_left": "pan_right", "p
        "hold": "zoom_in", "push_fast": "hold", "pan_up": "pan_down", "pan_down": "pan_up"}
 
 
-def _speed_lines(W: int, H: int, rng: np.random.Generator) -> np.ndarray:
-    """Anime 'focus lines': thin white streaks rushing in from the frame edges towards the centre."""
-    out = np.zeros((H, W), np.uint8)
-    cx, cy = W / 2, H / 2
-    R = math.hypot(W, H) / 2
-    for _ in range(170):
-        a = rng.uniform(0, 2 * math.pi)
-        r0 = rng.uniform(0.42, 0.62) * R
-        p0 = (int(cx + math.cos(a) * r0 * 0.75), int(cy + math.sin(a) * r0))
-        p1 = (int(cx + math.cos(a) * R * 1.1), int(cy + math.sin(a) * R * 1.1))
-        cv2.line(out, p0, p1, int(rng.uniform(150, 255)), int(rng.choice([1, 1, 2, 3])), cv2.LINE_AA)
-    return cv2.merge([out, out, out])
+def _motion_clip(src: Path, out: Path, length: float, W: int, H: int, fps: int) -> None:
+    """A real-motion clip from the GPU engine → this cut: upscaled, sharpened, 30 fps, stretched a little or held
+    on its last frame so it fills the cut exactly."""
+    from .common import ffprobe_duration
+    have = max(0.5, ffprobe_duration(src))
+    stretch = min(1.5, max(1.0, length / have))
+    vf = (f"setpts={stretch:.4f}*PTS,scale={W}:{H}:flags=lanczos:force_original_aspect_ratio=increase,"
+          f"crop={W}:{H},unsharp=5:5:0.6:5:5:0.0,fps={fps},tpad=stop_mode=clone:stop_duration={length + 1:.2f},"
+          f"trim=duration={length:.3f},setpts=PTS-STARTPTS,format=yuv420p")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(src), "-an", "-vf", vf, "-c:v", "libx264",
+                    "-preset", "veryfast", "-crf", "14", str(out)], check=True)
 
 
-def _impact(frame: np.ndarray) -> np.ndarray:
-    """Anime impact frame: crushed blacks, harsh white-red highlights and outlines, like a manga panel."""
-    g = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    g = cv2.equalizeHist(cv2.GaussianBlur(g, (3, 3), 0))
-    _, hard = cv2.threshold(g, 175, 255, cv2.THRESH_BINARY)
-    edges = cv2.Canny(g, 80, 200)
-    hard = cv2.max(hard, cv2.dilate(edges, np.ones((2, 2), np.uint8)))
-    out = cv2.merge([(hard * 0.55).astype(np.uint8), (hard * 0.55).astype(np.uint8), hard])
-    out[hard == 0] = (8, 0, 60)                      # deep blood-red shadows
-    return out
-
-
-def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durations: list[float]) -> list[Path]:
+def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durations: list[float],
+            motion_clips: dict[int, Path] | None = None) -> list[Path]:
     vcfg, vis = ctx.cfg["video"], ctx.cfg["visuals"]
     W, H, fps = vcfg["width"], vcfg["height"], vcfg["fps"]
     xf = vcfg.get("crossfade", 0.12)
@@ -217,12 +205,19 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
     cx, cy = (W - 1) / 2, (H - 1) / 2
     last_motion: dict[str, str] = {}
-    anime_fx = bool(vis.get("anime_effects", False))
-    lines = [_speed_lines(W, H, rng) for _ in range(3)] if anime_fx else []
     clips: list[Path] = []
     used_model = 0
 
+    real = motion_clips or {}
     for i, (shot, d) in enumerate(zip(shots, durations)):
+        if i in real:
+            out = out_dir / f"clip{i:02d}.mp4"
+            try:
+                _motion_clip(real[i], out, d + (xf if i < len(shots) - 1 else 0) + 0.05, W, H, fps)
+                clips.append(out)
+                continue
+            except (subprocess.CalledProcessError, ValueError) as e:
+                log(NAME, f"cut {i + 1}: moving clip unusable ({str(e)[:80]}); using a camera move")
         iid = shot["image_id"]
         if iid not in cache:
             img = cv2.imread(str(image_paths[iid]), cv2.IMREAD_COLOR)
@@ -285,13 +280,8 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
                     frame = cv2.convertScaleAbs(frame, alpha=flick)
                 dust = (dust_night if night else dust_day).layer(t, 0.55 if night else 0.35)
                 frame = cv2.add(frame, cv2.resize(dust, (W, H), interpolation=cv2.INTER_LINEAR))
-            if scare and anime_fx and 1 <= f < 4:
-                frame = _impact(frame)                       # 3 impact frames right on the scare
-            elif scare and f < 5:
+            if scare and f < 5:
                 frame = cv2.addWeighted(frame, 1 - (5 - f) / 6, np.full_like(frame, 255), (5 - f) / 6, 0)
-            if lines and scare and 4 <= f < 4 + int(0.7 * fps):
-                k = 1 - (f - 4) / (0.7 * fps)
-                frame = cv2.add(frame, cv2.convertScaleAbs(lines[f % 3], alpha=0.85 * k))
             proc.stdin.write(frame.tobytes())
         proc.stdin.close()
         if proc.wait() != 0:

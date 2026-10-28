@@ -135,6 +135,12 @@ def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, cap
         r = requests.post(f"{graph}/{user_id}/media", data={
             "media_type": "REELS", "video_url": url, "caption": caption,
             "share_to_feed": "true", "access_token": token, **(extra or {})}, timeout=120)
+        if r.status_code >= 400 and extra and "cover_url" in extra:
+            log(NAME, "Instagram refused the custom cover; posting with an automatic cover instead")
+            extra = {k: v for k, v in extra.items() if k != "cover_url"}
+            r = requests.post(f"{graph}/{user_id}/media", data={
+                "media_type": "REELS", "video_url": url, "caption": caption,
+                "share_to_feed": "true", "access_token": token, **extra}, timeout=120)
         try:
             yield name, _check(r, "create container (video_url)")["id"]
         except PublishError as e:

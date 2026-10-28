@@ -82,7 +82,6 @@ class Memory:
             if series.get("voice_style") == "narrator":
                 self.data["last_narrator_gender"] = series.get("narrator_gender")
         s["characters"] = script["characters"]
-        s["art_style"] = series.get("art_style_now") or s.get("art_style")
         s["ref_files"] = ref_files
         s["parts_done"] = series["part"]
         s["previously"] = list(series.get("previously") or []) + [script.get("summary", "")]

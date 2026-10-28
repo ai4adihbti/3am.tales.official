@@ -250,6 +250,153 @@ class Pollinations:
         raise ImageError(f"BUSY {last}")
 
 
+class ModelScope:
+    """ModelScope API-Inference (free daily allowance, Qwen-Image). Needs MODELSCOPE_API_KEY.
+    No reference images here, so characters stay consistent through their detailed descriptions."""
+    name = "modelscope"
+    BASE = "https://api-inference.modelscope.cn/v1"
+
+    def __init__(self, cfg: dict):
+        self.key = os.getenv("MODELSCOPE_API_KEY", "").strip()
+        self.model = cfg["visuals"].get("modelscope_model", "Qwen/Qwen-Image")
+
+    @property
+    def ready(self) -> bool:
+        return bool(self.key)
+
+    def generate(self, prompt: str, w: int, h: int, seed: int, refs: list[Path]) -> bytes:
+        head = {"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"}
+        body = {"model": self.model, "prompt": prompt[:1800] + ", vertical 9:16 portrait image"}
+        try:
+            r = requests.post(f"{self.BASE}/images/generations", json=body,
+                              headers={**head, "X-ModelScope-Async-Mode": "true"}, timeout=(15, 60))
+        except requests.RequestException as e:
+            raise ImageError(f"network {type(e).__name__}")
+        low = r.text.lower()
+        if r.status_code == 429 or (r.status_code >= 400 and ("quota" in low or "limit" in low)):
+            raise ImageError(f"QUOTA modelscope HTTP {r.status_code} {r.text[:160]}")
+        if r.status_code in (401, 403):
+            raise ImageError(f"ModelScope rejected the token: HTTP {r.status_code} {r.text[:160]}")
+        if r.status_code >= 400:
+            raise ImageError(f"HTTP {r.status_code} {r.text[:200]}")
+        task = (r.json() or {}).get("task_id")
+        if not task:
+            raise ImageError(f"no task id: {r.text[:200]}")
+        deadline = time.time() + 240
+        while time.time() < deadline:
+            time.sleep(5)
+            try:
+                t = requests.get(f"{self.BASE}/tasks/{task}", timeout=30,
+                                 headers={**head, "X-ModelScope-Task-Type": "image_generation"}).json()
+            except (requests.RequestException, ValueError):
+                continue
+            status = t.get("task_status")
+            if status == "SUCCEED" and t.get("output_images"):
+                img = requests.get(t["output_images"][0], timeout=60)
+                if img.status_code == 200:
+                    return _fit(_png(img.content), w, h)
+                raise ImageError(f"image download HTTP {img.status_code}")
+            if status in ("FAILED", "CANCELED"):
+                raise ImageError(f"SAFETY modelscope task {status}: {str(t)[:160]}")
+        raise ImageError("modelscope timed out")
+
+
+class AIHorde:
+    """AI Horde: free image generation on volunteers' GPUs (no account needed; AIHORDE_API_KEY optional for
+    faster queues). Slower and older models, so it's the last backup."""
+    name = "aihorde"
+    BASE = "https://aihorde.net/api/v2"
+    SIZES = [(576, 1024), (448, 768), (384, 640)]   # smaller sizes if anonymous limits refuse the larger ones
+
+    def __init__(self, cfg: dict):
+        self.key = os.getenv("AIHORDE_API_KEY", "").strip() or "0000000000"
+        self.head = {"apikey": self.key, "Client-Agent": "3am-tales:7.1.3:github-actions"}
+        self.model = None
+        self.started = 0.0
+
+    @property
+    def ready(self) -> bool:
+        return True
+
+    def _pick_model(self) -> list[str]:
+        if self.model is None:
+            self.model = []
+            try:
+                models = requests.get(f"{self.BASE}/status/models", params={"type": "image"},
+                                      headers=self.head, timeout=30).json()
+                xl = [m for m in models if "xl" in m.get("name", "").lower() and m.get("count", 0) > 0]
+                xl.sort(key=lambda m: m.get("count", 0), reverse=True)
+                self.model = [m["name"] for m in xl[:3]]
+            except (requests.RequestException, ValueError, TypeError, AttributeError):
+                pass
+        return self.model
+
+    def generate(self, prompt: str, w: int, h: int, seed: int, refs: list[Path]) -> bytes:
+        if not self.started:
+            self.started = time.time()
+        elif time.time() - self.started > 25 * 60:     # never let slow volunteer queues stall a whole run
+            raise ImageError("QUOTA aihorde: 25-minute budget for this run used")
+        neg = "text, letters, watermark, logo, signature, deformed, extra fingers, blurry, photo, 3d render"
+        last = ""
+        for sw, sh in self.SIZES:
+            body = {"prompt": f"{prompt[:900]} ### {neg}", "nsfw": False, "censor_nsfw": True, "r2": True,
+                    "shared": False, "slow_workers": True, "trusted_workers": False,
+                    "params": {"width": sw, "height": sh, "steps": 28, "cfg_scale": 6.0, "n": 1,
+                               "sampler_name": "k_dpmpp_2m", "karras": True, "seed": str(seed)}}
+            models = self._pick_model()
+            if models:
+                body["models"] = models
+            try:
+                r = requests.post(f"{self.BASE}/generate/async", json=body, headers=self.head, timeout=(15, 60))
+            except requests.RequestException as e:
+                raise ImageError(f"network {type(e).__name__}")
+            if r.status_code in (400, 403) and ("kudos" in r.text.lower() or "resolution" in r.text.lower()):
+                last = f"HTTP {r.status_code} {r.text[:160]}"
+                continue                                  # try a smaller size
+            if r.status_code == 429:
+                raise ImageError(f"BUSY aihorde HTTP 429")
+            if r.status_code >= 300:
+                raise ImageError(f"HTTP {r.status_code} {r.text[:200]}")
+            rid = (r.json() or {}).get("id")
+            if not rid:
+                raise ImageError(f"no request id: {r.text[:160]}")
+            deadline = time.time() + 600
+            while time.time() < deadline:
+                time.sleep(6)
+                try:
+                    c = requests.get(f"{self.BASE}/generate/check/{rid}", headers=self.head, timeout=30).json()
+                except (requests.RequestException, ValueError):
+                    continue
+                if c.get("faulted") or c.get("is_possible") is False:
+                    raise ImageError(f"aihorde request failed: {str(c)[:160]}")
+                if c.get("done"):
+                    st = requests.get(f"{self.BASE}/generate/status/{rid}", headers=self.head, timeout=60).json()
+                    gens = st.get("generations") or []
+                    if not gens or gens[0].get("censored"):
+                        raise ImageError("SAFETY aihorde image censored or missing")
+                    img = gens[0]["img"]
+                    data = requests.get(img, timeout=60).content if img.startswith("http") else base64.b64decode(img)
+                    return _fit(_png(data), w, h)
+            try:
+                requests.delete(f"{self.BASE}/generate/status/{rid}", headers=self.head, timeout=20)
+            except requests.RequestException:
+                pass
+            raise ImageError("aihorde queue too slow (10 min)")
+        raise ImageError(f"aihorde refused every size: {last}")
+
+
+def _fit(png: bytes, w: int, h: int) -> bytes:
+    """Crops/scales any picture to exactly w x h (the providers above choose their own sizes)."""
+    from PIL import Image
+    im = Image.open(io.BytesIO(png)).convert("RGB")
+    s = max(w / im.width, h / im.height)
+    im = im.resize((max(w, int(im.width * s + 0.5)), max(h, int(im.height * s + 0.5))), Image.LANCZOS)
+    x, y = (im.width - w) // 2, (im.height - h) // 2
+    buf = io.BytesIO()
+    im.crop((x, y, x + w, y + h)).save(buf, "PNG")
+    return buf.getvalue()
+
+
 class Mock:
     name = "mock"
     ready = True
@@ -329,10 +476,11 @@ class Studio:
     everything else → Cloudflare klein 4B → Pollinations.
     """
 
-    def __init__(self, ctx: Context, gemini_budget_usd: float = 0.0):
+    def __init__(self, ctx: Context, gemini_budget_usd: float = 0.0, first=None):
         self.ctx = ctx
         self.used: set[str] = set()
         self.dead: set[str] = set()
+        self.first = first                 # optional GPU picture provider (agents/gpu.py), tried first
         self.neurons = 0.0
         self.hq_allowance = 0.0          # neurons main.py lets the high-quality model spend this run
         self.hq_count = 0
@@ -340,9 +488,11 @@ class Studio:
         if ctx.mock:
             self.base, self.premium, self.hq = [Mock()], None, None
             return
-        base = [Cloudflare(ctx.cfg), Pollinations(ctx.cfg)]
-        if v.get("provider") == "pollinations":
-            base.reverse()
+        # free providers, best first; Pollinations only with a paid token (its free tier ended in July 2026)
+        base = [Cloudflare(ctx.cfg), ModelScope(ctx.cfg)]
+        if os.getenv("POLLINATIONS_TOKEN", "").strip():
+            base.append(Pollinations(ctx.cfg))
+        base.append(AIHorde(ctx.cfg))
         self.base = [p for p in base if p.ready]
         hq_model = v.get("cloudflare_hq_model")
         self.hq = Cloudflare(ctx.cfg, hq_model, "cloudflare_hq") if hq_model else None
@@ -378,13 +528,17 @@ class Studio:
                 order.insert(0, self.hq)
         if premium and self.premium and self.premium.ready:
             order.insert(0, self.premium)
+        if self.first is not None:
+            order.insert(0, self.first)
         return [p for p in order if p.name not in self.dead]
 
     def draw(self, prompt: str, w: int, h: int, seed: int, refs: list[Path], dest: Path,
              premium: bool = False) -> None:
         errors = []
         for p in self._order(premium, w, h):
-            use_refs = refs if p.name in ("cloudflare", "cloudflare_hq", "gemini") else []
+            if p.name == "modal" and not refs:
+                continue                    # the GPU picture model is only for shots with character portraits
+            use_refs = refs if p.name in ("cloudflare", "cloudflare_hq", "gemini", "modal") else []
             for attempt in range(3):
                 try:
                     pr = prompt if attempt == 0 else _soften(prompt)
@@ -413,7 +567,7 @@ class Studio:
                     self.dead.add(q)
                 log(NAME, f"Cloudflare daily allowance used up; using the next provider")
             elif "QUOTA" in errors[-1] or "rejected the token" in errors[-1] or fails >= 3 or \
-                    (p.name == "cloudflare_hq" and fails >= 1):
+                    (p.name in ("cloudflare_hq", "modal") and fails >= 1):
                 if p.name not in self.dead:
                     log(NAME, f"{p.name} unavailable ({errors[-1][:150]}); using the next provider")
                 self.dead.add(p.name)
@@ -427,10 +581,6 @@ def character_refs(ctx: Context, studio: Studio, series: dict, script: dict) -> 
     out_dir.mkdir(parents=True, exist_ok=True)
     refs: dict[str, Path] = {}
     saved = series.get("ref_files") or {}
-    style = ctx.cfg["visuals"].get("style_preset", "custom")
-    if saved and series.get("art_style", "custom") != style:
-        log(NAME, f"art style changed ({series.get('art_style', 'old')} → {style}); redrawing the character portraits")
-        saved = {}
     for c in script["characters"]:
         p = ROOT / saved[c["id"]] if c["id"] in saved else None
         if p and p.exists():
@@ -552,10 +702,8 @@ Flag ONLY serious problems a viewer would notice:
 - deformed faces, eyes, hands or extra limbs
 - visible text, letters, captions, watermarks or logos
 - photographic or 3D render instead of the 2D illustrated style, or very blurry
-- off-style pictures: the target look is "{v.get('style_label', 'the channel style')}" — clean crisp line art,
-  rich detail, cinematic night light, large expressive eyes on emotional close-ups; flag flat, dull, muddy or
-  half-realistic pictures
-- the same character drawn with a different hairstyle, hair colour or outfit colour than in their portrait
+- flat, dull or washed-out pictures: the target look is bold clean outlines, rich detail, a deep blue moonlit night
+  contrasted with warm lantern light, and large expressive eyes on emotional close-ups
 - anything gory or unsafe
 
 Return JSON: {{"redraw": [{{"id": "I4", "problem": "short", "fix": "one sentence to add to the drawing prompt"}}]}}
