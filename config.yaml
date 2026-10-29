@@ -56,10 +56,13 @@ llm:
   model: "gemini-3.8-flash"
   # Order matters: the stronger Flash models write better stories; "lite" models are the last resort.
   fallback_models: ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.5-flash-lite", "gemini-flash-lite-latest"]
+  groq_models: ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"]   # backup writers, only if GROQ_API_KEY is set
+  patience_rounds: 2        # when Gemini is overloaded, wait up to ~2 x 45 s for a strong model before using "lite"
 
 story:
-  min_seconds: 150          # reel length target (the reference reel is 3 min 20 s)
-  max_seconds: 200
+  min_seconds: 135          # spoken length target; the finished reel stays ≤ 2:55 so it is a YouTube Short too
+  max_seconds: 165
+  max_reel_seconds: 175     # hard cap for the finished reel (YouTube Shorts must be 3:00 or less)
   min_cuts: 40              # like the reference: slow 6-8 s holds on wide shots, fast 1-2 s cuts at the peaks
   max_cuts: 56
   max_images: 18            # unique illustrations per part (reused like the reference); fewer, better pictures
@@ -100,7 +103,6 @@ visuals:
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
   quality_check: true               # Gemini inspects every illustration and redraws bad ones
   upscale: true                     # Real-ESRGAN sharpens every picture before animation (free, runs on the CPU)
-  modelscope_model: "Qwen/Qwen-Image"   # used only if MODELSCOPE_API_KEY is set
   max_redraws: 6
   # Nano Banana (Gemini's image model) — best faces and consistency, paid from the Gemini API
   # (~$0.034 ≈ ₹3 per picture; your Google AI Pro plan includes $10/month of credit for this).
@@ -163,6 +165,12 @@ music:
   volume: 0.42                           # the reference keeps a clearly audible score under the storyteller
   duck_ratio: 3                          # how much the music dips under the voice (higher = more)
 
+sound:
+  # Real sound effects from Freesound (CC0 only). Used only if the FREESOUND_API_KEY secret is set.
+  enabled: true
+  ambience_db: -6      # ambience bed level relative to the music (lower = quieter)
+  effects_db: 2        # scene effects level relative to the music
+
 video:
   width: 1080
   height: 1920
@@ -195,6 +203,14 @@ caption:
   max_hashtags: 8
   core_hashtags: ["#hindistory", "#horrorstories", "#bhootiyakahani", "#hindihorrorstory"]
   cover: true                            # custom cover: the most emotional close-up + big title (grid + Explore)
+
+youtube:
+  # Posts every reel to YouTube as a Short too. Needs the secrets YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN.
+  enabled: true
+  privacy: "public"            # "public", "unlisted" or "private"
+  category_id: "24"            # 24 = Entertainment
+  contains_synthetic_media: false   # YouTube's "altered or realistic synthetic content" label (needed only for realistic-looking content)
+  tags: ["hindi horror story", "bhoot ki kahani", "horror story in hindi", "hindi kahani", "horror shorts", "3am tales"]
 
 instagram:
   api_host: "graph.instagram.com"

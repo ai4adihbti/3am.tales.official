@@ -21,9 +21,9 @@ import os
 import shutil
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
-from agents import analyst, animator, caption, composer, cover, critic, editor, gpu, illustrator, publisher, qa, researcher, upscaler, voice, writer
+from agents import analyst, animator, caption, composer, cover, critic, editor, gpu, illustrator, publisher, qa, researcher, sound, upscaler, voice, writer, youtube
 from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
 from agents.memory import Memory
 
@@ -101,7 +101,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.3 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.8 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -110,7 +110,7 @@ def main() -> int:
     memory = Memory()
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.1.3")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.1.8")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -126,6 +126,18 @@ def main() -> int:
     if not dry and not args.mock:
         ok, msg = publisher.check_token(ctx)
         log("Orchestrator", msg)
+        # Instagram tokens expire after 60 days: remember when this token was first used and warn in time
+        import hashlib
+        th = hashlib.sha256(os.getenv("IG_ACCESS_TOKEN", "").encode()).hexdigest()[:12]
+        tk = memory.data.get("ig_token") or {}
+        if tk.get("hash") != th:
+            tk = {"hash": th, "first_seen": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
+            memory.data["ig_token"] = tk
+        age = (datetime.now(timezone.utc) - datetime.strptime(tk["first_seen"], "%Y-%m-%d").replace(
+            tzinfo=timezone.utc)).days
+        if age >= 50:
+            log("Orchestrator", f"⚠️ WARNING: the Instagram token is about {age} days old and stops working at 60 days. "
+                                "Create a new one now (README step 8) and update the IG_ACCESS_TOKEN secret.")
         if not ok:
             log("Orchestrator", "STOPPED before making the reel: refresh IG_ACCESS_TOKEN (README step 8) and run again.")
             return 4
@@ -147,6 +159,21 @@ def main() -> int:
     v = cfg["video"]
     voice_wav, timeline, shot_starts, voice_len = voice.perform(ctx, script)
     total = round(v["lead_in_seconds"] + voice_len + v["tail_seconds"], 3)
+    reel_cap = float(cfg["story"].get("max_reel_seconds", 0) or 0)
+    if reel_cap and total > reel_cap:
+        # a gentle, pitch-preserving speed-up (max 8%) keeps the reel a YouTube Short (≤ 3:00)
+        room = reel_cap - v["lead_in_seconds"] - v["tail_seconds"]
+        speed = min(1.08, voice_len / room)
+        fast = work / "voice_fast.wav"
+        import subprocess as _sp
+        _sp.run(["ffmpeg", "-y", "-v", "error", "-i", str(voice_wav), "-af", f"atempo={speed:.4f}",
+                 "-c:a", "pcm_s24le", str(fast)], check=True)
+        voice_wav, voice_len = fast, voice_len / speed
+        shot_starts = [s / speed for s in shot_starts]
+        timeline = [{**t, "start": round(t["start"] / speed, 3), "end": round(t["end"] / speed, 3)} for t in timeline]
+        total = round(v["lead_in_seconds"] + voice_len + v["tail_seconds"], 3)
+        log("Orchestrator", f"voice sped up {100 * (speed - 1):.1f}% so the reel is {total:.0f}s "
+                            f"({'a YouTube Short' if total <= 180 else 'still over 3:00 — YouTube will treat it as a normal video'})")
     if total > 600:
         raise RuntimeError(f"Reel came out at {total:.0f}s, which is far too long; not posting it.")
 
@@ -160,11 +187,28 @@ def main() -> int:
     studio = illustrator.Studio(ctx, gemini_budget_usd=image_budget, first=engine.picture_provider())
     durations = editor.shot_durations(shot_starts, total, v["lead_in_seconds"])
     saved = series.get("ref_files") or {}
-    studio.plan(len(script["images"]), sum(1 for c in script["characters"] if c["id"] not in saved))
+    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")      # Cloudflare's allowance resets 00:00 UTC (5:30 AM IST)
+    ledger = memory.data.setdefault("cf_day", {"date": day, "used": 0.0})
+    if ledger.get("date") != day:
+        ledger.update(date=day, used=0.0)
+    affordable = studio.plan(len(script["images"]), sum(1 for c in script["characters"] if c["id"] not in saved),
+                             ledger["used"])
+    if affordable < len(script["images"]):
+        if affordable < 6 and not args.mock:
+            log("Orchestrator", f"STOPPED: today's free Cloudflare picture allowance is almost used up (earlier runs "
+                                f"today used ~{ledger['used']:.0f} of 10,000). It resets at 5:30 AM IST — run again after "
+                                "that. Tip: avoid test runs on the day of a post.")
+            memory.save()
+            shutil.rmtree(work, ignore_errors=True)
+            return 5
+        merged = illustrator.limit_images(script, affordable)
+        log("Orchestrator", f"today's allowance pays for {affordable} pictures: {merged} pictures merged into "
+                            "earlier ones (reused, like the reference reels)")
     refs = illustrator.character_refs(ctx, studio, series, script)
     heroes = illustrator.hero_images(ctx, script, durations)
     image_paths = illustrator.illustrate(ctx, studio, script, refs, heroes)
     illustrator.quality_check(ctx, studio, script, refs, image_paths)
+    ledger["used"] = 10000.0 if studio.quota_hit else round(ledger["used"] + studio.neurons)
     image_paths = upscaler.upscale(ctx, image_paths)
     motion = engine.motion_clips(script["shots"], image_paths, durations)
     clips = animator.animate(ctx, image_paths, script["shots"], durations, motion)
@@ -174,6 +218,10 @@ def main() -> int:
     score = None
     if cfg["music"].get("enabled", True):
         score = composer.compose(ctx, script["shots"], shot_starts, voice_len, v["lead_in_seconds"], total)
+        try:
+            score = sound.add_effects(ctx, score, script, shot_starts, v["lead_in_seconds"], total)
+        except Exception as e:  # noqa: BLE001 — sound effects are a bonus, never a reason to fail
+            log("Orchestrator", f"sound effects skipped ({str(e)[:120]})")
 
     # 8. edit
     end_card = ("The End", "Follow for more kahaniyan") if final else \
@@ -238,7 +286,18 @@ def main() -> int:
         shutil.rmtree(work, ignore_errors=True)
         return 3
     else:
-        result = publisher.publish_reel(ctx, reel, cap, cover_path)
+        if cfg.get("youtube", {}).get("enabled", True) and youtube.ready():
+            try:
+                post.update(youtube.upload(ctx, reel, series, cap))
+            except Exception as e:  # noqa: BLE001 — YouTube problems never stop the Instagram post
+                log("YouTube", f"not uploaded ({str(e)[:220]})")
+        try:
+            result = publisher.publish_reel(ctx, reel, cap, cover_path)
+        except Exception as e:  # noqa: BLE001 — never lose the finished reel
+            log("Orchestrator", f"NOT POSTED: the upload to Instagram failed ({str(e)[:200]}). The finished reel and its "
+                                f"cover are in this run's Artifacts (out/{reel.name}) — you can post them from the app.")
+            memory.save()
+            return 6
         post.update(result)
         memory.add_post(post)
         series["voice_engine"] = series.get("voice_engine") or ctx.notes.get("voice_engine")
