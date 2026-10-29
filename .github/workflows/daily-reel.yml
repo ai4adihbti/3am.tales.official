@@ -57,11 +57,16 @@ jobs:
       - name: Run the agent team
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ github.token }}   # lets the Publisher host the reel on a temporary release (public repos)
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           POLLINATIONS_TOKEN: ${{ secrets.POLLINATIONS_TOKEN }}
-          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
           AIHORDE_API_KEY: ${{ secrets.AIHORDE_API_KEY }}
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
           MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
@@ -75,7 +80,7 @@ jobs:
 
       # Saved first, so a full artifact store can never make the system forget what it posted.
       - name: Save memory
-        if: success()
+        if: always()               # also after a "not posted" run, so today's picture-allowance use is remembered
         run: |
           git config user.name "night-stories-bot"
           git config user.email "night-stories-bot@users.noreply.github.com"
