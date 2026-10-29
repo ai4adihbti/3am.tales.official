@@ -175,7 +175,55 @@
       },
       "media_id": "17913431964505683",
       "permalink": "https://www.instagram.com/reel/DfAw7IwDV1Q/",
-      "posted_at": "2026-10-27T20:56:15+00:00"
+      "posted_at": "2026-10-27T20:56:15+00:00",
+      "deleted": true
+    },
+    {
+      "title": "Chhatarpur ka Ulti Pailo Kuan — Part 1",
+      "series_title": "Chhatarpur ka Ulti Pailo Kuan",
+      "series_id": "20261029-chhatarpur-ka-ulti-pailo-kuan",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Chhatarpur ke Jamni gaon mein ek aisa kuan hai...",
+      "critic_score": 75,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare",
+        "cloudflare_hq"
+      ],
+      "duration_s": 158.334,
+      "file": "reel-20261029-203802.mp4",
+      "caption": "Chhatarpur ka Ulti Pailo Kuan | Part 1/1 Kya Anandi Varun ko bacha paayegi? (fiction)\n\nAgar tumhe well ki aawaz sunayi deti, tum rukte ya aage badhte? 👀\n\nPoori kahani khatam… agli kahani kal raat 🕯️ Follow karo\n.\n.\n#hindistory #horrorstories #bhootiyakahani #hindihorrorstory #ulutipailokuan #villagehorror #hindi #3amtales",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 158.4,
+        "loudness_lufs": -14.2,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare",
+          "cloudflare_hq"
+        ],
+        "redrawn": [
+          "I12",
+          "I5",
+          "I9"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 6126,
+        "hq_images": 2,
+        "est_cost_usd": 0.13,
+        "month_spend_usd": 0.55
+      },
+      "youtube_id": "5SiWouHqqv0",
+      "youtube_url": "https://youtube.com/shorts/5SiWouHqqv0",
+      "media_id": "17956891071289398",
+      "permalink": "https://www.instagram.com/reel/DfF9KqkiiUO/",
+      "posted_at": "2026-10-29T21:19:46+00:00"
     }
   ],
   "used_video_ids": [],
@@ -189,11 +237,12 @@
   "series": null,
   "series_done": [
     "Choti Line Ki Akhri Bus",
-    "Kosi Gaon ka Safed Peepal"
+    "Kosi Gaon ka Safed Peepal",
+    "Chhatarpur ka Ulti Pailo Kuan"
   ],
   "spend": {
     "month": "2026-10",
-    "usd": 0.4155
+    "usd": 0.5455
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -207,11 +256,33 @@
       "entity": "Nishi Daak (a midnight entity that calls children using a mother's voice)",
       "protagonist": "Meera, 19, a protective elder sister living with her Dadi and 8-year-old brother, Chhotu.",
       "emotion": "A sister's desperate bravery and a grandmother's tragic, protective secret."
+    },
+    {
+      "title": "Chhatarpur ka Ulti Pailo Kuan",
+      "format": "lok_katha",
+      "parts": 1,
+      "region": "Bundelkhand, Madhya Pradesh",
+      "setting": "Orachha-adjacent village of Jamni – mud-brick houses, dry canal, a moonlit ancient stepwell (kuan) surrounded by thick babool trees.",
+      "entity": "Pichhal-Pairi (the backward-footed entity of the stepwell)",
+      "protagonist": "Anandi, 20, a young newly-wed bahu",
+      "emotion": "A bride's selfless devotion and a mother-in-law's sacrifice."
     }
   ],
   "followers": 1,
   "format_block": {
     "format": "lok_katha",
     "target": 2
+  },
+  "ig_token": {
+    "hash": "08dcf1e8582f",
+    "first_seen": "2026-10-29"
+  },
+  "modal_spend": {
+    "month": "2026-10",
+    "usd": 0.0
+  },
+  "cf_day": {
+    "date": "2026-10-29",
+    "used": 6126
   }
 }
