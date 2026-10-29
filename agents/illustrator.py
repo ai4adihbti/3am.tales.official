@@ -250,57 +250,6 @@ class Pollinations:
         raise ImageError(f"BUSY {last}")
 
 
-class ModelScope:
-    """ModelScope API-Inference (free daily allowance, Qwen-Image). Needs MODELSCOPE_API_KEY.
-    No reference images here, so characters stay consistent through their detailed descriptions."""
-    name = "modelscope"
-    BASE = "https://api-inference.modelscope.cn/v1"
-
-    def __init__(self, cfg: dict):
-        self.key = os.getenv("MODELSCOPE_API_KEY", "").strip()
-        self.model = cfg["visuals"].get("modelscope_model", "Qwen/Qwen-Image")
-
-    @property
-    def ready(self) -> bool:
-        return bool(self.key)
-
-    def generate(self, prompt: str, w: int, h: int, seed: int, refs: list[Path]) -> bytes:
-        head = {"Authorization": f"Bearer {self.key}", "Content-Type": "application/json"}
-        body = {"model": self.model, "prompt": prompt[:1800] + ", vertical 9:16 portrait image"}
-        try:
-            r = requests.post(f"{self.BASE}/images/generations", json=body,
-                              headers={**head, "X-ModelScope-Async-Mode": "true"}, timeout=(15, 60))
-        except requests.RequestException as e:
-            raise ImageError(f"network {type(e).__name__}")
-        low = r.text.lower()
-        if r.status_code == 429 or (r.status_code >= 400 and ("quota" in low or "limit" in low)):
-            raise ImageError(f"QUOTA modelscope HTTP {r.status_code} {r.text[:160]}")
-        if r.status_code in (401, 403):
-            raise ImageError(f"ModelScope rejected the token: HTTP {r.status_code} {r.text[:160]}")
-        if r.status_code >= 400:
-            raise ImageError(f"HTTP {r.status_code} {r.text[:200]}")
-        task = (r.json() or {}).get("task_id")
-        if not task:
-            raise ImageError(f"no task id: {r.text[:200]}")
-        deadline = time.time() + 240
-        while time.time() < deadline:
-            time.sleep(5)
-            try:
-                t = requests.get(f"{self.BASE}/tasks/{task}", timeout=30,
-                                 headers={**head, "X-ModelScope-Task-Type": "image_generation"}).json()
-            except (requests.RequestException, ValueError):
-                continue
-            status = t.get("task_status")
-            if status == "SUCCEED" and t.get("output_images"):
-                img = requests.get(t["output_images"][0], timeout=60)
-                if img.status_code == 200:
-                    return _fit(_png(img.content), w, h)
-                raise ImageError(f"image download HTTP {img.status_code}")
-            if status in ("FAILED", "CANCELED"):
-                raise ImageError(f"SAFETY modelscope task {status}: {str(t)[:160]}")
-        raise ImageError("modelscope timed out")
-
-
 class AIHorde:
     """AI Horde: free image generation on volunteers' GPUs (no account needed; AIHORDE_API_KEY optional for
     faster queues). Slower and older models, so it's the last backup."""
@@ -334,8 +283,8 @@ class AIHorde:
     def generate(self, prompt: str, w: int, h: int, seed: int, refs: list[Path]) -> bytes:
         if not self.started:
             self.started = time.time()
-        elif time.time() - self.started > 25 * 60:     # never let slow volunteer queues stall a whole run
-            raise ImageError("QUOTA aihorde: 25-minute budget for this run used")
+        elif time.time() - self.started > 15 * 60:     # never let slow volunteer queues stall a whole run
+            raise ImageError("QUOTA aihorde: 15-minute budget for this run used")
         neg = "text, letters, watermark, logo, signature, deformed, extra fingers, blurry, photo, 3d render"
         last = ""
         for sw, sh in self.SIZES:
@@ -360,7 +309,7 @@ class AIHorde:
             rid = (r.json() or {}).get("id")
             if not rid:
                 raise ImageError(f"no request id: {r.text[:160]}")
-            deadline = time.time() + 600
+            deadline = time.time() + 300
             while time.time() < deadline:
                 time.sleep(6)
                 try:
@@ -381,7 +330,7 @@ class AIHorde:
                 requests.delete(f"{self.BASE}/generate/status/{rid}", headers=self.head, timeout=20)
             except requests.RequestException:
                 pass
-            raise ImageError("aihorde queue too slow (10 min)")
+            raise ImageError("aihorde queue too slow (5 min)")
         raise ImageError(f"aihorde refused every size: {last}")
 
 
@@ -478,6 +427,8 @@ class Studio:
 
     def __init__(self, ctx: Context, gemini_budget_usd: float = 0.0, first=None):
         self.ctx = ctx
+        self.quota_hit = False
+        self.last_provider = ""
         self.used: set[str] = set()
         self.dead: set[str] = set()
         self.first = first                 # optional GPU picture provider (agents/gpu.py), tried first
@@ -489,7 +440,7 @@ class Studio:
             self.base, self.premium, self.hq = [Mock()], None, None
             return
         # free providers, best first; Pollinations only with a paid token (its free tier ended in July 2026)
-        base = [Cloudflare(ctx.cfg), ModelScope(ctx.cfg)]
+        base = [Cloudflare(ctx.cfg)]
         if os.getenv("POLLINATIONS_TOKEN", "").strip():
             base.append(Pollinations(ctx.cfg))
         base.append(AIHorde(ctx.cfg))
@@ -507,18 +458,29 @@ class Studio:
     def gemini_images(self) -> int:
         return self.premium.count if self.premium else 0
 
-    def plan(self, n_images: int, n_portraits: int) -> None:
-        """Share today's free Cloudflare neurons: every picture and redraw on the 4B model first,
-        whatever is left goes to the high-quality 9B model (portraits first, then hero shots)."""
+    def plan(self, n_images: int, n_portraits: int, used_today: float = 0.0) -> int:
+        """Share what is LEFT of today's free Cloudflare neurons (earlier runs today count too): every picture,
+        portrait and a few redraws on the 4B model first; only the rest goes to the high-quality 9B model.
+        Returns how many pictures today's allowance can still pay for."""
         v = self.ctx.cfg["visuals"]
-        if not self.hq:
-            return
-        daily = float(v.get("cloudflare_daily_neurons", 10000)) * 0.95
+        self.quota_hit = False
+        if not any(p.name == "cloudflare" for p in self.base):
+            return n_images
+        daily = float(v.get("cloudflare_daily_neurons", 10000)) * 0.85     # safety margin on our estimate
+        left = max(0.0, daily - used_today)
         per = neurons(v["cloudflare_model"], v["width"], v["height"], 2)
-        need = (n_images + n_portraits + int(v.get("max_redraws", 6))) * per
-        self.hq_allowance = max(0.0, daily - need)
-        log(NAME, f"neuron plan: ~{need:.0f} for {n_images} pictures + redraws; "
-                  f"{self.hq_allowance:.0f} for high-quality drawings (~{int(self.hq_allowance // 1460)})")
+        reserve = (n_portraits + min(3, int(v.get("max_redraws", 6)))) * per
+        affordable = max(0, int((left - reserve) // per))
+        need = (min(n_images, affordable) + n_portraits + int(v.get("max_redraws", 6))) * per
+        self.hq_allowance = max(0.0, left - need) if self.hq else 0.0
+        log(NAME, f"Cloudflare today: ~{used_today:.0f} already used, ~{left:.0f} usable; {n_images} pictures need "
+                  f"~{n_images * per:.0f}; {self.hq_allowance:.0f} left for high-quality drawings "
+                  f"(~{int(self.hq_allowance // 1460)})")
+        return affordable
+
+    def can_hq(self, w: int, h: int) -> bool:
+        return bool((self.hq and self.hq.name not in self.dead and
+                     self.hq_allowance >= neurons(self.hq.model, w, h, 2)) or (self.premium and self.premium.ready))
 
     def _order(self, premium: bool, w: int, h: int) -> list:
         order = list(self.base)
@@ -535,7 +497,8 @@ class Studio:
     def draw(self, prompt: str, w: int, h: int, seed: int, refs: list[Path], dest: Path,
              premium: bool = False) -> None:
         errors = []
-        for p in self._order(premium, w, h):
+        order = self._order(premium, w, h)
+        for p in order:
             if p.name == "modal" and not refs:
                 continue                    # the GPU picture model is only for shots with character portraits
             use_refs = refs if p.name in ("cloudflare", "cloudflare_hq", "gemini", "modal") else []
@@ -545,6 +508,7 @@ class Studio:
                     rf = use_refs if attempt < 2 else []   # last try: without reference images
                     dest.write_bytes(p.generate(pr, w, h, seed + attempt * 7919, rf))
                     self.used.add(p.name)
+                    self.last_provider = p.name
                     if p.name.startswith("cloudflare"):
                         cost = neurons(p.model, w, h, len(rf))
                         self.neurons += cost
@@ -563,6 +527,7 @@ class Studio:
             fails = len([x for x in errors if x.startswith(p.name + ":") and "BUSY" not in x])
             if "QUOTA" in errors[-1] and p.name.startswith("cloudflare"):
                 # both Cloudflare models share one daily allowance
+                self.quota_hit = True
                 for q in ("cloudflare", "cloudflare_hq"):
                     self.dead.add(q)
                 log(NAME, f"Cloudflare daily allowance used up; using the next provider")
@@ -625,7 +590,7 @@ def illustrate(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path]
     for i, im in enumerate(script["images"]):
         dest = out_dir / f"{im['id']}.png"
         try:
-            _draw_image(ctx, studio, im, chars, refs, dest, base_seed + i * 31, premium=im["id"] in heroes)
+            _draw_image(ctx, studio, im, chars, refs, dest, base_seed + i * 31)   # every picture first
             paths[im["id"]] = dest
         except ImageError as e:
             log(NAME, f"{im['id']}: could not draw ({str(e)[:120]})")
@@ -634,6 +599,21 @@ def illustrate(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path]
             log(NAME, f"{i + 1}/{len(script['images'])} illustrations drawn")
     if not paths:
         raise ImageError("No illustration could be drawn")
+    # then, only with what is left of today's allowance, redraw the longest-on-screen pictures in high quality
+    upgraded = 0
+    for i, im in enumerate(script["images"]):
+        if im["id"] not in heroes or im["id"] not in paths or not studio.can_hq(v["width"], v["height"]):
+            continue
+        dest = out_dir / f"{im['id']}_hq.png"
+        try:
+            _draw_image(ctx, studio, im, chars, refs, dest, base_seed + i * 31, premium=True)
+            if studio.last_provider in ("cloudflare_hq", "gemini"):
+                paths[im["id"]] = dest
+                upgraded += 1
+        except ImageError:
+            pass                                  # keep the normal picture
+    if upgraded:
+        log(NAME, f"{upgraded} key pictures redrawn in high quality")
     for iid in failed:  # reuse the closest earlier (or any) drawing so the reel still works
         order = [im["id"] for im in script["images"]]
         k = order.index(iid)
@@ -802,3 +782,26 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
         clips.append(out)
     log(NAME, f"{len(clips)} cuts animated")
     return clips
+
+
+def limit_images(script: dict, n: int) -> int:
+    """Keeps only the first n unique pictures (today's allowance can't pay for more); the other cuts reuse the
+    nearest earlier picture, like the reference reels do. Returns how many pictures were merged away."""
+    order = [im["id"] for im in script["images"]]
+    if len(order) <= n:
+        return 0
+    keep = set(order[:max(1, n)])
+    by_id = {im["id"]: im for im in script["images"]}
+    last = None
+    for sh in script["shots"]:
+        if sh["image_id"] in keep:
+            last = by_id[sh["image_id"]]
+        elif last is not None:
+            for k in ("image", "framing", "characters", "night"):
+                sh[k] = last[k]
+            sh["image_id"] = last["id"]
+        else:
+            first = by_id[order[0]]
+            sh.update({k: first[k] for k in ("image", "framing", "characters", "night")}, image_id=first["id"])
+    script["images"] = [by_id[i] for i in order if i in keep]
+    return len(order) - len(keep)

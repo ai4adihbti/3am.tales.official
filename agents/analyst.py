@@ -27,7 +27,8 @@ def _fetch_insights(graph: str, media_id: str, token: str) -> dict | None:
         r = requests.get(f"{graph}/{media_id}/insights",
                          params={"metric": metrics, "access_token": token}, timeout=30)
         last = f"HTTP {r.status_code} {r.text[:160]}"
-        if r.status_code == 200:
+        if r.status_code == 400 and "does not exist" in r.text:
+            return {"_deleted": True}          # the post was deleted on Instagram
             out = {}
             for item in r.json().get("data", []):
                 vals = item.get("values") or [{}]
@@ -56,7 +57,7 @@ def run(ctx: Context, memory: Memory) -> None:
 
     updated = 0
     for p in memory.posts:
-        if not p.get("media_id") or not p.get("posted_at"):
+        if not p.get("media_id") or not p.get("posted_at") or p.get("deleted"):
             continue
         posted = datetime.fromisoformat(p["posted_at"])
         if not (timedelta(hours=24) <= now - posted <= timedelta(days=14)):
@@ -68,6 +69,10 @@ def run(ctx: Context, memory: Memory) -> None:
             m = _fetch_insights(graph, p["media_id"], token)
         except requests.RequestException:
             m = None
+        if m and m.get("_deleted"):
+            p["deleted"] = True
+            log(NAME, f"post \"{p.get('title', p['media_id'])}\" no longer exists on Instagram; skipping it from now on")
+            continue
         if m:
             p["metrics"], p["score"] = m, score(m)
             p["metrics_at"] = now.isoformat(timespec="seconds")

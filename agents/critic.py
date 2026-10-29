@@ -61,7 +61,7 @@ Return JSON:
     total = round(sum(scores.values()) / max(1, len(scores)) * 10) if scores else 0
     notes = []
     if not ctx.mock:
-        if secs < s["min_seconds"] - 15 or secs > s["max_seconds"] + 20:
+        if secs < s["min_seconds"] - 15 or secs > s["max_seconds"] + 10:
             total -= 12
             notes.append(f"LENGTH: about {secs:.0f}s; it must be {s['min_seconds']}-{s['max_seconds']}s "
                          f"(roughly {int(s['min_seconds'] * 2.0)}-{int(s['max_seconds'] * 2.0)} spoken words).")

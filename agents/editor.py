@@ -166,8 +166,8 @@ def render(ctx: Context, clips: list[Path], durations: list[float], voice: Path,
 
     args += ["-filter_complex", ";".join(f), "-map", "[vout]", "-map", "[aout]",
              "-t", f"{total:.3f}",
-             "-c:v", "libx264", "-preset", os.getenv("X264_PRESET", "medium"), "-crf", "18",
-             "-maxrate", "20M", "-bufsize", "40M", "-profile:v", "high",
+             "-c:v", "libx264", "-preset", os.getenv("X264_PRESET", "medium"), "-crf", "19",
+             "-maxrate", "4M", "-bufsize", "8M", "-profile:v", "high",
              "-pix_fmt", "yuv420p", "-r", str(fps), "-g", str(fps * 2),
              "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2",
              "-use_editlist", "0", "-movflags", "+faststart", str(out)]   # Instagram: no edit lists, moov first

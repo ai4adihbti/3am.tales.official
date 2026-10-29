@@ -101,10 +101,10 @@ must not reuse their twist. {stage}"""
 
 def _parts_rule(lo: int, hi: int) -> str:
     if hi <= 1:
-        return "This story must be complete in ONE reel (~3 minutes): a full arc with a strong twist at the end."
+        return "This story must be complete in ONE reel (about 2.5 minutes, never over 2:50): a full arc with a strong twist at the end."
     return (f"Decide the number of parts YOURSELF ({lo}-{hi}), by what this story truly needs: 1 if it's a single "
             "punchy tale; more only if each part is a full chapter with its own escalation and a cliffhanger. "
-            "Never pad a story to make more parts — weak middle parts lose followers. Each part is ~3 minutes.")
+            "Never pad a story to make more parts — weak middle parts lose followers. Each part is about 2.5 minutes (never over 2:50).")
 
 
 INDIAN_RULE = """FOR AN INDIAN AUDIENCE, ALWAYS: set in India (a real Indian state/region, invented village or town
@@ -146,7 +146,7 @@ def todays_series(ctx: Context, memory: Memory, avoid_extra: list[str] | None = 
     avoid = memory.recent_titles() + (avoid_extra or [])
     learnings = memory.data.get("learnings") or "No performance data yet — go with your best instinct."
     prompt = f"""You are the head of story for "{ch['name']}", an Instagram account of illustrated Hindi horror
-and mystery stories, posted one ~3-minute reel a day; a story can be one reel or a series of parts that each end
+and mystery stories, posted one ~2.5-minute reel a day (it must stay under 3 minutes to be a YouTube Short too); a story can be one reel or a series of parts that each end
 on a cliffhanger. Audience: {ch['audience']}. Quality of the story is everything.
 
 Story type for the new story: {fmt['label']} — {fmt['brief']}

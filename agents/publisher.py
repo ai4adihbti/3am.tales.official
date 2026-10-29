@@ -92,7 +92,74 @@ def _host_tmpfiles(video: Path) -> str:
     return url.replace("tmpfiles.org/", "tmpfiles.org/dl/", 1).replace("http://", "https://", 1)
 
 
-HOSTS = [_host_catbox, _host_litterbox, _host_uguu, _host_tmpfiles]
+# ── GitHub release (most reliable): the reel is attached to a temporary release of YOUR repo, Instagram
+# downloads it from there, then the release is deleted. Works only if the repo is public (private-repo files
+# need a login, which Instagram doesn't have); otherwise the free hosts below are used.
+class _GitHub:
+    def __init__(self):
+        self.release = None
+        self.public = None
+
+    @property
+    def repo(self) -> str:                      # read at posting time, not at start-up
+        return os.getenv("GITHUB_REPOSITORY", "")
+
+    @property
+    def token(self) -> str:
+        return os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN", "")
+
+    def _h(self) -> dict:
+        return {"Authorization": f"Bearer {self.token}", "Accept": "application/vnd.github+json"}
+
+    def usable(self) -> bool:
+        if not (self.repo and self.token):
+            return False
+        if self.public is None:
+            try:
+                r = requests.get(f"https://api.github.com/repos/{self.repo}", headers=self._h(), timeout=30)
+                self.public = r.status_code == 200 and not r.json().get("private", True)
+            except (requests.RequestException, ValueError):
+                self.public = False
+            if not self.public:
+                log(NAME, "GitHub hosting skipped (the repo is private or unreachable); using free file hosts")
+        return bool(self.public)
+
+    def upload(self, path: Path, ctype: str) -> str:
+        if not self.usable():
+            raise PublishError("github: repo not public")
+        if self.release is None:
+            tag = f"reel-upload-{int(time.time())}"
+            r = requests.post(f"https://api.github.com/repos/{self.repo}/releases", headers=self._h(), timeout=60,
+                              json={"tag_name": tag, "name": "temporary reel upload (deleted automatically)",
+                                    "prerelease": True, "body": "Temporary file for Instagram to download."})
+            data = _check(r, "github release")
+            self.release = {"id": data["id"], "tag": tag, "upload": data["upload_url"].split("{")[0]}
+        with open(path, "rb") as fh:
+            r = requests.post(self.release["upload"], params={"name": path.name}, data=fh, timeout=900,
+                              headers={**self._h(), "Content-Type": ctype})
+        return _check(r, "github upload")["browser_download_url"]
+
+    def cleanup(self) -> None:
+        if not self.release:
+            return
+        try:
+            requests.delete(f"https://api.github.com/repos/{self.repo}/releases/{self.release['id']}",
+                            headers=self._h(), timeout=60)
+            requests.delete(f"https://api.github.com/repos/{self.repo}/git/refs/tags/{self.release['tag']}",
+                            headers=self._h(), timeout=60)
+        except requests.RequestException:
+            pass
+        self.release = None
+
+
+GITHUB = _GitHub()
+
+
+def _host_github(video: Path) -> str:
+    return GITHUB.upload(video, "video/mp4")
+
+
+HOSTS = [_host_github, _host_catbox, _host_litterbox, _host_uguu, _host_tmpfiles]
 
 
 def _serves_mp4(url: str, size: int) -> str:
@@ -144,7 +211,7 @@ def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, cap
         try:
             yield name, _check(r, "create container (video_url)")["id"]
         except PublishError as e:
-            errors.append(f"{name}: {str(e)[:160]}")
+            errors.append(f"{name}: Instagram refused: {str(e)[:160]}")
             log(NAME, f"{name}: Instagram refused the link ({str(e)[:100]})")
     raise PublishError("Every upload route failed: " + " | ".join(errors))
 
@@ -186,6 +253,15 @@ def followers(ctx: Context) -> int | None:
 
 def _host_cover(cover: Path) -> str:
     """Puts the cover image on a temporary public host (Instagram downloads it from there)."""
+    if GITHUB.usable():
+        try:
+            url = GITHUB.upload(cover, "image/jpeg")
+            head = requests.get(url, headers={"Range": "bytes=0-3"}, timeout=60, allow_redirects=True).content[:3]
+            if head == b"\xff\xd8\xff":
+                return url
+        except (requests.RequestException, PublishError):
+            pass
+        log(NAME, "cover upload via GitHub failed; trying the next host")
     for name, url_, data in (("catbox", "https://catbox.moe/user/api.php", {"reqtype": "fileupload"}),
                              ("litterbox", "https://litterbox.catbox.moe/resources/internals/api.php",
                               {"reqtype": "fileupload", "time": "72h"})):
@@ -257,17 +333,21 @@ def publish_reel(ctx: Context, video: Path, caption: str, cover: Path | None = N
         except (PublishError, requests.RequestException) as e:
             log(NAME, f"direct upload didn't work ({str(e)[:140]}); using public-link upload")
             container = None
-    if container is None:
-        try:
-            container = _via_hosts(graph, user_id, token, video, caption, extra)
-        except PublishError as e:
-            if not extra:
-                raise
-            log(NAME, f"posting with the custom cover failed ({str(e)[:120]}); retrying without it")
-            container = _via_hosts(graph, user_id, token, video, caption, {})
-    r = requests.post(f"{graph}/{user_id}/media_publish",
-                      data={"creation_id": container, "access_token": token}, timeout=60)
-    media_id = _check(r, "publish")["id"]
+    try:
+        if container is None:
+            try:
+                container = _via_hosts(graph, user_id, token, video, caption, extra)
+            except PublishError as e:
+                # only worth a second round if Instagram itself refused (e.g. the cover); not if uploads failed
+                if not extra or "Instagram refused" not in str(e) and "refused" not in str(e):
+                    raise
+                log(NAME, f"posting with the custom cover failed ({str(e)[:120]}); retrying without it")
+                container = _via_hosts(graph, user_id, token, video, caption, {})
+        r = requests.post(f"{graph}/{user_id}/media_publish",
+                          data={"creation_id": container, "access_token": token}, timeout=60)
+        media_id = _check(r, "publish")["id"]
+    finally:
+        GITHUB.cleanup()                     # the temporary release is removed either way
 
     permalink = ""
     try:

@@ -64,13 +64,53 @@ class LLM:
         self.key = os.getenv("GEMINI_API_KEY", "")
         first = os.getenv("GEMINI_MODEL") or cfg["llm"]["model"]
         self.models = [first] + [m for m in cfg["llm"].get("fallback_models", []) if m != first]
+        # Groq (free, USA) as a backup writer: used when Gemini's strong models are busy, before Gemini "lite"
+        self.groq_key = os.getenv("GROQ_API_KEY", "").strip()
+        if self.groq_key:
+            groq = ["groq:" + m for m in cfg["llm"].get("groq_models", ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"])]
+            lite_at = next((i for i, m in enumerate(self.models) if "lite" in m), len(self.models))
+            self.models[lite_at:lite_at] = groq
         self.no_thinking_cap: set[str] = set()
         self.calls = 0          # successful requests (for the monthly spend estimate)
         self.dead_reasons: list[str] = []
+        self._cfg_llm = cfg.get("llm", {})
+
+    def _groq(self, model: str, prompt: str, system: str, temperature: float, errors: list[str]):
+        """Groq's OpenAI-compatible API, JSON mode. Returns (result, kind) like _call."""
+        name = model.split(":", 1)[1]
+        msgs = ([{"role": "system", "content": system}] if system else []) + [
+            {"role": "user", "content": prompt + "\n\nReply with valid JSON only."}]
+        try:
+            r = requests.post("https://api.groq.com/openai/v1/chat/completions", timeout=(15, 180),
+                              headers={"Authorization": f"Bearer {self.groq_key}"},
+                              json={"model": name, "messages": msgs, "temperature": min(temperature, 1.0),
+                                    "response_format": {"type": "json_object"}, "max_completion_tokens": 16000})
+        except requests.RequestException as e:
+            errors.append(f"{model}: network error {type(e).__name__}")
+            return None, "busy"
+        if r.status_code == 200:
+            try:
+                return _parse_json(r.json()["choices"][0]["message"]["content"]), "ok"
+            except (ValueError, KeyError, IndexError, TypeError) as e:
+                errors.append(f"{model}: unusable reply ({e})")
+                return None, "busy"
+        errors.append(f"{model}: HTTP {r.status_code} {r.text[:200]}")
+        if r.status_code in (401, 403):
+            log("Gemini", f"{model}: Groq rejected the key — check the GROQ_API_KEY secret; skipping Groq")
+            return None, "gone"
+        if r.status_code in (400, 404, 413):          # model retired, or this prompt is too big for its free limits
+            log("Gemini", f"{model}: not usable for this request (HTTP {r.status_code})")
+            return None, "busy"
+        log("Gemini", f"{model}: busy (HTTP {r.status_code}) — trying the next model")
+        return None, "busy"
 
     def _call(self, model: str, prompt: str, system: str, temperature: float, errors: list[str],
               images: list | None = None):
         """One model, at most 2 tries. Returns (result, kind): ok | busy | gone | key."""
+        if model.startswith("groq:"):
+            if images:
+                return None, "busy"                    # Groq is text-only here; picture checks stay on Gemini
+            return self._groq(model, prompt, system, temperature, errors)
         for attempt in (1, 2):
             parts = [{"inline_data": {"mime_type": m, "data": base64.b64encode(b).decode()}} for m, b in (images or [])]
             body = {"contents": [{"role": "user", "parts": parts + [{"text": prompt}]}],
@@ -145,8 +185,13 @@ class LLM:
             raise LLMError("GEMINI_API_KEY is not set")
 
         errors: list[str] = []
-        for rnd in range(4):
-            for model in list(self.models):
+        patience = int(self._cfg_llm.get("patience_rounds", 2))
+        for rnd in range(4 + patience):
+            strong = [m for m in self.models if "lite" not in m]
+            # when Google is overloaded, wait for a strong model a little before settling for a "lite" one:
+            # lite models write noticeably weaker stories
+            pool = strong if (rnd < patience and strong) else list(self.models)
+            for model in pool:
                 result, kind = self._call(model, prompt, system, temperature, errors, images)
                 if kind == "ok":
                     self.calls += 1
@@ -161,8 +206,9 @@ class LLM:
                     self.models.remove(model)
             if not self.models:
                 break
-            wait = 30 * (rnd + 1)
-            log("Gemini", f"all models busy — waiting {wait}s before trying again")
+            wait = 45 if rnd < patience else 30 * (rnd - patience + 1)
+            log("Gemini", f"{'strong models' if pool is strong and rnd < patience else 'all models'} busy — "
+                          f"waiting {wait}s before trying again")
             time.sleep(wait)
 
         if not self.models and self.dead_reasons:
