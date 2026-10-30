@@ -29,6 +29,7 @@ def _fetch_insights(graph: str, media_id: str, token: str) -> dict | None:
         last = f"HTTP {r.status_code} {r.text[:160]}"
         if r.status_code == 400 and "does not exist" in r.text:
             return {"_deleted": True}          # the post was deleted on Instagram
+        if r.status_code == 200:
             out = {}
             for item in r.json().get("data", []):
                 vals = item.get("values") or [{}]

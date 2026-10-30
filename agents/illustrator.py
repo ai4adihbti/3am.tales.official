@@ -689,7 +689,7 @@ Flag ONLY serious problems a viewer would notice:
 Return JSON: {{"redraw": [{{"id": "I4", "problem": "short", "fix": "one sentence to add to the drawing prompt"}}]}}
 At most {v.get('max_redraws', 6)} items, worst first. Return an empty list if everything is fine."""
     try:
-        result = ctx.llm.json(prompt, temperature=0.2, images=[("image/jpeg", _contact_sheet(script, refs, paths))],
+        result = ctx.llm.json(prompt, temperature=0.2, list_key="redraw", images=[("image/jpeg", _contact_sheet(script, refs, paths))],
                               mock={"redraw": []})
     except Exception as e:  # never let the inspection itself break the run
         log(NAME, f"quality check skipped ({str(e)[:120]})")
