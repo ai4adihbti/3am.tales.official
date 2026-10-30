@@ -209,3 +209,18 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
 | `FREESOUND_API_KEY` | optional | real sound effects |
 | `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN` | optional | YouTube Shorts |
 | `IG_API_HOST`, `GEMINI_MODEL`, `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`, `POLLINATIONS_TOKEN` | not needed | advanced / unused |
+
+## v7.1.9 — post once a day, on time
+
+GitHub often starts scheduled runs hours late (your runs started around 2 AM).
+- Scheduled runs now use mode **auto**: they post only if nothing has been posted yet that day (IST), so a late
+  GitHub run never posts twice after a manual or timer post.
+- **post** (Run workflow button) always posts, even a second reel on the same day.
+- Optional, for exact timing: a free timer at **cron-job.org** can start the workflow at exactly 9:17 PM IST in
+  mode **auto** (setup steps in the chat / ask for them).
+
+## v7.1.10 — fixes from the 30 Oct run
+- Gemini sometimes answers with a list instead of an object; every agent now accepts both (this crashed the run).
+- The Analyst reads view counts again (a v7.1.8 edit had disabled it) — the system learns from your views.
+- A Gemini model that fails to answer in time is tried last for the rest of the run (saves ~3 min per call).
+- If a run crashes, its memory (today's picture-allowance use etc.) is still saved.

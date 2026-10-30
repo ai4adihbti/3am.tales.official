@@ -21,7 +21,7 @@ import os
 import shutil
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from agents import analyst, animator, caption, composer, cover, critic, editor, gpu, illustrator, publisher, qa, researcher, sound, upscaler, voice, writer, youtube
 from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
@@ -101,16 +101,34 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.8 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.10 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
         shutil.rmtree(work, ignore_errors=True)
         return 0
     memory = Memory()
+    if not args.mock:
+        import atexit
+        atexit.register(memory.save)     # even if the run crashes, remember what it used today
+    if mode == "auto" and not args.mock:
+        # timer / schedule runs: post at most once per day (IST), so two triggers never post twice
+        ist = timezone(timedelta(hours=5, minutes=30))
+        today = datetime.now(ist).date()
+        for p in reversed(memory.posts):
+            try:
+                when = datetime.fromisoformat(p.get("posted_at", "")).astimezone(ist).date()
+            except ValueError:
+                continue
+            if when == today and p.get("media_id"):
+                log("Orchestrator", f"already posted today (\"{p.get('title', '')}\"); nothing to do. "
+                                    "Use mode 'post' to post another reel anyway.")
+                shutil.rmtree(work, ignore_errors=True)
+                return 0
+            break
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.1.8")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.1.10")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
