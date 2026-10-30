@@ -2,16 +2,16 @@ name: Daily horror reel
 
 on:
   schedule:
-    # 15:47 UTC = 9:17 PM IST, every day (peak time for Hindi horror). The run takes ~30 min, so the
-    # reel goes live around 9:45 PM. GitHub may start scheduled runs a few minutes late.
+    # BACKUP schedule. The main trigger is the free timer at cron-job.org (exactly 9:17 PM IST, mode "auto").
+    # GitHub often starts scheduled runs hours late; in "auto" mode this run only posts if nothing was posted today.
     # Change it with https://crontab.guru (times are UTC; IST = UTC + 5:30).
     - cron: "47 15 * * *"
   workflow_dispatch:
     inputs:
       mode:
-        description: "preview = quick 30 s sample · dry_run = full reel, not posted · post = make and post · gpu_setup = download the GPU models once + test them"
+        description: "auto = post only if nothing was posted today · post = make and post now · preview = quick 30 s sample · dry_run = full reel, not posted · gpu_setup = GPU models (unused)"
         type: choice
-        options: [preview, dry_run, post, gpu_setup]
+        options: [auto, post, preview, dry_run, gpu_setup]
         default: preview
 
 permissions:
@@ -75,7 +75,7 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_API_HOST: ${{ secrets.IG_API_HOST }}
           X264_PRESET: medium
-          RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'post' }}
+          RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'auto' }}
         run: python main.py
 
       # Saved first, so a full artifact store can never make the system forget what it posted.
