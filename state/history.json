@@ -35,16 +35,16 @@
       "permalink": "https://www.instagram.com/reel/De99HISAvmE/",
       "posted_at": "2026-10-26T18:45:26+00:00",
       "metrics": {
-        "views": 142,
-        "reach": 131,
-        "likes": 10,
+        "views": 146,
+        "reach": 132,
+        "likes": 12,
         "comments": 0,
         "shares": 0,
         "saved": 0,
-        "total_interactions": 10
+        "total_interactions": 13
       },
-      "score": 70.56,
-      "metrics_at": "2026-10-27T20:18:28+00:00"
+      "score": 82.34,
+      "metrics_at": "2026-10-30T20:19:26+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 2",
@@ -86,7 +86,18 @@
       },
       "media_id": "18131550643793615",
       "permalink": "https://www.instagram.com/reel/DfAE91JDjj-/",
-      "posted_at": "2026-10-27T14:32:28+00:00"
+      "posted_at": "2026-10-27T14:32:28+00:00",
+      "metrics": {
+        "views": 135,
+        "reach": 105,
+        "likes": 5,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 6
+      },
+      "score": 37.17,
+      "metrics_at": "2026-10-30T20:19:26+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 3",
@@ -127,7 +138,18 @@
       },
       "media_id": "17911164663556480",
       "permalink": "https://www.instagram.com/reel/DfAX_YOCboR/",
-      "posted_at": "2026-10-27T17:18:35+00:00"
+      "posted_at": "2026-10-27T17:18:35+00:00",
+      "metrics": {
+        "views": 128,
+        "reach": 114,
+        "likes": 4,
+        "comments": 1,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 7
+      },
+      "score": 47.0,
+      "metrics_at": "2026-10-30T20:19:26+00:00"
     },
     {
       "title": "Kosi Gaon ka Safed Peepal — Part 1",
@@ -227,11 +249,11 @@
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 142, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 1, \"avg\": 70.56}}",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 146, shares 0, saves 0, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 3, \"avg\": 55.5}}",
   "format_scores": {
     "family_bond": {
-      "n": 1,
-      "avg": 70.56
+      "n": 3,
+      "avg": 55.5
     }
   },
   "series": null,
@@ -270,7 +292,7 @@
   ],
   "followers": 1,
   "format_block": {
-    "format": "lok_katha",
+    "format": "village_secret",
     "target": 2
   },
   "ig_token": {
@@ -282,7 +304,7 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-10-29",
-    "used": 6126
+    "date": "2026-10-30",
+    "used": 0.0
   }
 }
