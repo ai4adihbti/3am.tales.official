@@ -67,7 +67,7 @@ class LLM:
         # Groq (free, USA) as a backup writer: used when Gemini's strong models are busy, before Gemini "lite"
         self.groq_key = os.getenv("GROQ_API_KEY", "").strip()
         if self.groq_key:
-            groq = ["groq:" + m for m in cfg["llm"].get("groq_models", ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"])]
+            groq = ["groq:" + m for m in cfg["llm"].get("groq_models", ["openai/gpt-oss-120b", "openai/gpt-oss-20b"])]
             lite_at = next((i for i, m in enumerate(self.models) if "lite" in m), len(self.models))
             self.models[lite_at:lite_at] = groq
         self.no_thinking_cap: set[str] = set()
@@ -76,19 +76,31 @@ class LLM:
         self._cfg_llm = cfg.get("llm", {})
         self.slow: set[str] = set()
 
-    def _groq(self, model: str, prompt: str, system: str, temperature: float, errors: list[str]):
+    def _groq(self, model: str, prompt: str, system: str, temperature: float, errors: list[str],
+              max_tokens: int = 16000):
         """Groq's OpenAI-compatible API, JSON mode. Returns (result, kind) like _call."""
         name = model.split(":", 1)[1]
         msgs = ([{"role": "system", "content": system}] if system else []) + [
             {"role": "user", "content": prompt + "\n\nReply with valid JSON only."}]
+        body = {"model": name, "messages": msgs, "temperature": min(temperature, 1.0),
+                "response_format": {"type": "json_object"}, "max_completion_tokens": max_tokens}
+        if max_tokens < 16000 and "gpt-oss" in name:
+            body["reasoning_effort"] = "low"          # little answer room: spend it on the answer, not on thinking
         try:
             r = requests.post("https://api.groq.com/openai/v1/chat/completions", timeout=(15, 180),
-                              headers={"Authorization": f"Bearer {self.groq_key}"},
-                              json={"model": name, "messages": msgs, "temperature": min(temperature, 1.0),
-                                    "response_format": {"type": "json_object"}, "max_completion_tokens": 16000})
+                              headers={"Authorization": f"Bearer {self.groq_key}"}, json=body)
         except requests.RequestException as e:
             errors.append(f"{model}: network error {type(e).__name__}")
             return None, "busy"
+        if r.status_code == 413 and max_tokens == 16000:
+            # free plan: prompt + room for the answer must fit the per-minute token limit; ask for a shorter answer room
+            m = re.search(r"Limit\D*(\d+)\D+Requested\D*(\d+)", r.text)
+            if m:
+                limit, requested = int(m.group(1)), int(m.group(2))
+                room = limit - (requested - max_tokens) - 300
+                # 1,500 tokens still fit a review or a caption (a too-short screenplay just fails over to the next model)
+                if room >= 1500:
+                    return self._groq(model, prompt, system, temperature, errors, max_tokens=room)
         if r.status_code == 200:
             try:
                 return _parse_json(r.json()["choices"][0]["message"]["content"]), "ok"
@@ -99,7 +111,10 @@ class LLM:
         if r.status_code in (401, 403):
             log("Gemini", f"{model}: Groq rejected the key — check the GROQ_API_KEY secret; skipping Groq")
             return None, "gone"
-        if r.status_code in (400, 404, 413):          # model retired, or this prompt is too big for its free limits
+        if r.status_code == 404:                     # model retired by Groq: don't ask it again this run
+            log("Gemini", f"{model}: no longer offered by Groq (HTTP 404) — dropped for this run")
+            return None, "gone"
+        if r.status_code in (400, 413):              # this prompt is too big for its free limits
             log("Gemini", f"{model}: not usable for this request (HTTP {r.status_code})")
             return None, "busy"
         log("Gemini", f"{model}: busy (HTTP {r.status_code}) — trying the next model")

@@ -31,19 +31,36 @@ Caption rules (Roman Hinglish, the way Indian Gen Z writes):
 
 Return JSON: {{"line1": "...", "line2": "...", "line3": "...", "hashtags": ["#..."]}}"""
 
-    r = ctx.llm.json(prompt, temperature=0.8, mock={
+    plain = {"line1": f"{series['title']} | {part_tag} (fiction)",
+             "line2": "Tum hote toh kya karte? 👀",
+             "line3": "Poori kahani khatam… agli kahani kal raat 🕯️ Follow karo" if final else ch["cta"],
+             "hashtags": ["#bhootkikahani", "#desihorror", "#raatkikahani", "#horrorseries"]}
+    try:
+        r = _ask(ctx, prompt, ch, series, part_tag)
+    except Exception as e:  # noqa: BLE001 — the reel is finished; a plain caption beats not posting
+        log(NAME, f"the caption writer is unavailable ({str(e).splitlines()[0][:100]}); using a simple caption")
+        r = plain
+    if not isinstance(r, dict) or not str(r.get("line1") or "").strip():
+        r = plain
+    if not isinstance(r.get("hashtags"), list):
+        r["hashtags"] = plain["hashtags"]
+
+    tags: list[str] = []
+    for t in list(c["core_hashtags"]) + [str(x) for x in r.get("hashtags", [])]:
+        t = "#" + t.lstrip("#").replace(" ", "").lower()
+        if len(t) > 1 and t not in tags and t != "#aistory":
+            tags.append(t)
+    tags = tags[: c["max_hashtags"]]
+    caption = (f"{str(r['line1']).strip()}\n\n{str(r.get('line2') or plain['line2']).strip()}\n\n"
+               f"{str(r.get('line3') or ch['cta']).strip()}\n.\n.\n{' '.join(tags)}")
+    log(NAME, f"caption ready ({len(tags)} hashtags)")
+    return caption[:2200]
+
+
+def _ask(ctx: Context, prompt: str, ch: dict, series: dict, part_tag: str) -> dict:
+    return ctx.llm.json(prompt, temperature=0.8, mock={
         "line1": f"{series['title']} | {part_tag} — qabristan ka raaz (fiction)",
         "line2": "Tum hote toh andar jaate ya wapas bhaagte? 👀",
         "line3": ch["cta"],
         "hashtags": ["#qabristan", "#horrorseries", "#raatkikahani", "#desihorror"],
     })
-
-    tags: list[str] = []
-    for t in list(c["core_hashtags"]) + list(r.get("hashtags", [])):
-        t = "#" + t.lstrip("#").replace(" ", "").lower()
-        if len(t) > 1 and t not in tags and t != "#aistory":
-            tags.append(t)
-    tags = tags[: c["max_hashtags"]]
-    caption = f"{r['line1'].strip()}\n\n{r['line2'].strip()}\n\n{(r.get('line3') or ch['cta']).strip()}\n.\n.\n{' '.join(tags)}"
-    log(NAME, f"caption ready ({len(tags)} hashtags)")
-    return caption[:2200]

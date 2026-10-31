@@ -58,8 +58,11 @@ Return JSON:
         "scores": {"hook": 9, "emotion": 9, "tension": 8, "ending": 9, "dialogue": 8, "visuals": 9, "desi_feel": 9},
         "safety_ok": True, "safety_issues": "", "feedback": "Strong."})
 
-    scores = result.get("scores", {})
+    scores = _numbers(result.get("scores"))
     total = round(sum(scores.values()) / max(1, len(scores)) * 10) if scores else 0
+    result["safety_ok"] = _yes(result.get("safety_ok", False))
+    result["feedback"] = str(result.get("feedback") or "")
+    result["safety_issues"] = str(result.get("safety_issues") or "")
     notes = []
     if not ctx.mock:
         if secs < s["min_seconds"] - 15 or secs > s["max_seconds"] + 10:
@@ -106,3 +109,28 @@ Return JSON:
     log(NAME, f"score {total}/100 · safety {'ok' if result.get('safety_ok') else 'FAIL'}"
               f" · {'APPROVED' if result['approved'] else 'needs revision'}")
     return result
+
+
+def _numbers(scores) -> dict:
+    """Scores as numbers 0-10, whatever shape the model sent ("8", "8/10", 8.5, or 85 out of 100)."""
+    import re
+    out = {}
+    if not isinstance(scores, dict):
+        return out
+    for k, v in scores.items():
+        if isinstance(v, dict):
+            v = v.get("score", v.get("value"))
+        m = re.search(r"-?\d+(?:\.\d+)?", str(v)) if v is not None and not isinstance(v, bool) else None
+        if not m:
+            continue
+        x = float(m.group(0))
+        if x > 10:
+            x = x / 10 if x <= 100 else 10
+        out[str(k)] = max(0.0, min(10.0, x))
+    return out
+
+
+def _yes(v) -> bool:
+    if isinstance(v, str):
+        return v.strip().lower() in ("true", "yes", "ok", "1")
+    return bool(v)

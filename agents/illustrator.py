@@ -51,15 +51,16 @@ SOFTEN = {"blood": "dark stain", "bloody": "stained", "corpse": "still figure", 
 HORDE_SOFTEN = {"wet ": "", "soaked": "", "naked": "", "bare ": "", "body": "figure", "chudail": "village legend",
                 "daayan": "village legend", "dayan": "village legend", "ghost": "mysterious figure",
                 "ghostly": "mysterious", "pale woman": "quiet woman in white", "corpse": "still figure",
-                "scream": "call out", "terrified": "worried", "horror": "mystery", "demon": "shadow",
+                "scream": "call out", "screams": "calls out", "screaming": "calling out", "terrified": "worried", "horror": "mystery", "demon": "shadow",
                 "witch": "old woman", "dead": "lost", "death": "loss", "blood": "red stain"}
 
 
 def horde_safe(prompt: str) -> str:
+    """Whole words only ("nobody" must not become "nofigure")."""
     low = prompt
     for a, b in sorted(HORDE_SOFTEN.items(), key=lambda kv: -len(kv[0])):   # longer phrases first
-        low = low.replace(a, b).replace(a.capitalize(), b)
-    return low
+        low = re.sub(r"\b" + re.escape(a.strip()) + r"\b" + (r"\s*" if not b else ""), b, low, flags=re.I)
+    return re.sub(r"\s{2,}", " ", low)
 
 
 class ImageError(RuntimeError):
@@ -85,13 +86,18 @@ def _ref_bytes(path: Path, size: int = 448) -> bytes:
     return buf.getvalue()
 
 
+# The real 31 Oct run hit the 10,000 cap when this estimate said ~6,300: real use is ~1.6x the published price
+# (reference images, retries). Planning with the higher figure keeps every picture of the day affordable.
+CF_REAL_FACTOR = 1.6
+
+
 def neurons(model: str, w: int, h: int, n_refs: int = 0) -> float:
-    """Cloudflare's published price of one image in neurons (10,000 free per day)."""
+    """Estimated neurons for one Cloudflare image (10,000 free per day)."""
     mp = w * h / 1048576
     if "klein-9b" in model:
-        return 1363.64 + max(0.0, mp - 1) * 181.82 + n_refs * 0.2 * 181.82
+        return CF_REAL_FACTOR * (1363.64 + max(0.0, mp - 1) * 181.82 + n_refs * 0.2 * 181.82)
     tiles = math.ceil(w / 512) * math.ceil(h / 512)
-    return tiles * 26.05 + n_refs * 5.37
+    return CF_REAL_FACTOR * (tiles * 26.05 + n_refs * 5.37)
 
 
 class Cloudflare:
@@ -270,6 +276,7 @@ class AIHorde:
     name = "aihorde"
     BASE = "https://aihorde.net/api/v2"
     SIZES = [(576, 1024), (448, 768), (384, 640)]   # smaller sizes if anonymous limits refuse the larger ones
+    BUDGET_MIN = 15.0      # minutes of volunteer-queue time per run; main.py raises it when there are hours to spare
 
     def __init__(self, cfg: dict):
         self.key = os.getenv("AIHORDE_API_KEY", "").strip() or "0000000000"
@@ -297,8 +304,8 @@ class AIHorde:
     def generate(self, prompt: str, w: int, h: int, seed: int, refs: list[Path]) -> bytes:
         if not self.started:
             self.started = time.time()
-        elif time.time() - self.started > 15 * 60:     # never let slow volunteer queues stall a whole run
-            raise ImageError("QUOTA aihorde: 15-minute budget for this run used")
+        elif time.time() - self.started > self.BUDGET_MIN * 60:   # never let slow volunteer queues stall a whole run
+            raise ImageError(f"QUOTA aihorde: {self.BUDGET_MIN:.0f}-minute budget for this run used")
         neg = "text, letters, watermark, logo, signature, deformed, extra fingers, blurry, photo, 3d render"
         last = ""
         for sw, sh in self.SIZES:
@@ -323,7 +330,8 @@ class AIHorde:
             rid = (r.json() or {}).get("id")
             if not rid:
                 raise ImageError(f"no request id: {r.text[:160]}")
-            deadline = time.time() + 300
+            patience = 300 if self.BUDGET_MIN <= 20 else 540
+            deadline = time.time() + patience
             while time.time() < deadline:
                 time.sleep(6)
                 try:
@@ -344,7 +352,7 @@ class AIHorde:
                 requests.delete(f"{self.BASE}/generate/status/{rid}", headers=self.head, timeout=20)
             except requests.RequestException:
                 pass
-            raise ImageError("aihorde queue too slow (5 min)")
+            raise ImageError(f"aihorde queue too slow ({patience // 60} min)")
         raise ImageError(f"aihorde refused every size: {last}")
 
 
@@ -489,6 +497,7 @@ class Studio:
         self.used: set[str] = set()
         self.dead: set[str] = set()
         self.first = first                 # optional GPU picture provider (agents/gpu.py), tried first
+        self.safety_streak: dict[str, int] = {}
         self.neurons = 0.0
         self.hq_allowance = 0.0          # neurons main.py lets the high-quality model spend this run
         self.hq_count = 0
@@ -532,8 +541,17 @@ class Studio:
         self.hq_allowance = max(0.0, left - need) if self.hq else 0.0
         log(NAME, f"Cloudflare today: ~{used_today:.0f} already used, ~{left:.0f} usable; {n_images} pictures need "
                   f"~{n_images * per:.0f}; {self.hq_allowance:.0f} left for high-quality drawings "
-                  f"(~{int(self.hq_allowance // 1460)})")
+                  f"(~{int(self.hq_allowance // neurons(self.hq.model, v['width'], v['height'], 2)) if self.hq else 0})")
         return affordable
+
+    def can_use_refs(self) -> bool:
+        """Is any provider left that draws from character portraits (Cloudflare, Nano Banana, GPU)?"""
+        names = {p.name for p in self.base} | ({self.hq.name} if self.hq else set())
+        if self.premium and self.premium.ready:
+            names.add("gemini")
+        if self.first is not None:
+            names.add(self.first.name)
+        return bool(names & {"cloudflare", "cloudflare_hq", "gemini", "modal", "mock"} - self.dead)
 
     def can_hq(self, w: int, h: int) -> bool:
         return bool((self.hq and self.hq.name not in self.dead and
@@ -552,7 +570,9 @@ class Studio:
         return [p for p in order if p.name not in self.dead]
 
     def draw(self, prompt: str, w: int, h: int, seed: int, refs: list[Path], dest: Path,
-             premium: bool = False) -> None:
+             premium: bool = False, scenery: str = "") -> None:
+        """`scenery`: a people-free picture of the place, the last try when AI Horde's filter blanks a picture
+        (its filter reacts to people in horror scenes; an empty moonlit lane still tells the story)."""
         errors = []
         order = self._order(premium, w, h)
         for p in order:
@@ -562,6 +582,8 @@ class Studio:
             for attempt in range(3):
                 try:
                     pr = prompt if attempt == 0 else _soften(prompt)
+                    if attempt == 2 and p.name == "aihorde" and scenery:
+                        pr = scenery
                     rf = use_refs if attempt < 2 else []   # last try: without reference images
                     dest.write_bytes(p.generate(pr, w, h, seed + attempt * 7919, rf))
                     self.used.add(p.name)
@@ -581,14 +603,23 @@ class Studio:
                     if msg.startswith("SAFETY"):
                         continue  # retry with softened wording / no refs
                     break
-            fails = len([x for x in errors if x.startswith(p.name + ":") and "BUSY" not in x])
+            # a censored picture says nothing about the service being down: only real failures count, and
+            # censorship only switches the backup off after many pictures in a row
+            fails = len([x for x in errors if x.startswith(p.name + ":") and "BUSY" not in x and "SAFETY" not in x])
+            if errors and errors[-1].startswith(p.name + ": SAFETY"):
+                self.safety_streak[p.name] = self.safety_streak.get(p.name, 0) + 1
+                if self.safety_streak[p.name] >= 6:
+                    fails = 99
+            else:
+                self.safety_streak[p.name] = 0
             if "QUOTA" in errors[-1] and p.name.startswith("cloudflare"):
                 # both Cloudflare models share one daily allowance
                 self.quota_hit = True
                 for q in ("cloudflare", "cloudflare_hq"):
                     self.dead.add(q)
                 log(NAME, f"Cloudflare daily allowance used up; using the next provider")
-            elif "QUOTA" in errors[-1] or "rejected the token" in errors[-1] or fails >= 3 or \
+            elif "QUOTA" in errors[-1] or "rejected the token" in errors[-1] or \
+                    fails >= (5 if p.name == "aihorde" and AIHorde.BUDGET_MIN > 20 else 3) or \
                     (p.name in ("cloudflare_hq", "modal") and fails >= 1):
                 if p.name not in self.dead:
                     log(NAME, f"{p.name} unavailable ({errors[-1][:150]}); using the next provider")
@@ -607,6 +638,10 @@ def character_refs(ctx: Context, studio: Studio, series: dict, script: dict) -> 
         p = ROOT / saved[c["id"]] if c["id"] in saved else None
         if p and p.exists():
             refs[c["id"]] = p
+            continue
+        if not studio.can_use_refs():
+            log(NAME, f"no portrait for {c['name']}: the backup picture service can't use portraits anyway "
+                      "(characters are kept alike by their descriptions)")
             continue
         dest = out_dir / f"{c['id']}.png"
         seed = random.randint(1, 2**31 - 1)
@@ -687,7 +722,11 @@ def _draw_image(ctx: Context, studio: Studio, im: dict, chars: dict, refs: dict[
     v = ctx.cfg["visuals"]
     ref_ids = [cid for cid in im["characters"] if cid in refs][:4]
     prompt = shot_prompt(ctx, im, chars, ref_ids) + (f". {extra}" if extra else "")
-    studio.draw(prompt, v["width"], v["height"], seed, [refs[c] for c in ref_ids], dest, premium=premium)
+    scenery = shot_prompt(ctx, {"image": "an empty, quiet view of this place at night, one glowing lantern, low mist, "
+                                         "nobody in sight", "framing": "establishing", "characters": [],
+                                "night": im.get("night", True)}, {}, [])
+    studio.draw(prompt, v["width"], v["height"], seed, [refs[c] for c in ref_ids], dest, premium=premium,
+                scenery=scenery)
 
 
 # ── quality inspector ───────────────────────────────────────────────────

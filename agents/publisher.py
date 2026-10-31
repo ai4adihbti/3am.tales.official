@@ -180,11 +180,31 @@ def _serves_mp4(url: str, size: int) -> str:
     return ""
 
 
+def _new_container(graph: str, user_id: str, token: str, url: str, caption: str, extra: dict) -> requests.Response:
+    for attempt in range(3):
+        try:
+            r = requests.post(f"{graph}/{user_id}/media", data={
+                "media_type": "REELS", "video_url": url, "caption": caption,
+                "share_to_feed": "true", "access_token": token, **extra}, timeout=120)
+        except requests.RequestException as e:
+            if attempt == 2:
+                raise PublishError(f"create container: network {type(e).__name__}")
+            time.sleep(30)
+            continue
+        if r.status_code >= 500 and attempt < 2:       # Instagram hiccup: try again in a moment
+            time.sleep(30)
+            continue
+        return r
+    return r
+
+
 def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, caption: str,
                           extra: dict | None = None):
-    """Yields container ids, one per host that works (the caller waits and moves on if processing fails)."""
+    """Yields container ids, one per host that works (the caller waits and moves on if processing fails).
+    The GitHub link (the reliable one) gets a second container if Instagram fails to process the first."""
     errors = []
     size = video.stat().st_size
+    extra = dict(extra or {})
     for host in HOSTS:
         name = host.__name__[6:]
         try:
@@ -199,20 +219,26 @@ def _containers_via_hosts(graph: str, user_id: str, token: str, video: Path, cap
             log(NAME, f"{name}: {problem}; trying the next host")
             continue
         log(NAME, f"video hosted temporarily via {name}")
-        r = requests.post(f"{graph}/{user_id}/media", data={
-            "media_type": "REELS", "video_url": url, "caption": caption,
-            "share_to_feed": "true", "access_token": token, **(extra or {})}, timeout=120)
-        if r.status_code >= 400 and extra and "cover_url" in extra:
-            log(NAME, "Instagram refused the custom cover; posting with an automatic cover instead")
-            extra = {k: v for k, v in extra.items() if k != "cover_url"}
-            r = requests.post(f"{graph}/{user_id}/media", data={
-                "media_type": "REELS", "video_url": url, "caption": caption,
-                "share_to_feed": "true", "access_token": token, **extra}, timeout=120)
-        try:
-            yield name, _check(r, "create container (video_url)")["id"]
-        except PublishError as e:
-            errors.append(f"{name}: Instagram refused: {str(e)[:160]}")
-            log(NAME, f"{name}: Instagram refused the link ({str(e)[:100]})")
+        for attempt in range(2 if name == "github" else 1):
+            if attempt:
+                log(NAME, "asking Instagram to process the video once more (same link)")
+                time.sleep(60)
+            try:
+                r = _new_container(graph, user_id, token, url, caption, extra)
+            except PublishError as e:
+                errors.append(f"{name}: {str(e)[:160]}")
+                break
+            if r.status_code >= 400 and "cover_url" in extra:
+                log(NAME, "Instagram refused the custom cover; posting with an automatic cover instead")
+                extra = {k: v for k, v in extra.items() if k != "cover_url"}
+                r = _new_container(graph, user_id, token, url, caption, extra)
+            try:
+                yield name, _check(r, "create container (video_url)")["id"]
+            except PublishError as e:
+                errors.append(f"{name}: Instagram refused: {str(e)[:160]}")
+                log(NAME, f"{name}: Instagram refused the link ({str(e)[:100]})")
+                break
+            errors.append(f"{name}: Instagram could not process the video")
     raise PublishError("Every upload route failed: " + " | ".join(errors))
 
 
@@ -220,19 +246,114 @@ class ProcessingError(PublishError):
     pass
 
 
+def _status(graph: str, container: str, token: str) -> dict:
+    """The container's status; {} if Instagram didn't answer this time (a hiccup is not a failure)."""
+    try:
+        r = requests.get(f"{graph}/{container}", params={
+            "fields": "status_code,status", "access_token": token}, timeout=30)
+    except requests.RequestException:
+        return {}
+    try:
+        data = r.json()
+    except ValueError:
+        return {}
+    if r.status_code in (400, 401, 403) and isinstance(data, dict) and "error" in data:
+        err = data["error"] if isinstance(data["error"], dict) else {}
+        if err.get("code") == 190 or r.status_code in (401, 403):
+            raise PublishError(f"check status failed: HTTP {r.status_code} {data}")
+    return data if r.status_code == 200 and isinstance(data, dict) else {}
+
+
 def _wait(graph: str, container: str, token: str) -> None:
     deadline = time.time() + 20 * 60
     while time.time() < deadline:
-        r = requests.get(f"{graph}/{container}", params={
-            "fields": "status_code,status", "access_token": token}, timeout=30)
-        data = _check(r, "check status")
+        data = _status(graph, container, token)
         status = data.get("status_code", "")
-        if status == "FINISHED":
+        if status in ("FINISHED", "PUBLISHED"):
             return
         if status in ("ERROR", "EXPIRED"):
             raise ProcessingError(f"Instagram could not process the video: {data}")
         time.sleep(10)
     raise ProcessingError("Timed out waiting for Instagram to process the video")
+
+
+def _latest_media(graph: str, user_id: str, token: str) -> list[dict]:
+    try:
+        r = requests.get(f"{graph}/{user_id}/media", params={
+            "fields": "id,timestamp,media_product_type", "limit": "5", "access_token": token}, timeout=30)
+        data = r.json() if r.status_code == 200 else {}
+    except (requests.RequestException, ValueError):
+        return []
+    items = data.get("data") if isinstance(data, dict) else None
+    return [x for x in items if isinstance(x, dict)] if isinstance(items, list) else []
+
+
+def recent_reel_hours(ctx: Context) -> float | None:
+    """Hours since the newest reel on the Instagram account (None if Instagram can't tell us right now).
+    A second safety net against posting twice, independent of the system's own memory."""
+    token = os.getenv("IG_ACCESS_TOKEN", "")
+    user_id = os.getenv("IG_USER_ID", "")
+    if ctx.mock or not token or not user_id:
+        return None
+    from datetime import datetime, timezone
+    ig = ctx.cfg["instagram"]
+    graph = f"https://{os.getenv('IG_API_HOST') or ig['api_host']}/{ig['api_version']}"
+    best = None
+    for m in _latest_media(graph, user_id, token):
+        if m.get("media_product_type") not in (None, "REELS"):
+            continue
+        try:
+            when = datetime.strptime(str(m.get("timestamp", "")), "%Y-%m-%dT%H:%M:%S%z")
+        except ValueError:
+            continue
+        h = (datetime.now(timezone.utc) - when).total_seconds() / 3600
+        best = h if best is None else min(best, h)
+    return best
+
+
+def newest_media_id(ctx: Context) -> str:
+    try:
+        graph, host, ver, token, user_id = _graph(ctx)
+    except PublishError:
+        return ""
+    newest = _latest_media(graph, user_id, token)
+    return str(newest[0].get("id", "")) if newest else ""
+
+
+def _publish(graph: str, user_id: str, token: str, container: str) -> str:
+    """media_publish, retried. Before a retry it checks whether the first try went through after all,
+    so a slow answer from Instagram never causes a second copy of the reel."""
+    last = ""
+    for attempt in range(4):
+        if attempt:
+            time.sleep(30 * attempt)
+            st = _status(graph, container, token).get("status_code", "")
+            if st == "PUBLISHED":
+                newest = _latest_media(graph, user_id, token)
+                log(NAME, "Instagram had already published it (its first answer was lost)")
+                return newest[0]["id"] if newest and newest[0].get("id") else container
+            if st in ("ERROR", "EXPIRED"):
+                raise ProcessingError(f"publish: the processed video is no longer usable ({st})")
+        try:
+            r = requests.post(f"{graph}/{user_id}/media_publish",
+                              data={"creation_id": container, "access_token": token}, timeout=120)
+        except requests.RequestException as e:
+            last = f"network {type(e).__name__}"
+            log(NAME, f"publish: no answer from Instagram ({last}); checking and retrying")
+            continue
+        try:
+            return _check(r, "publish")["id"]
+        except (PublishError, KeyError) as e:
+            last = str(e)[:200]
+            code = ""
+            try:
+                code = str(r.json().get("error", {}).get("code", ""))
+            except (ValueError, AttributeError):
+                pass
+            if code == "190" or r.status_code in (401, 403):
+                raise PublishError(last)
+            log(NAME, f"publish not accepted yet ({last[:120]}); retrying")
+    raise PublishError(f"publish failed after retries: {last}")
 
 
 def followers(ctx: Context) -> int | None:
@@ -290,7 +411,13 @@ def check_token(ctx: Context) -> tuple[bool, str]:
     except requests.RequestException as e:
         return True, f"couldn't reach Instagram to check the token ({type(e).__name__}); continuing"
     if r.status_code == 200:
-        return True, f"Instagram token OK (@{r.json().get('username', '?')})"
+        try:
+            return True, f"Instagram token OK (@{r.json().get('username', '?')})"
+        except ValueError:
+            return True, "Instagram token OK"
+    if r.status_code >= 500 or r.status_code == 429:
+        # Instagram itself is having a moment: that's not a token problem, so carry on
+        return True, f"Instagram is busy (HTTP {r.status_code}); couldn't check the token, continuing"
     return False, f"Instagram token problem: HTTP {r.status_code} {r.text[:200]}"
 
 
@@ -305,7 +432,7 @@ def _via_hosts(graph: str, user_id: str, token: str, video: Path, caption: str, 
     raise PublishError("no host worked")
 
 
-def publish_reel(ctx: Context, video: Path, caption: str, cover: Path | None = None) -> dict:
+def _graph(ctx: Context) -> tuple[str, str, str, str, str]:
     ig = ctx.cfg["instagram"]
     token = os.getenv("IG_ACCESS_TOKEN", "")
     user_id = os.getenv("IG_USER_ID", "")
@@ -313,7 +440,58 @@ def publish_reel(ctx: Context, video: Path, caption: str, cover: Path | None = N
         raise PublishError("IG_ACCESS_TOKEN and IG_USER_ID must be set")
     host = os.getenv("IG_API_HOST") or ig["api_host"]
     ver = ig["api_version"]
-    graph = f"https://{host}/{ver}"
+    return f"https://{host}/{ver}", host, ver, token, user_id
+
+
+def prepare_reel(ctx: Context, video: Path, caption: str, cover: Path | None = None) -> str:
+    """Uploads the reel and lets Instagram process it WITHOUT publishing (used hours before the posting time,
+    so a processing problem can be fixed in time). Returns the ready container id."""
+    graph, host, ver, token, user_id = _graph(ctx)
+    extra = {}
+    if cover and cover.exists():
+        cover_url = _host_cover(cover)
+        if cover_url:
+            extra["cover_url"] = cover_url
+            log(NAME, "custom cover attached")
+        else:
+            extra["thumb_offset"] = str(int(ctx.notes.get("cover_offset_ms", 1500)))
+    try:
+        container = _via_hosts(graph, user_id, token, video, caption, extra)
+    except PublishError as e:
+        if not extra or "refused" not in str(e):
+            raise
+        log(NAME, f"posting with the custom cover failed ({str(e)[:120]}); retrying without it")
+        container = _via_hosts(graph, user_id, token, video, caption, {})
+    log(NAME, f"Instagram has processed the video (container {container}); it will be published at the posting time")
+    return container
+
+
+def publish_prepared(ctx: Context, container: str) -> dict:
+    """Publishes a container made by prepare_reel (Instagram keeps it for 24 h)."""
+    graph, host, ver, token, user_id = _graph(ctx)
+    try:
+        st = _status(graph, container, token).get("status_code", "")
+        if st in ("ERROR", "EXPIRED"):
+            raise PublishError(f"the prepared video expired ({st})")
+        media_id = _publish(graph, user_id, token, container)
+    finally:
+        GITHUB.cleanup()
+    return _done(graph, token, media_id)
+
+
+def _done(graph: str, token: str, media_id: str) -> dict:
+    permalink = ""
+    try:
+        r = requests.get(f"{graph}/{media_id}", params={"fields": "permalink", "access_token": token}, timeout=30)
+        permalink = r.json().get("permalink", "")
+    except (requests.RequestException, ValueError, AttributeError):
+        pass
+    log(NAME, f"PUBLISHED ✓ {permalink or media_id}")
+    return {"media_id": media_id, "permalink": permalink}
+
+
+def publish_reel(ctx: Context, video: Path, caption: str, cover: Path | None = None) -> dict:
+    graph, host, ver, token, user_id = _graph(ctx)
 
     extra = {}
     if cover and cover.exists():
@@ -343,17 +521,7 @@ def publish_reel(ctx: Context, video: Path, caption: str, cover: Path | None = N
                     raise
                 log(NAME, f"posting with the custom cover failed ({str(e)[:120]}); retrying without it")
                 container = _via_hosts(graph, user_id, token, video, caption, {})
-        r = requests.post(f"{graph}/{user_id}/media_publish",
-                          data={"creation_id": container, "access_token": token}, timeout=60)
-        media_id = _check(r, "publish")["id"]
+        media_id = _publish(graph, user_id, token, container)
     finally:
         GITHUB.cleanup()                     # the temporary release is removed either way
-
-    permalink = ""
-    try:
-        r = requests.get(f"{graph}/{media_id}", params={"fields": "permalink", "access_token": token}, timeout=30)
-        permalink = r.json().get("permalink", "")
-    except requests.RequestException:
-        pass
-    log(NAME, f"PUBLISHED ✓ {permalink or media_id}")
-    return {"media_id": media_id, "permalink": permalink}
+    return _done(graph, token, media_id)

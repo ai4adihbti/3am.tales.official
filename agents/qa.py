@@ -55,8 +55,13 @@ def check(ctx: Context, reel: Path, script: dict, total: float) -> dict:
         errors.append(f"video size is not {v['width']}x{v['height']}")
     if not auds:
         errors.append("the reel has no audio")
-    if not (q.get("min_seconds", 60) <= dur <= q.get("max_seconds", 240)):
-        errors.append(f"length {dur:.0f}s is outside {q.get('min_seconds', 60)}-{q.get('max_seconds', 240)}s")
+    if dur < q.get("min_seconds", 60):
+        errors.append(f"length {dur:.0f}s is shorter than {q.get('min_seconds', 60)}s")
+    elif dur > 600:
+        errors.append(f"length {dur:.0f}s is far too long")
+    elif dur > q.get("max_seconds", 240):
+        # longer than planned, but still a fine Instagram reel: post it rather than lose the day
+        warnings.append(f"length {dur:.0f}s is over the planned {q.get('max_seconds', 240)}s")
 
     lufs, black, silences = _analyse(reel)
     if lufs is None:
@@ -74,8 +79,13 @@ def check(ctx: Context, reel: Path, script: dict, total: float) -> dict:
 
     images = script.get("images") or []
     failed = ctx.notes.get("images_failed", [])
-    if images and len(failed) / len(images) > q.get("max_reused_image_ratio", 0.35):
-        errors.append(f"{len(failed)} of {len(images)} illustrations failed to draw")
+    drawn = len(images) - len(failed)
+    # a reel with fewer, reused pictures (each with new camera moves) still beats no reel; only refuse when there
+    # are too few real pictures to tell the story
+    if images and drawn < min(len(images), int(q.get("min_drawn_images", 5))):
+        errors.append(f"only {drawn} of {len(images)} illustrations could be drawn")
+    elif images and len(failed) / len(images) > q.get("max_reused_image_ratio", 0.35):
+        warnings.append(f"{len(failed)} of {len(images)} illustrations failed to draw and were replaced by neighbours")
     elif failed:
         warnings.append(f"{len(failed)} illustration(s) failed and were replaced by neighbours")
     if ctx.notes.get("image_providers") == ["pollinations"]:

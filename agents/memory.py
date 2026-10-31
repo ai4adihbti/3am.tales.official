@@ -8,12 +8,13 @@ GitHub Actions commits state/ back to the repo after every successful run.
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .common import ROOT
+from .common import ROOT, log
 
 STATE_DIR = ROOT / "state"
 STATE_FILE = STATE_DIR / "history.json"
@@ -22,7 +23,7 @@ STATE_FILE = STATE_DIR / "history.json"
 class Memory:
     def __init__(self, path: Path = STATE_FILE):
         self.path = path
-        self.data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        self.data = self._load(path)
         self.data.setdefault("posts", [])
         self.data.setdefault("used_video_ids", [])
         self.data.setdefault("learnings", "")
@@ -31,6 +32,24 @@ class Memory:
         self.data.setdefault("series_done", [])
         self.data.setdefault("spend", {"month": "", "usd": 0.0})
         self.data.setdefault("story_log", [])      # region/setting/entity/hero of every story, for diversity
+
+    @staticmethod
+    def _load(path: Path) -> dict:
+        """Reads the memory file; if it is damaged, the last good copy (history.bak.json) is used instead,
+        so one broken save can never stop every later run."""
+        for p in (path, path.with_name(path.stem + ".bak.json")):
+            if not p.exists():
+                continue
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+                if isinstance(data, dict):
+                    if p != path:
+                        log("Memory", f"the memory file was damaged; using the last good copy ({p.name})")
+                    return data
+            except (ValueError, OSError):
+                pass
+            log("Memory", f"{p.name} could not be read (damaged)")
+        return {}
 
     # ── reads ────────────────────────────────────────────────
     @property
@@ -112,5 +131,15 @@ class Memory:
         self.data["used_video_ids"] = merged[-keep:]
 
     def save(self) -> None:
+        """Atomic save (never a half-written file) + a copy of the previous good version."""
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(json.dumps(self.data, indent=2, ensure_ascii=False), encoding="utf-8")
+        text = json.dumps(self.data, indent=2, ensure_ascii=False)
+        tmp = self.path.with_name(self.path.name + ".tmp")
+        tmp.write_text(text, encoding="utf-8")
+        if self.path.exists():
+            try:
+                json.loads(self.path.read_text(encoding="utf-8"))
+                shutil.copy(self.path, self.path.with_name(self.path.stem + ".bak.json"))
+            except (ValueError, OSError):
+                pass
+        os.replace(tmp, self.path)

@@ -229,15 +229,16 @@ def _norm_line(ln, ids: set) -> dict | None:
     if not isinstance(ln, dict):
         return None
     sp = str(ln.get("speaker", "")).upper()
-    hi = (ln.get("hi") or "").strip()
+    hi = str(ln.get("hi") or "").strip()
     if (sp not in ids and sp != "N") or not hi:
         return None
-    return {"speaker": sp, "hi": hi, "roman": (ln.get("roman") or "").strip() or strip_tags(hi),
-            "style": (ln.get("style") or "").strip()[:60]}
+    return {"speaker": sp, "hi": hi, "roman": str(ln.get("roman") or "").strip() or strip_tags(hi),
+            "style": str(ln.get("style") or "").strip()[:60]}
 
 
 def _clean(script: dict, series: dict, max_images: int = 40) -> dict:
     chars = series.get("characters") or script.get("characters") or []
+    chars = [c for c in chars if isinstance(c, dict)] if isinstance(chars, list) else []
     seen = []
     for i, c in enumerate(chars[:4]):
         cid = str(c.get("id", ""))
@@ -256,19 +257,24 @@ def _clean(script: dict, series: dict, max_images: int = 40) -> dict:
     ids = {c["id"] for c in chars}
 
     images = {}
-    for k, im in enumerate(script.get("images") or []):
+    for k, im in enumerate(script.get("images") if isinstance(script.get("images"), list) else []):
+        if not isinstance(im, dict):
+            continue
         iid = str(im.get("id") or f"I{k + 1}")
-        desc = (im.get("image") or "").strip()
+        desc = str(im.get("image") or "").strip()
         if not desc or iid in images:
             continue
         images[iid] = {"id": iid, "image": desc,
                        "framing": im.get("framing") if im.get("framing") in FRAMINGS else "medium",
-                       "characters": [c for c in (im.get("characters") or []) if c in ids][:3],
+                       "characters": [c for c in (im.get("characters") if isinstance(im.get("characters"), list)
+                                                  else []) if c in ids][:3],
                        "night": bool(im.get("night", True))}
 
     shots = []
-    if script.get("cuts"):
+    if isinstance(script.get("cuts"), list) and script["cuts"]:
         for cut in script["cuts"]:
+            if not isinstance(cut, dict):
+                continue
             im = images.get(str(cut.get("image", "")))
             if not im:
                 continue
@@ -278,9 +284,9 @@ def _clean(script: dict, series: dict, max_images: int = 40) -> dict:
                           "motion": cut.get("motion") if cut.get("motion") in MOTIONS else "zoom_in",
                           "mood": cut.get("mood") if cut.get("mood") in MOODS else "uneasy",
                           "lines": [ln] if ln else []})
-    elif script.get("shots"):  # already normalised (e.g. a revision of our own output)
+    elif isinstance(script.get("shots"), list):  # already normalised (e.g. a revision of our own output)
         for sh in script["shots"]:
-            if sh.get("image_id") and sh.get("image"):
+            if isinstance(sh, dict) and sh.get("image_id") and sh.get("image"):
                 sh["lines"] = [x for x in (_norm_line(l, ids) for l in sh.get("lines") or []) if x]
                 shots.append(sh)
                 images.setdefault(sh["image_id"], {k: sh[k] for k in ("image", "framing", "characters", "night")}
