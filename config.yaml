@@ -65,7 +65,7 @@ story:
   max_reel_seconds: 175     # hard cap for the finished reel (YouTube Shorts must be 3:00 or less)
   min_cuts: 40              # like the reference: slow 6-8 s holds on wide shots, fast 1-2 s cuts at the peaks
   max_cuts: 56
-  max_images: 18            # unique illustrations per part (reused like the reference); fewer, better pictures
+  max_images: 24            # unique illustrations per part (more pictures = fewer repeats; ~170 neurons each)
   parts_per_series: [1, 3]  # the Researcher decides how many daily parts each story needs (1 = a single reel)
   min_critic_score: 75
   max_revisions: 2
@@ -92,7 +92,8 @@ visuals:
     Indian skin tones, beautiful faces, emotions clearly readable, fabric folds and embroidery drawn in
     detail, richly painted village backgrounds with textured mud walls, tiled roofs, trees and fields,
     cinematic composition with depth, crisp sharp lines, vibrant saturated colours, masterpiece quality,
-    no text, no letters, no captions, no speech bubbles, no watermark, no logo
+    one single continuous scene filling the whole frame, no comic panels, no split screen, no collage, no inset
+    pictures, no borders, no text, no letters, no captions, no speech bubbles, no watermark, no logo
   night_palette: >-
     deep cobalt-blue moonlit night, a huge glowing full moon with silver-edged clouds, soft moonbeams and
     low drifting ground mist, cool blue moonlight rim light on hair and faces, contrasted with warm
@@ -164,19 +165,25 @@ music:
   enabled: true                          # original score generated for every reel
   volume: 0.42                           # the reference keeps a clearly audible score under the storyteller
   duck_ratio: 3                          # how much the music dips under the voice (higher = more)
+  bass_db: -4                            # trims the score's low end so it doesn't muddy the voice
 
 sound:
   # Real sound effects from Freesound (CC0 only). Used only if the FREESOUND_API_KEY secret is set.
   enabled: true
-  ambience_db: -6      # ambience bed level relative to the music (lower = quieter)
-  effects_db: 2        # scene effects level relative to the music
+  ambience_db: -5      # ambience bed level relative to the music (lower = quieter)
+  effects_db: 5        # scene effects level relative to the music (the old +2 was barely audible)
 
 video:
   width: 1080
   height: 1920
   fps: 30
-  lead_in_seconds: 0.5
-  tail_seconds: 4.0                      # room for the end card
+  lead_in_seconds: 0.15                  # the voice starts almost at once (cold open)
+  tail_seconds: 3.0                      # end card: short, readable, then the reel loops
+  max_shot_seconds: 6.0                  # longer lines get extra cuts (new angles) at the storyteller's breaths
+  hook_text: true                        # big on-screen hook for the first 3 s (most people scroll muted)
+  hook_text_seconds: 3.0
+  hook_text_size: 92
+  audio_bitrate: "128k"                  # Instagram's Reels spec says 128 kbps: do not raise
   crossfade: 0.12                        # near-hard cuts, like the references
   grade: "eq=contrast=1.04:saturation=1.04"
   grain: false
@@ -184,6 +191,7 @@ video:
   subtitle_font: "DejaVu Sans"
   subtitle_size: 68
   hook_color: "#FF3B3B"
+  end_sub_color: "#FFD34D"
   speaker_colors: ["#FFFFFF", "#FFD34D", "#9BE7FF", "#FFB4A2", "#C8F7C5"]
   end_card_font: "DejaVu Serif"
 
@@ -211,6 +219,16 @@ youtube:
   category_id: "24"            # 24 = Entertainment
   contains_synthetic_media: false   # YouTube's "altered or realistic synthetic content" label (needed only for realistic-looking content)
   tags: ["hindi horror story", "bhoot ki kahani", "horror story in hindi", "hindi kahani", "horror shorts", "3am tales"]
+
+schedule:
+  # GitHub starts scheduled runs late (often hours), so the workflow triggers several times in the afternoon.
+  # The first "auto" run that starts within start_window_hours of post_time makes the reel at once, then WAITS and
+  # posts at exactly post_time (India time). Later triggers see the post and skip. Runs that start too early skip too.
+  post_time_ist: "21:17"
+  start_window_hours: 5          # GitHub stops any job after 6 h, so a run may not start earlier than this
+  # "auto" skips only if today's slot is already done (a reel went out after 4:17 PM today); a manual post
+  # earlier in the day does not stop the 9:17 PM post
+  post_mode_min_gap_hours: 3     # even mode "post" won't post twice within 3 h (protects against a double click)
 
 instagram:
   api_host: "graph.instagram.com"

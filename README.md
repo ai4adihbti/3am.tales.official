@@ -211,6 +211,7 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
 | `IG_API_HOST`, `GEMINI_MODEL`, `MODAL_TOKEN_ID`, `MODAL_TOKEN_SECRET`, `POLLINATIONS_TOKEN` | not needed | advanced / unused |
 
 ## v7.1.9 — post once a day, on time
+*(Replaced by "On-time posting (v7.1.13)" at the end of this file: no outside timer is needed any more.)*
 
 GitHub often starts scheduled runs hours late (your runs started around 2 AM).
 - Scheduled runs now use mode **auto**: they post only if nothing has been posted yet that day (IST), so a late
@@ -224,3 +225,54 @@ GitHub often starts scheduled runs hours late (your runs started around 2 AM).
 - The Analyst reads view counts again (a v7.1.8 edit had disabled it) — the system learns from your views.
 - A Gemini model that fails to answer in time is tried last for the rest of the run (saves ~3 min per call).
 - If a run crashes, its memory (today's picture-allowance use etc.) is still saved.
+
+## v7.1.11 — once-a-day guard by hours
+"auto" runs (GitHub's schedule or a timer) now skip if a reel went out less than 18 hours ago (12 h since v7.1.13)
+(`schedule.min_hours_between_posts`), so a late-night GitHub run after a manual 9 PM post never posts twice.
+
+## v7.1.12 — fixes from the 31 Oct 1:49 AM run
+- If no picture can be drawn, the run stops with a clear message (and nothing is posted) instead of crashing.
+- Today's Cloudflare use is remembered even when a run stops early, so the next run plans correctly.
+- AI Horde (backup pictures) gets calmer wording, because its automatic safety filter blanked horror pictures.
+
+## v7.1.13 — a strong first 5 seconds, faster cutting, cleaner pictures, better sound
+**The first 5 seconds**
+- Every reel opens with a *cold open*: a flash-forward to the scariest moment of the part (an extreme close-up, one
+  shocking line of at most 10 words), then "but it all began…", and only then the calm village shot. If the writer
+  still opens on calm scenery, the system moves the scariest short line to the front by itself.
+- The first frame lands with a white flash, a camera shake and a deep boom (plus a real horror sting from Freesound).
+  No fade-in from black: the picture and the voice start at once (0.15 s).
+- A big on-screen hook line for the first 3 seconds, for people scrolling with the sound off.
+- The last line echoes the cold open, so the reel loops when Instagram replays it.
+
+**Cuts and sync**
+- No picture stays longer than ~6 s: long narration lines get extra cuts at the storyteller's breaths, each a new
+  angle on the drawing (a punch-in on the face, then a different camera move).
+- Up to 24 different pictures per part (was 18); the motif shot comes back at most twice, nothing more than 3 times,
+  never twice in a row. The Critic checks the cold open, line length and repeats.
+
+**Pictures**
+- Fixed "setting" for the whole series (region, houses, trees) added to every picture, so the story never jumps from a
+  plains village to a pine forest; the picture check rejects things the story doesn't have (cars, hills, modern items).
+- Props that come out as gibberish text (signboards, posters, letters, newspapers) are removed from picture prompts;
+  comic-panel / collage pictures are forbidden and rejected by the picture check.
+
+**Sound**
+- Voice: clearer and crisper (less 300 Hz mud, more presence at 3-6 kHz, a de-esser).
+- Music: low end trimmed under the voice, wider stereo; sound effects +3 dB; ambience starts at once.
+- Master: -14 LUFS with 2 dB of peak headroom and a limiter (no clipping after Instagram's re-encode); (AAC stays 128 kbps: Instagram's spec).
+
+**End card**: 3 s (was 4), big bold text in the middle of the screen, above Instagram's caption area.
+
+### On-time posting (v7.1.13)
+GitHub starts scheduled runs late (often by hours) and sometimes skips one, so the workflow now triggers 7 times
+between 1:17 PM and 9:17 PM IST. **The first run that starts after 4:17 PM makes the reel immediately, waits, and
+posts at exactly 9:17 PM IST** (YouTube and Instagram). Every other run skips in about 2 minutes:
+- too early (before 4:17 PM; GitHub stops any job after 6 h, so a run can't wait longer than that),
+- or today's reel already went out (any post after 4:17 PM today, manual ones included). A manual post earlier in
+  the day does not stop the 9:17 PM post.
+If a run fails, the next trigger automatically tries again. If GitHub is so late that no run starts before 9:17 PM,
+the reel is posted as soon as it is ready, until midnight; it never posts in the middle of the night.
+While one run is waiting for 9:17 PM, GitHub keeps only one later trigger queued and marks the others "cancelled"
+(grey): that is normal. Change the time in `config.yaml` → `schedule.post_time_ist`.
+Manual runs: mode `post` posts at once (but never within 3 h of another post); `auto` behaves like the schedule.

@@ -71,6 +71,72 @@ def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict
     raise RuntimeError("No script passed the Critic today — nothing will be posted.")
 
 
+IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def _post_target(cfg: dict, now_utc: datetime) -> datetime:
+    """Today's posting time (India time) as an aware datetime."""
+    hh, mm = (int(x) for x in str(cfg.get("schedule", {}).get("post_time_ist", "21:17")).split(":"))
+    return now_utc.astimezone(IST).replace(hour=hh, minute=mm, second=0, microsecond=0)
+
+
+def _hours_since_last_post(memory: Memory, now_utc: datetime) -> float | None:
+    for p in reversed(memory.posts):
+        if not p.get("media_id"):
+            continue
+        try:
+            when = datetime.fromisoformat(p.get("posted_at", ""))
+        except ValueError:
+            continue
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=timezone.utc)
+        return (now_utc - when).total_seconds() / 3600
+    return None
+
+
+def schedule_check(cfg: dict, memory: Memory, mode: str, now_utc: datetime) -> tuple[bool, str]:
+    """Should this run make a reel? (auto = the daily schedule; post = a manual 'post now')"""
+    sc = cfg.get("schedule", {})
+    since = _hours_since_last_post(memory, now_utc)
+    if mode == "post":
+        gap = float(sc.get("post_mode_min_gap_hours", 3))
+        if since is not None and since < gap:
+            return False, (f"a reel went out only {since * 60:.0f} min ago; not posting another one so soon "
+                           f"(wait {gap:.0f} h between posts, or use mode 'dry_run' to just make one)")
+        return True, "mode 'post': making and posting a reel now"
+    target = _post_target(cfg, now_utc)
+    window = float(sc.get("start_window_hours", 5))
+    now = now_utc.astimezone(IST)
+    slot_start = target - timedelta(hours=window)
+    if since is not None and now - timedelta(hours=since) >= slot_start:
+        return False, f"today's reel already went out {since:.1f} h ago; nothing to do"
+    if now < target - timedelta(hours=window):
+        return False, (f"too early ({now:%H:%M} IST): a later scheduled run will make today's reel and post it at "
+                       f"{target:%H:%M} IST")
+    if now <= target:
+        return True, f"making today's reel now; it will be posted at {target:%H:%M} IST"
+    return True, f"GitHub started this run late ({now:%H:%M} IST): making the reel and posting it as soon as it's ready"
+
+
+def wait_for_post_time(cfg: dict, mode: str) -> None:
+    """auto mode: the reel is ready early; hold it until the posting time."""
+    if mode != "auto":
+        return
+    target = _post_target(cfg, datetime.now(timezone.utc))
+    left = (target - datetime.now(IST)).total_seconds()
+    if left <= 0:
+        return
+    log("Orchestrator", f"reel ready; waiting {left / 60:.0f} min to post at {target:%H:%M} IST")
+    while True:
+        left = (target - datetime.now(IST)).total_seconds()
+        if left <= 0:
+            break
+        time.sleep(min(left, 1800))
+        if left > 1800:
+            log("Orchestrator", f"… {max(0.0, left - 1800) / 60:.0f} min to go")
+    log("Orchestrator", f"it's {datetime.now(IST):%H:%M} IST — posting")
+
+
 def _trim_for_preview(script: dict, cuts: int = 12) -> dict:
     """Preview mode: keep the first cuts only (about 25-30 s) to check look and sound cheaply."""
     shots = script["shots"][:cuts]
@@ -101,7 +167,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.10 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.13 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -111,24 +177,15 @@ def main() -> int:
     if not args.mock:
         import atexit
         atexit.register(memory.save)     # even if the run crashes, remember what it used today
-    if mode == "auto" and not args.mock:
-        # timer / schedule runs: post at most once per day (IST), so two triggers never post twice
-        ist = timezone(timedelta(hours=5, minutes=30))
-        today = datetime.now(ist).date()
-        for p in reversed(memory.posts):
-            try:
-                when = datetime.fromisoformat(p.get("posted_at", "")).astimezone(ist).date()
-            except ValueError:
-                continue
-            if when == today and p.get("media_id"):
-                log("Orchestrator", f"already posted today (\"{p.get('title', '')}\"); nothing to do. "
-                                    "Use mode 'post' to post another reel anyway.")
-                shutil.rmtree(work, ignore_errors=True)
-                return 0
-            break
+    if mode in ("auto", "post") and not args.mock:
+        go, why = schedule_check(cfg, memory, mode, datetime.now(timezone.utc))
+        log("Orchestrator", why)
+        if not go:
+            shutil.rmtree(work, ignore_errors=True)
+            return 0
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.1.10")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.1.13")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -192,6 +249,8 @@ def main() -> int:
         total = round(v["lead_in_seconds"] + voice_len + v["tail_seconds"], 3)
         log("Orchestrator", f"voice sped up {100 * (speed - 1):.1f}% so the reel is {total:.0f}s "
                             f"({'a YouTube Short' if total <= 180 else 'still over 3:00 — YouTube will treat it as a normal video'})")
+    # no picture longer than ~6 s: long lines get extra cuts at the storyteller's breaths
+    shot_starts = editor.split_long_shots(ctx, script, shot_starts, voice_wav, voice_len)
     if total > 600:
         raise RuntimeError(f"Reel came out at {total:.0f}s, which is far too long; not posting it.")
 
@@ -222,11 +281,27 @@ def main() -> int:
         merged = illustrator.limit_images(script, affordable)
         log("Orchestrator", f"today's allowance pays for {affordable} pictures: {merged} pictures merged into "
                             "earlier ones (reused, like the reference reels)")
+    used_before = float(ledger["used"])
+
+    def _record_cloudflare_use() -> None:
+        ledger["used"] = 10000.0 if studio.quota_hit else round(used_before + studio.neurons)
+    if not args.mock:
+        import atexit
+        atexit.register(_record_cloudflare_use)   # runs before the memory save, even after a crash
     refs = illustrator.character_refs(ctx, studio, series, script)
     heroes = illustrator.hero_images(ctx, script, durations)
-    image_paths = illustrator.illustrate(ctx, studio, script, refs, heroes)
+    try:
+        image_paths = illustrator.illustrate(ctx, studio, script, refs, heroes)
+    except illustrator.ImageError as e:
+        _record_cloudflare_use()
+        log("Orchestrator", f"STOPPED: no pictures could be drawn ({str(e)[:160]}). "
+                            + ("Today's free Cloudflare picture allowance is used up; it resets at 5:30 AM IST. "
+                               if studio.quota_hit else "") + "Nothing was posted.")
+        memory.save()
+        shutil.rmtree(work, ignore_errors=True)
+        return 7
     illustrator.quality_check(ctx, studio, script, refs, image_paths)
-    ledger["used"] = 10000.0 if studio.quota_hit else round(ledger["used"] + studio.neurons)
+    _record_cloudflare_use()
     image_paths = upscaler.upscale(ctx, image_paths)
     motion = engine.motion_clips(script["shots"], image_paths, durations)
     clips = animator.animate(ctx, image_paths, script["shots"], durations, motion)
@@ -246,7 +321,8 @@ def main() -> int:
         ("To Be Continued", f"Follow For Part {series['part'] + 1}")
     overlay = work / "overlay.ass"
     speakers = ["N"] + [c["id"] for c in script["characters"]]
-    editor.build_overlay(ctx, timeline, speakers, v["lead_in_seconds"], total, end_card, overlay)
+    editor.build_overlay(ctx, timeline, speakers, v["lead_in_seconds"], total, end_card, overlay,
+                         hook_text=script.get("hook_text", ""))
     reel = out_dir / f"reel-{stamp}.mp4"
     editor.render(ctx, clips, durations, voice_wav, score, overlay, total, reel)
 
@@ -304,6 +380,7 @@ def main() -> int:
         shutil.rmtree(work, ignore_errors=True)
         return 3
     else:
+        wait_for_post_time(cfg, mode)
         if cfg.get("youtube", {}).get("enabled", True) and youtube.ready():
             try:
                 post.update(youtube.upload(ctx, reel, series, cap))
