@@ -55,6 +55,8 @@ AMBIENCE = [
     (r"village|gaon|gaanv|field|khet|baoli|haveli|haweli", "night crickets village ambience"),
 ]
 DEFAULT_AMBIENCE = "night crickets ambience"
+OPENING_STING = "horror impact hit"
+SCARE_FX = "horror whoosh"
 
 
 class Freesound:
@@ -123,14 +125,23 @@ def plan(script: dict) -> tuple[str, list[tuple[int, str]]]:
     everything = " ".join(sh.get("image", "") for sh in shots).lower()
     amb = next((q for pat, q in AMBIENCE if re.search(pat, everything)), DEFAULT_AMBIENCE)
     cues, last_at = [], {}
+    if shots and shots[0].get("mood") == "scare":
+        cues.append((0, OPENING_STING))           # the cold open hits with a real horror sting on frame one
+        last_at[OPENING_STING] = 0
     for i, sh in enumerate(shots):
+        if sh.get("split_of") is not None or (i == 0 and cues):
+            continue                              # extra angles of one line don't repeat its sound
         text = (sh.get("image", "") + " " + " ".join(ln.get("roman", "") for ln in sh.get("lines", []))).lower()
         for pat, q in CUES:
             if re.search(pat, text) and i - last_at.get(q, -99) >= 4:   # don't repeat the same effect too soon
                 cues.append((i, q))
                 last_at[q] = i
                 break
-    return amb, cues[:14]
+        else:
+            if sh.get("mood") == "scare" and i - last_at.get(SCARE_FX, -99) >= 6:
+                cues.append((i, SCARE_FX))        # scare cuts without a named sound still get a whoosh
+                last_at[SCARE_FX] = i
+    return amb, cues[:16]
 
 
 def add_effects(ctx: Context, score: Path, script: dict, shot_starts: list[float], lead: float,
@@ -167,7 +178,7 @@ def add_effects(ctx: Context, score: Path, script: dict, shot_starts: list[float
                         break
                     pos += max(SR, len(seg) - xf)
                 bed = _fit_level(bed, music_db + float(sc.get("ambience_db", -6)))
-                fade = np.clip(np.arange(n) / (SR * 2.0), 0, 1) * np.clip((n - np.arange(n)) / (SR * 3.0), 0, 1)
+                fade = np.clip(np.arange(n) / (SR * 0.3), 0, 1) * np.clip((n - np.arange(n)) / (SR * 3.0), 0, 1)
                 mix += bed * fade[:, None]
                 placed.append(f"ambience: {amb_q}")
         except (subprocess.CalledProcessError, ValueError) as e:
@@ -182,13 +193,13 @@ def add_effects(ctx: Context, score: Path, script: dict, shot_starts: list[float
             fx = _load(f, seconds=6)
         except subprocess.CalledProcessError:
             continue
-        at = int((lead + shot_starts[i] + 0.25) * SR)
+        at = int((lead + shot_starts[i] + (0.0 if q == OPENING_STING else 0.25)) * SR)
         if at >= n:
             continue
         fx = fx[: n - at]
         k = min(len(fx), int(0.4 * SR))
         fx[-k:] *= np.linspace(1, 0, k)[:, None]
-        fx = _fit_level(fx, music_db + float(sc.get("effects_db", 2)))
+        fx = _fit_level(fx, music_db + float(sc.get("effects_db", 5)) + (2.0 if q == OPENING_STING else 0.0))
         mix[at:at + len(fx)] += fx
         placed.append(f"cut {i + 1}: {q}")
 

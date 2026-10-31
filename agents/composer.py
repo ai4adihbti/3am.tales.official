@@ -233,11 +233,14 @@ def compose(ctx: Context, shots: list[dict], shot_starts: list[float], voice_len
     strings = (np.sin(2 * np.pi * 1174.66 * t) + np.sin(2 * np.pi * 1244.51 * t)) * trem * tense_w
     heart = _heartbeat(t, tense_w)
 
-    mono_fx = box * 0.55 + strings * 0.05 + heart * 0.9
+    # the music box drifts slowly between left and right (width), the heartbeat stays centred
+    pan = 0.45 * np.sin(2 * np.pi * 0.045 * t + rng.uniform(0, 6.28))
+    box_l, box_r = box * 0.55 * (1 + pan), box * 0.55 * (1 - pan)
+    mono_fx = strings * 0.05 + heart * 0.9
     # string swell: the pad an octave higher, rising with tension
     swell_w = np.clip(level / 2.0, 0, 1) * 0.6
-    left = pad_l * 0.11 + wind_l * 0.08 + mono_fx + pno_l * 0.16 + pad_r * 0.05 * swell_w
-    right = pad_r * 0.11 + wind_r * 0.08 + mono_fx + pno_r * 0.16 + pad_l * 0.05 * swell_w
+    left = pad_l * 0.11 + wind_l * 0.08 + mono_fx + box_l + pno_l * 0.16 + pad_r * 0.05 * swell_w
+    right = pad_r * 0.11 + wind_r * 0.08 + mono_fx + box_r + pno_r * 0.16 + pad_l * 0.05 * swell_w
 
     # boom on every scare cut, and one for the end card
     hits = [starts[i] for i, sh in enumerate(shots) if sh.get("mood") == "scare" and i > 0]
@@ -250,10 +253,19 @@ def compose(ctx: Context, shots: list[dict], shot_starts: list[float], voice_len
         left[a:a + len(x)] += x
         right[a:a + len(x)] += x
 
+    # cold open: the very first frame lands on a deep boom (no whoosh before it, the reel starts on the hit)
+    if shots and shots[0].get("mood") == "scare":
+        pre = int(0.7 * SR)
+        x = _hit(pre + int(2.2 * SR), rng)[pre:] * 1.1
+        a = int(lead * SR)
+        x = x[: max(0, n - a)]
+        left[a:a + len(x)] += x
+        right[a:a + len(x)] += x
+
     left, right = _hp(left, 40), _hp(right, 40)      # no sub-bass rumble (phones can't play it anyway)
 
     # fade in/out and normalise
-    fade_in = np.clip(t / 1.5, 0, 1)
+    fade_in = np.clip(t / 0.03, 0, 1)        # starts at full level: the first seconds must grab
     fade_out = np.clip((total - t) / 2.5, 0, 1)
     stereo = np.stack([left, right], axis=1) * (fade_in * fade_out)[:, None]
     peak = float(np.max(np.abs(stereo))) or 1.0
@@ -265,5 +277,6 @@ def compose(ctx: Context, shots: list[dict], shot_starts: list[float], voice_len
         w.setsampwidth(2)
         w.setframerate(SR)
         w.writeframes(stereo.tobytes())
-    log(NAME, f"original score: {total:.0f}s, {len(hits) - 1} scare hits")
+    log(NAME, f"original score: {total:.0f}s, {len(hits) - 1} scare hits"
+              + (" + an opening boom" if shots and shots[0].get("mood") == "scare" else ""))
     return path

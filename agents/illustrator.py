@@ -20,6 +20,7 @@ import io
 import math
 import os
 import random
+import re
 import subprocess
 import time
 import urllib.parse
@@ -46,6 +47,19 @@ FRAMING = {
 }
 SOFTEN = {"blood": "dark stain", "bloody": "stained", "corpse": "still figure", "dead body": "still figure",
           "skull": "old stone", "gore": "shadow", "knife": "old tool", "hanging": "standing", "kill": "take"}
+# AI Horde's automatic safety filter blanks out many horror pictures; its prompts use calmer words
+HORDE_SOFTEN = {"wet ": "", "soaked": "", "naked": "", "bare ": "", "body": "figure", "chudail": "village legend",
+                "daayan": "village legend", "dayan": "village legend", "ghost": "mysterious figure",
+                "ghostly": "mysterious", "pale woman": "quiet woman in white", "corpse": "still figure",
+                "scream": "call out", "terrified": "worried", "horror": "mystery", "demon": "shadow",
+                "witch": "old woman", "dead": "lost", "death": "loss", "blood": "red stain"}
+
+
+def horde_safe(prompt: str) -> str:
+    low = prompt
+    for a, b in sorted(HORDE_SOFTEN.items(), key=lambda kv: -len(kv[0])):   # longer phrases first
+        low = low.replace(a, b).replace(a.capitalize(), b)
+    return low
 
 
 class ImageError(RuntimeError):
@@ -288,7 +302,7 @@ class AIHorde:
         neg = "text, letters, watermark, logo, signature, deformed, extra fingers, blurry, photo, 3d render"
         last = ""
         for sw, sh in self.SIZES:
-            body = {"prompt": f"{prompt[:900]} ### {neg}", "nsfw": False, "censor_nsfw": True, "r2": True,
+            body = {"prompt": f"{_clip(horde_safe(prompt), 760)}, Indian 2D illustrated story art, bold ink outlines, cel shading, moonlit blue night, fully clothed, family friendly ### {neg}, nsfw", "nsfw": False, "censor_nsfw": True, "r2": True,
                     "shared": False, "slow_workers": True, "trusted_workers": False,
                     "params": {"width": sw, "height": sh, "steps": 28, "cfg_scale": 6.0, "n": 1,
                                "sampler_name": "k_dpmpp_2m", "karras": True, "seed": str(seed)}}
@@ -394,26 +408,69 @@ def portrait_prompt(ctx: Context, c: dict) -> str:
             f"plain light grey background, centered, face and outfit clearly visible.")
 
 
-def shot_prompt(ctx: Context, shot: dict, chars: dict, ref_ids: list[str]) -> str:
+# things that make the image model write (gibberish) text into the picture
+_TEXT_NOUN = (r"(?:(?:red cross|shop|notice|name|wooden|painted|old|faded)\s+)*(?:sign ?boards?|sign|name ?plates?|"
+              r"boards? with writing|banners?|posters?|billboards?|newspapers?|letters?|labels?|placards?|plaques?|"
+              r"calendars?|inscriptions?|red cross)(?:\s*boards?)?")
+_ADJ = r"(?:(?!(?:with|and|a|an|the|of|in|on|at|by)\b)[\w'-]+\s+)"
+TEXT_PROPS = re.compile(r"(?:\b(?:with|and|showing|holding|reading|under|below|beside)\s+)?"
+                        r"(?:\b(?:a|an|the|some|its|his|her|their)\s+)?" + _ADJ + r"{0,2}?\b" + _TEXT_NOUN +
+                        r"\b(?:\s+(?:above|on|over|near|at|in|saying|reading)\s+(?:the|a|an)?\s*[\w'-]+)?", re.I)
+
+
+def no_text(desc: str) -> str:
+    """Drops the props that come out as garbled text (a clinic 'sign' became 'CHECK ROOST')."""
+    out = TEXT_PROPS.sub("", desc)
+    out = re.sub(r"\s+([,.;])", r"\1", out)
+    out = re.sub(r"([,;])\s*([,.;])", r"\2", out)
+    return re.sub(r"\s{2,}", " ", out).strip(" ,;")
+
+
+PROMPT_LIMIT = 1950          # Cloudflare reads at most 2,000 characters; AI Horde ~900, so the essentials go first
+
+
+def _clip(text: str, n: int) -> str:
+    """Shortens at a comma/space boundary."""
+    if len(text) <= n:
+        return text
+    cut = text[:max(0, n)]
+    k = max(cut.rfind(","), cut.rfind(";"))
+    return (cut[:k] if k > n * 0.5 else cut[:cut.rfind(" ")] if " " in cut else cut).rstrip(" ,;")
+
+
+def shot_prompt(ctx: Context, shot: dict, chars: dict, ref_ids: list[str], limit: int = PROMPT_LIMIT) -> str:
+    """Scene and characters FIRST (backups that read only the start still get the picture right), then the setting,
+    then the house style, shortened so the whole prompt always fits the provider's limit."""
     v = ctx.cfg["visuals"]
-    parts = [v["style"], v["night_palette"] if shot.get("night", True) else v["day_palette"],
-             FRAMING.get(shot["framing"], FRAMING["medium"]) + ", vertical 9:16 composition",
-             f"Scene: {shot['image']}"]
+    head = [FRAMING.get(shot["framing"], FRAMING["medium"]) + ", vertical 9:16",
+            f"Scene: {no_text(shot['image'])}"]
     people = []
     for cid in shot["characters"]:
         c = chars.get(cid)
         if not c:
             continue
-        tag = f" (the same person as reference image {ref_ids.index(cid)})" if cid in ref_ids else ""
+        tag = f" (= reference image {ref_ids.index(cid)})" if cid in ref_ids else ""
         people.append(f"{_person(c)}{tag}")
     if people:
-        parts.append("Characters: " + "; ".join(people))
+        head.append("Characters: " + "; ".join(people))
         if ref_ids:
-            parts.append("Keep each character's face, age, hairstyle, skin tone and outfit exactly as in their reference "
-                         "image; only the pose, expression and camera angle change. Use the reference images for the "
-                         "people only, not for the background or composition")
-        parts.append(f"Exactly {len(people)} {'person' if len(people) == 1 else 'people'} in the picture")
-    return ". ".join(parts)
+            head.append("Each character keeps the face, age, hair, skin tone and outfit of their reference image; only "
+                        "pose, expression and angle change; references are for the people only, not the background")
+        head.append(f"Exactly {len(people)} {'person' if len(people) == 1 else 'people'} in the picture")
+    setting = no_text(ctx.notes.get("setting", ""))
+    tail = "One single scene, no panels or collage. No text, letters, signboards or writing anywhere"
+    style = v["style"]
+    palette = v["night_palette"] if shot.get("night", True) else v["day_palette"]
+    fixed = ". ".join(head)
+    room = limit - len(fixed) - len(tail) - 12
+    if setting:
+        setting = "Location: " + _clip(setting, max(120, min(len(setting), room - 450)))
+        room -= len(setting) + 2
+    pal = _clip(palette, max(0, min(len(palette), room // 3)))
+    sty = _clip(style, max(0, room - len(pal) - 2))
+    parts = [fixed] + ([setting] if setting else []) + [p for p in (sty, pal) if p] + [tail]
+    out = ". ".join(parts)
+    return out if len(out) <= limit else _clip(out, limit)
 
 
 # ── main entry points ───────────────────────────────────────────────────
@@ -581,6 +638,7 @@ def illustrate(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path]
     v = ctx.cfg["visuals"]
     heroes = heroes or set()
     ctx.notes["heroes"] = sorted(heroes)
+    ctx.notes["setting"] = script.get("setting", "")
     chars = {c["id"]: c for c in script["characters"]}
     out_dir = ctx.workdir / "images"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -673,6 +731,8 @@ def quality_check(ctx: Context, studio: Studio, script: dict, refs: dict[str, Pa
     prompt = f"""You are the art director of an illustrated Indian story reel. The image shows a contact sheet:
 top row = the character reference portraits (labelled with id and name); below = the illustrations, labelled I1, I2 …
 
+The story's setting: {script.get("setting") or "(not given)"}
+
 What each illustration should show:
 {json.dumps(expected, ensure_ascii=False, indent=1)}
 
@@ -680,7 +740,10 @@ Flag ONLY serious problems a viewer would notice:
 - a character clearly doesn't match their reference (different face, hair, age, gender or outfit)
 - wrong people in the picture (missing, extra or duplicated person)
 - deformed faces, eyes, hands or extra limbs
-- visible text, letters, captions, watermarks or logos
+- visible text, letters, signboards, captions, watermarks or logos (even one garbled word)
+- a comic-strip layout: several panels, a split screen, a collage or small inset pictures instead of ONE scene
+- a background that doesn't match the story's setting, or objects the story doesn't have (a car or steering wheel in
+  a village story, hills or a pine forest in a plains village, modern things in an old setting)
 - photographic or 3D render instead of the 2D illustrated style, or very blurry
 - flat, dull or washed-out pictures: the target look is bold clean outlines, rich detail, a deep blue moonlit night
   contrasted with warm lantern light, and large expressive eyes on emotional close-ups

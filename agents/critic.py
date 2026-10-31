@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 
 from .common import HINGLISH_GUIDE, SAFETY_RULES, Context, log
-from .writer import all_lines, craft, estimate_seconds, to_screenplay, voice_rule
+from .writer import all_lines, craft, estimate_seconds, has_cold_open, to_screenplay, voice_rule
 
 NAME = "Critic"
 
@@ -35,7 +35,8 @@ Screenplay: {cuts} cuts, {images} images, {len(lines)} lines ({narr} narrator), 
 The language should be: {HINGLISH_GUIDE}
 
 Score each 0-10:
-- hook: would a viewer stop scrolling in the first 3 seconds?
+- hook: would a viewer stop scrolling in the first 3 seconds? (cut 1 must be a scary close-up flash-forward with a
+  short shocking line, cut 2 a turn back in time; a calm scenic opening scores at most 4)
 - emotion: do we care about these people? is there a real bond/feeling at the centre?
 - tension: does it escalate cut by cut through small, concrete details? any dead lines?
 - ending: {'does the twist land emotionally and pay off earlier parts?' if final else 'is the cliffhanger strong enough to make people follow for the next part?'}
@@ -69,6 +70,23 @@ Return JSON:
             total -= 10
             notes.append(f"CUTS: only {cuts}; write {s['min_cuts']}-{s['max_cuts']} cuts of ~2-3 s each, one line per cut, "
                          "cutting between speaker and listener close-ups.")
+        shots = script["shots"]
+        if not has_cold_open(shots):
+            total -= 5
+            notes.append("COLD OPEN: cut 1 must be a close-up flash-forward of the scariest moment with ONE gripping "
+                         "line of at most 10 words; the calm motif shot comes only after cut 2.")
+        longest = max((len(ln["roman"].split()) for ln in lines), default=0)
+        if longest > 24:
+            # feedback only (no penalty): the editor splits long lines anyway, and a missed post is worse
+            notes.append(f"LONG LINES: a line has {longest} words; keep every line under 22 words (split it).")
+        uses: dict[str, int] = {}
+        for sh in shots:
+            uses[sh["image_id"]] = uses.get(sh["image_id"], 0) + 1
+        repeats = sum(1 for a, b in zip(shots, shots[1:]) if a["image_id"] == b["image_id"])
+        if max(uses.values(), default=0) > 4 or repeats > 2:
+            # feedback only (no penalty): the editor splits long lines anyway, and a missed post is worse
+            notes.append("REPEATS: an image is reused too often or twice in a row; use new inserts "
+                         "(hands, eyes, lantern, a clue) instead.")
         ratio = narr / len(lines) if lines else 0
         if series.get("voice_style") == "narrator":
             if lines and not 0.78 <= ratio <= 0.98:

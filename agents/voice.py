@@ -28,10 +28,13 @@ NAME = "Voice"
 TTS_URL = "https://generativelanguage.googleapis.com/v1beta/interactions"
 
 MASTER_CHAIN = ",".join([
-    "highpass=f=70",
-    "equalizer=f=180:t=q:w=1:g=2",          # warmth / chest
-    "equalizer=f=3000:t=q:w=1.2:g=2",       # presence / clarity
-    "equalizer=f=7500:t=q:w=1.5:g=-1.5",    # tame harshness
+    "highpass=f=80",
+    "equalizer=f=170:t=q:w=1:g=1",          # a little warmth (less than before: the mix was bass-heavy)
+    "equalizer=f=320:t=q:w=1.2:g=-2",       # clear out the boxy/muddy zone
+    "equalizer=f=3200:t=q:w=1.0:g=3",       # presence: the words cut through the music on phone speakers
+    "equalizer=f=5500:t=q:w=1.2:g=2",       # crispness (the old voice measured ~23 dB dull above 5 kHz)
+    "treble=g=2:f=9500",                    # air
+    "deesser=i=0.35",                       # keep the brighter 's' sounds soft
     "acompressor=threshold=-20dB:ratio=2.5:attack=10:release=150:makeup=2",
     "aecho=0.85:0.5:35|70:0.10|0.05",       # subtle room, keeps it intimate
 ])

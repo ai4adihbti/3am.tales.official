@@ -57,6 +57,11 @@ BODY_SPEC = """"images": [
                 (their designs are added automatically). No readable text, signs or writing in the picture.",
       "night": true}}
   ],
+  "setting": "ONE fixed description of where this story happens, used for every picture's background: region, terrain,
+              houses/buildings, trees, era (e.g. 'a small Bundelkhand village on flat dry plains: mud-brick houses with
+              clay-tile roofs, neem and peepal trees, a stone stepwell, no hills, no pine forest, no vehicles')",
+  "hook_text": "2-5 word on-screen hook in Roman Hinglish for the first 3 seconds, a question or a shock
+                (e.g. 'Kuen se aayi uski awaaz…', 'Dadi 3 saal pehle mar chuki thi')",
   "cuts": [
     {{"image": "I1", "motion": one of {motions}, "mood": one of {moods},
       "line": {{"speaker": "C1" or "N", "hi": "…", "roman": "…", "style": "2-5 word delivery note"}} or null}}
@@ -68,6 +73,12 @@ RULES = """Rules:
   close-ups); every image must be used at least once.
 - Total spoken length {min_s}-{max_s} seconds: roughly {min_w}-{max_w} words in total.
 - {voice_rule}
+- Reuse is limited: the motif wide shot appears at most 2 times, no other image more than 3 times, and never the
+  same image on two cuts in a row. Prefer a NEW image (an insert of a hand, a lantern, eyes, feet, a clue) over a repeat.
+- Every image's background must match the "setting" (same region, buildings, trees). Never put in things the story
+  doesn't have (cars, phones, modern objects in a village story; hills or pine forest in a plains village).
+- No signboards, boards, posters, newspapers, letters, labels, books with writing or any written word in any image
+  (AI pictures turn them into gibberish text). Show a clinic by a stethoscope or white coat, not by a sign.
 - Images: mostly single-character close-ups and medium shots (they draw best), plus establishing, two-shots and
   object inserts. "characters" lists only who is VISIBLE (max 3). Children are drawn as clearly young kids.
   Each "image" description is 25-50 words: where, light source (moonlight / lantern / diya), pose, exact facial
@@ -76,7 +87,16 @@ RULES = """Rules:
   Numbers as words. At most one vocal tag per line, only from: <whisper>, <sigh>, <gasp>, <short pause>,
   <laugh>, <long pause>, <crying>, in English angle brackets.
 - "roman": the same line in natural Roman Hinglish, no tags.
-- The first 2 cuts must hook in under 4 seconds. {ending_rule}"""
+- THE FIRST 5 SECONDS DECIDE EVERYTHING (cold open):
+  * Cut 1 = a flash-forward to the most frightening or heart-stopping moment of THIS part: an extreme_closeup or
+    closeup (terrified eyes, a hand reaching from the dark, a figure behind her), mood "scare", motion "push_fast",
+    with ONE gripping line of at most 10 words, spoken tensely — a shocking fact, a whispered warning or a question
+    viewers need answered ("Us raat Meera ne apni hi awaaz suni… kuen ke andar se."). No "Ye kahani hai…", no
+    greetings, no calm scenery first.
+  * Cut 2 = a short turn back in time (max 8 words, e.g. "Par ye sab shuru hua teen din pehle…"), mood "tense".
+  * Only then the motif wide shot and the calm set-up. {recap_rule}
+  * The final line of the part echoes the cold-open line or image, so the reel loops when it replays.
+- No single line longer than 22 words (long sentences become long frozen pictures). {ending_rule}"""
 
 
 DIALOGUE_RULE = ("At least 80% of lines are CHARACTER dialogue. The narrator \"N\" only opens the part (one or two "
@@ -88,12 +108,12 @@ NARRATOR_RULE = ("STORYTELLER STYLE: one {g} storyteller \"N\" tells the whole k
                  "moments (a scream, a warning, a whispered question, a final sting).")
 
 STORYTELLER_CRAFT = """How the reference reels are built (copy this rhythm exactly):
-- OPEN on a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a few lit windows. The storyteller
-  sets the scene over it in 1-2 calm sentences ("Ye kahani hai Rampur gaon ki…"). This motif image comes back 3-5
-  times as a breathing space between chapters of the story (same image id, different camera motion).
+- After the cold open (see the rules), a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a few
+  lit windows. The storyteller sets the scene over it in 1-2 sentences ("Ye kahani hai Rampur gaon ki…"). This motif
+  image comes back once more as a breathing space (same image id, different camera motion), not more.
 - INTRODUCE the heroine/hero with a medium shot and a close-up of their face; make us love them in 15 seconds
   (who they live with, what they long for, a small sweet detail).
-- RHYTHM: calm narration sits on long holds (one 12-25 word sentence on a wide or medium shot, motion zoom_in or
+- RHYTHM: calm narration sits on longer holds (one 10-20 word sentence on a wide or medium shot, motion zoom_in or
   pan); as fear rises, the cuts get short — 4-8 words per cut, alternating extreme close-ups of the frightened eyes,
   the thing she sees, her running feet, a lantern, the tree. Peaks use 2-4 silent cuts in a row (no line) for
   a heartbeat of pure picture.
@@ -127,7 +147,9 @@ def _fmt(ctx: Context, ending_rule: str = "", series: dict | None = None) -> dic
                 min_cuts=s["min_cuts"], max_cuts=s["max_cuts"], max_images=s["max_images"],
                 min_s=s["min_seconds"], max_s=s["max_seconds"],
                 min_w=int(s["min_seconds"] * 2.0), max_w=int(s["max_seconds"] * 2.0),
-                ending_rule=ending_rule, voice_rule=voice_rule(series or {}))
+                ending_rule=ending_rule, voice_rule=voice_rule(series or {}),
+                recap_rule=("The one-line recap ('Pichhle part mein…') comes AFTER cut 2, never first."
+                            if (series or {}).get("previously") else ""))
 
 
 def _ending_rule(series: dict) -> str:
@@ -144,11 +166,13 @@ def _series_block(series: dict) -> str:
         out.append("Concept: " + json.dumps(series["concept"], ensure_ascii=False))
     if series.get("outline"):
         out.append("Series outline:\n" + "\n".join(f"- Part {i + 1}: {p}" for i, p in enumerate(series["outline"])))
+    if series.get("setting"):
+        out.append("Setting (FIXED from earlier parts, copy it into \"setting\" unchanged): " + series["setting"])
     if series.get("previously"):
         out.append("What happened in earlier parts:\n" + "\n".join(f"- Part {i + 1}: {p}"
                                                                   for i, p in enumerate(series["previously"])))
-        out.append("Open with the narrator giving a one-line recap ('Pichhle part mein…'), then continue straight "
-                   "from the cliffhanger.")
+        out.append("After the cold open (cuts 1-2), the narrator gives a one-line recap ('Pichhle part mein…'), then "
+                   "continue straight from the cliffhanger.")
     return "\n".join(out)
 
 
@@ -176,6 +200,8 @@ def _mock_script(series: dict) -> dict:
     ]
     L = lambda sp, hi, ro, st: {"speaker": sp, "hi": hi, "roman": ro, "style": st}
     cuts = [
+        {"image": "I5", "motion": "push_fast", "mood": "scare",
+         "line": L("C2", "माँ… ये पत्थर कल भी यहीं था।", "Maa… yeh patthar kal bhi yahin tha.", "cold whisper")},
         {"image": "I1", "motion": "zoom_in", "mood": "uneasy",
          "line": L("N", "उस रात हाईवे पर एक माँ अपने बेटे को लेकर अकेली चल रही थी।",
                    "Us raat highway par ek maa apne bete ko lekar akeli chal rahi thi.", "deep, slow storyteller")},
@@ -192,6 +218,8 @@ def _mock_script(series: dict) -> dict:
          "line": L("C1", "<gasp> छोटू… तुझे कैसे पता?", "Chhotu… tujhe kaise pata?", "frightened whisper")},
     ]
     return {"characters": chars, "images": images, "cuts": cuts,
+            "setting": "an empty two-lane highway through flat Haryana farmland at night, mustard fields, keekar trees",
+            "hook_text": "Kal bhi yahin tha…?",
             "summary": "Savitri carries Chhotu down an empty highway to a hospital; Chhotu insists they walked this road yesterday and recognises a marked stone.",
             "next_part_hook": "Why does Chhotu remember a road they've never walked?"}
 
@@ -272,13 +300,67 @@ def _clean(script: dict, series: dict, max_images: int = 40) -> dict:
     script["images"] = [images[i] for i in used_order if i in allowed]
     script["shots"] = shots
     script.pop("cuts", None)
+    if ensure_cold_open(shots):
+        # list pictures in order of first use, so the flash-forward picture is never the one merged away
+        by_id = {im["id"]: im for im in script["images"]}
+        script["images"] = [by_id[i] for i in dict.fromkeys(sh["image_id"] for sh in shots) if i in by_id]
     first = next((ln for sh in shots for ln in sh["lines"]), None)
     last = next((ln for sh in reversed(shots) for ln in reversed(sh["lines"])), None)
     script["hook"] = first["roman"] if first else ""
     script["ending"] = last["roman"] if last else ""
+    if shots and shots[0]["lines"]:
+        # the cold open is always staged as a scare: flash, shake and a hit on the very first frame
+        shots[0]["mood"] = "scare"
+        shots[0]["motion"] = "push_fast"
+    script["setting"] = str(script.get("setting") or series.get("setting") or "").strip()[:400]
+    script["hook_text"] = clean_hook(script.get("hook_text"))
+    if not script["hook_text"] and shots and shots[0]["lines"]:
+        # no usable hook from the writer: the first words of the cold-open line
+        words = clean_hook(shots[0]["lines"][0]["roman"]).split()
+        script["hook_text"] = " ".join(words) if len(words) <= 7 else " ".join(words[:6]) + "…"
     script.setdefault("summary", "")
     script.setdefault("next_part_hook", "")
     return script
+
+
+def clean_hook(text) -> str:
+    """On-screen hook: Roman letters only (the video font has no Devanagari or emoji: they'd show as boxes)."""
+    t = re.sub(r"[^A-Za-z0-9 .,!?'…\-]", " ", str(text or ""))
+    t = re.sub(r"\s+", " ", t).strip(" .,-")
+    if len(t.split()) < 2:
+        return ""
+    return t if len(t) <= 44 else t[:44].rsplit(" ", 1)[0] + "…"
+
+
+def has_cold_open(shots: list[dict]) -> bool:
+    if not shots or not shots[0]["lines"]:
+        return False
+    return len(shots[0]["lines"][0]["roman"].split()) <= 12 and shots[0]["framing"] not in ("establishing", "wide")
+
+
+def ensure_cold_open(shots: list[dict]) -> bool:
+    """If the writer still opened on calm scenery, flash forward: copy the scariest short line (and its close-up)
+    from later in the part to the very front. The line is heard again in its place, like a film's cold open."""
+    if not shots or has_cold_open(shots):
+        return False
+    rank = {"scare": 0, "tense": 1, "uneasy": 2}
+    best = None
+    for i, sh in enumerate(shots[1:], 1):
+        if not sh["lines"] or sh["framing"] in ("establishing", "wide") or sh.get("mood") not in rank:
+            continue
+        words = len(sh["lines"][0]["roman"].split())
+        if not 3 <= words <= 12:
+            continue
+        key = (rank[sh["mood"]], -i)            # scariest first, then the latest (the climax)
+        if best is None or key < best[0]:
+            best = (key, i)
+    if best is None:
+        return False
+    src = shots[best[1]]
+    shots.insert(0, {**src, "lines": [dict(src["lines"][0])], "mood": "scare", "motion": "push_fast",
+                     "flash_forward": True})
+    log(NAME, f"cold open added: cut {best[1] + 1}'s line moved to the front as a flash-forward")
+    return True
 
 
 def to_screenplay(script: dict) -> dict:
@@ -286,6 +368,7 @@ def to_screenplay(script: dict) -> dict:
     cuts = [{"image": sh["image_id"], "motion": sh["motion"], "mood": sh["mood"],
              "line": sh["lines"][0] if sh["lines"] else None} for sh in script["shots"]]
     return {"characters": script["characters"], "images": script["images"], "cuts": cuts,
+            "setting": script.get("setting", ""), "hook_text": script.get("hook_text", ""),
             "summary": script.get("summary", ""), "next_part_hook": script.get("next_part_hook", "")}
 
 
@@ -338,8 +421,8 @@ Editor feedback:
 
 {SAFETY_RULES}
 
-Return the full revised screenplay as JSON with the same keys ("characters", "images", "cuts", "summary",
-"next_part_hook").
+Return the full revised screenplay as JSON with the same keys ("characters", "images", "cuts", "setting",
+"hook_text", "summary", "next_part_hook").
 {RULES.format(**_fmt(ctx, _ending_rule(series), series))}"""
     fixed = {**series, "characters": series.get("characters") or script.get("characters")}
     new = _clean(ctx.llm.json(prompt, temperature=0.8, mock=to_screenplay(script)), fixed,

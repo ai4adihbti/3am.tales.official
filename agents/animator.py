@@ -235,6 +235,10 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
         last_motion[iid] = motion
         m = m0 * min(1.0, max(0.55, d / 3.5))
         scare = shot.get("mood") == "scare"
+        # a "punch-in" piece of a split shot: a tighter angle on the same drawing (face for people, centre otherwise)
+        punch = 0.36 if shot.get("punch") else 0.0
+        face = shot.get("framing") in ("closeup", "extreme_closeup", "medium", "two_shot", "over_shoulder")
+        focus_y = (-0.07 if face else 0.03) * H if punch else 0.0
         night = shot.get("night", True)
         length = d + (xf if i < len(shots) - 1 else 0) + 0.05
         n = int(math.ceil(length * fps))
@@ -259,9 +263,9 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
                 k = 1 - f / 24
                 shake_x, shake_y = 9 * math.sin(f * 2.3) * k, 7 * math.cos(f * 1.9) * k
             # camera maps at half resolution (depth is smooth), upscaled → same result, ~4x faster
-            scale = 1.0 + bz + dz * d_half
+            scale = 1.0 + bz + punch + dz * d_half
             mxh = (SW / 2) + (xh - cx) / scale + (bx + dx * (d_half - 0.5)) * W + shake_x
-            myh = (SH / 2) + (yh - cy) / scale + (dy * (d_half - 0.5)) * H + shake_y
+            myh = (SH / 2) + (yh - cy) / scale + (dy * (d_half - 0.5)) * H + shake_y + focus_y
             map_x = cv2.resize(mxh, (W, H), interpolation=cv2.INTER_LINEAR)
             map_y = cv2.resize(myh, (W, H), interpolation=cv2.INTER_LINEAR)
             frame = cv2.remap(img, map_x, map_y, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
