@@ -1,0 +1,134 @@
+name: Daily horror reel
+
+on:
+  schedule:
+    # GitHub starts scheduled runs late (we've seen ~4.5 h) and sometimes skips one, so it is triggered 7 times.
+    # The first run that starts after 4:17 PM IST makes the reel and POSTS IT AT 9:17 PM IST (config.yaml →
+    # schedule.post_time_ist); the others skip in ~2 minutes. Times are UTC (IST = UTC + 5:30).
+    - cron: "47 7 * * *"     # 1:17 PM IST (useful only when GitHub is very late)
+    - cron: "17 9 * * *"     # 2:47 PM IST
+    - cron: "47 10 * * *"    # 4:17 PM IST
+    - cron: "17 12 * * *"    # 5:47 PM IST
+    - cron: "47 13 * * *"    # 7:17 PM IST
+    - cron: "17 15 * * *"    # 8:47 PM IST
+    - cron: "47 15 * * *"    # 9:17 PM IST (last chance: posts as soon as ready)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "auto = make the reel now and post it at 9:17 PM IST (skips if today's reel already went out) · post = make and post now · preview = quick 30 s sample · dry_run = full reel, not posted · gpu_setup = GPU models (unused)"
+        type: choice
+        options: [auto, post, preview, dry_run, gpu_setup]
+        default: preview
+
+permissions:
+  contents: write   # lets the run save its memory (state/: series progress + character portraits)
+
+concurrency:
+  group: daily-reel
+  cancel-in-progress: false
+
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350        # a run can make the reel in the afternoon and wait to post at 9:17 PM (GitHub max: 360)
+    env:
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # A run that waited in GitHub's queue was checked out at the commit from when it was QUEUED, i.e. before the
+      # run ahead of it saved tonight's post. Without this step it would think nothing was posted (double post) and
+      # then overwrite the memory. So: always start from the newest code and memory.
+      - name: Load the latest memory
+        run: |
+          for i in 1 2 3; do
+            if git fetch --depth=1 origin "${{ github.ref_name }}" && git reset --hard FETCH_HEAD; then
+              echo "using the newest memory ($(git log -1 --format=%h))"; exit 0
+            fi
+            sleep 10
+          done
+          echo "could not load the newest memory; continuing with the queued copy"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ffmpeg and fonts
+        # libomp5 + Mesa's CPU Vulkan driver let the Real-ESRGAN upscaler run without a GPU
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core libomp5 libvulkan1 mesa-vulkan-drivers
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Cache the depth model (downloaded once, ~25-100 MB)
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: depth-anything-v2-small-v1
+
+      - name: Deploy the GPU engine (only if Modal is set up)
+        if: env.MODAL_TOKEN_ID != ''
+        continue-on-error: true      # without it the reel is still made the normal way
+        run: pip install -q "modal>=1.6,<2" && modal deploy gpu_app.py
+
+      - name: Run the agent team
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ github.token }}   # lets the Publisher host the reel on a temporary release (public repos)
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          POLLINATIONS_TOKEN: ${{ secrets.POLLINATIONS_TOKEN }}
+          AIHORDE_API_KEY: ${{ secrets.AIHORDE_API_KEY }}
+          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_API_HOST: ${{ secrets.IG_API_HOST }}
+          X264_PRESET: medium
+          RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'auto' }}
+        run: python main.py
+
+      # Saved first, so a full artifact store can never make the system forget what it posted.
+      - name: Save memory
+        if: always()               # also after a "not posted" run, so today's picture-allowance use is remembered
+        run: |
+          git config user.name "night-stories-bot"
+          git config user.email "night-stories-bot@users.noreply.github.com"
+          cp state/history.json /tmp/history.mine.json 2>/dev/null || true
+          git add state/
+          if ! git diff --cached --quiet; then
+            git commit -m "memory: $(date -u +%F)"
+            for i in 1 2 3 4 5; do
+              if git pull --rebase -X theirs; then
+                # this run's memory file is the complete, newest one: keep it whole (a line-by-line merge of two
+                # versions could break the file and stop every later run)
+                if [ -f /tmp/history.mine.json ] && ! cmp -s /tmp/history.mine.json state/history.json; then
+                  cp /tmp/history.mine.json state/history.json
+                  git add state/history.json && git commit -m "memory: keep this run's copy"
+                fi
+                git push && break
+              else
+                git rebase --abort || true
+              fi
+              sleep $((i * 10))
+            done
+          fi
+
+      - name: Keep the reel for 3 days (download from this run's page)
+        if: always()
+        continue-on-error: true      # free accounts have 500 MB of artifact storage
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ github.run_number }}
+          path: out/
+          retention-days: 3
+          if-no-files-found: ignore
