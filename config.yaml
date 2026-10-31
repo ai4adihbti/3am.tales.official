@@ -56,7 +56,7 @@ llm:
   model: "gemini-3.8-flash"
   # Order matters: the stronger Flash models write better stories; "lite" models are the last resort.
   fallback_models: ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.5-flash-lite", "gemini-flash-lite-latest"]
-  groq_models: ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"]   # backup writers, only if GROQ_API_KEY is set
+  groq_models: ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]   # (Llama 3.3 is no longer free on Groq)   # backup writers, only if GROQ_API_KEY is set
   patience_rounds: 2        # when Gemini is overloaded, wait up to ~2 x 45 s for a strong model before using "lite"
 
 story:
@@ -70,6 +70,7 @@ story:
   min_critic_score: 75
   max_revisions: 2
   max_ideas_per_run: 2
+  last_resort_score: 45     # if no draft reaches the bar, the best safe draft at or above this is still posted
 
 visuals:
   # Free image generation. 1st choice Cloudflare Workers AI (FLUX.2 klein, keeps characters
@@ -83,6 +84,7 @@ visuals:
   cloudflare_hq_model: "@cf/black-forest-labs/flux-2-klein-9b"
   cloudflare_daily_neurons: 10000
   hq_hero_shots: 3
+  aihorde_minutes: 15               # backup pictures (AI Horde) time limit; more when the run has hours to spare
   width: 864                        # generated size (9:16); upscaled to 1080x1920 in the edit
   height: 1536
   style: >-
@@ -205,7 +207,8 @@ qa:
   # The final check before posting. If a reel fails, it is NOT posted (it's still saved for you to see).
   min_seconds: 60
   max_seconds: 230
-  max_reused_image_ratio: 0.35           # fail if too many shots had to reuse a picture because drawing failed
+  max_reused_image_ratio: 0.35           # above this, a warning (pictures were reused because drawing failed)
+  min_drawn_images: 6                    # NOT posted only if fewer real pictures than this could be drawn
 
 caption:
   max_hashtags: 8
@@ -226,8 +229,10 @@ schedule:
   # posts at exactly post_time (India time). Later triggers see the post and skip. Runs that start too early skip too.
   post_time_ist: "21:17"
   start_window_hours: 5          # GitHub stops any job after 6 h, so a run may not start earlier than this
-  # "auto" skips only if today's slot is already done (a reel went out after 4:17 PM today); a manual post
-  # earlier in the day does not stop the 9:17 PM post
+  # Cloudflare's free pictures cover ONE reel per day (5:30 AM to 5:30 AM IST). So "auto" skips if a reel already
+  # went out since 5:30 AM today (e.g. a manual post), and test runs (preview / dry_run) are refused until
+  # tonight's reel is out, because they would use its pictures.
+  protect_daily_post: true
   post_mode_min_gap_hours: 3     # even mode "post" won't post twice within 3 h (protects against a double click)
 
 instagram:

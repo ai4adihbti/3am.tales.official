@@ -31,15 +31,30 @@ from agents.memory import Memory
 def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict]:
     s = ctx.cfg["story"]
     rejected: list[str] = []
+    overall = None          # the best safe draft of ANY idea today: the last resort, so a fussy Critic never costs the day
     for _ in range(s["max_ideas_per_run"]):
         series, fmt = researcher.todays_series(ctx, memory, avoid_extra=rejected)
         try:
             script = writer.write(ctx, series, fmt)
+        except LLMBlocked as e:
+            log("Orchestrator", f"{e}; trying a different story")
+            rejected.append(series["title"])
+            continue
+        if not script["shots"]:
+            log("Orchestrator", "the writer returned an empty screenplay; trying a different story")
+            rejected.append(series["title"])
+            continue
+        try:
             review = critic.review(ctx, script, series, fmt)
         except LLMBlocked as e:
             log("Orchestrator", f"{e}; trying a different story")
             rejected.append(series["title"])
             continue
+        except LLMError as e:
+            # the writer finished but every model is too busy to judge it: a written story beats no story
+            log("Orchestrator", f"the Critic couldn't be reached ({str(e).splitlines()[0][:100]}); "
+                                "using the writer's draft without a review")
+            return series, fmt, script, {"score": None, "approved": True, "safety_ok": True, "feedback": "unreviewed"}
         best = (review["score"], script, review)
         rev = 0
         while not review["approved"] and rev < s["max_revisions"]:
@@ -58,6 +73,8 @@ def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict
         if review["approved"]:
             return series, fmt, script, review
         score, script, review = best
+        if review.get("safety_ok") and script["shots"] and (overall is None or score > overall[0]):
+            overall = (score, series, fmt, script, review)
         if review.get("safety_ok") and score >= s["min_critic_score"] - 10:
             log("Orchestrator", f"using the best draft ({score}/100), close enough to the bar")
             return series, fmt, script, review
@@ -68,6 +85,10 @@ def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict
                 return series, fmt, script, review
         rejected.append(series["title"])
         log("Orchestrator", "story rejected; trying a new one")
+    if overall and overall[0] >= int(s.get("last_resort_score", 45)):
+        score, series, fmt, script, review = overall
+        log("Orchestrator", f"no draft reached the bar today; posting the best one ({score}/100) rather than nothing")
+        return series, fmt, script, review
     raise RuntimeError("No script passed the Critic today — nothing will be posted.")
 
 
@@ -78,6 +99,12 @@ def _post_target(cfg: dict, now_utc: datetime) -> datetime:
     """Today's posting time (India time) as an aware datetime."""
     hh, mm = (int(x) for x in str(cfg.get("schedule", {}).get("post_time_ist", "21:17")).split(":"))
     return now_utc.astimezone(IST).replace(hour=hh, minute=mm, second=0, microsecond=0)
+
+
+def _day_start(now_ist: datetime) -> datetime:
+    """Cloudflare's free picture allowance resets at 00:00 UTC = 5:30 AM IST: one reel per such 'day'."""
+    start = now_ist.replace(hour=5, minute=30, second=0, microsecond=0)
+    return start if now_ist >= start else start - timedelta(days=1)
 
 
 def _hours_since_last_post(memory: Memory, now_utc: datetime) -> float | None:
@@ -98,18 +125,27 @@ def schedule_check(cfg: dict, memory: Memory, mode: str, now_utc: datetime) -> t
     """Should this run make a reel? (auto = the daily schedule; post = a manual 'post now')"""
     sc = cfg.get("schedule", {})
     since = _hours_since_last_post(memory, now_utc)
+    if mode in ("preview", "dry_run"):
+        now = now_utc.astimezone(IST)
+        done = since is not None and now - timedelta(hours=since) >= _day_start(now)
+        if sc.get("protect_daily_post", True) and not done:
+            return False, (f"NOT RUN: a {mode} now would use the free pictures that tonight's "
+                           f"{_post_target(cfg, now_utc):%H:%M} IST reel needs (Cloudflare gives enough for one reel a "
+                           "day). Run tests after tonight's post, or set schedule.protect_daily_post: false in config.yaml.")
+        return True, f"mode '{mode}': making a reel without posting it"
     if mode == "post":
         gap = float(sc.get("post_mode_min_gap_hours", 3))
         if since is not None and since < gap:
             return False, (f"a reel went out only {since * 60:.0f} min ago; not posting another one so soon "
                            f"(wait {gap:.0f} h between posts, or use mode 'dry_run' to just make one)")
-        return True, "mode 'post': making and posting a reel now"
+        return True, ("mode 'post': making and posting a reel now (it counts as today's reel: the 9:17 PM run will "
+                      "skip today, because the free pictures cover one reel a day)")
     target = _post_target(cfg, now_utc)
     window = float(sc.get("start_window_hours", 5))
     now = now_utc.astimezone(IST)
-    slot_start = target - timedelta(hours=window)
-    if since is not None and now - timedelta(hours=since) >= slot_start:
-        return False, f"today's reel already went out {since:.1f} h ago; nothing to do"
+    if since is not None and now - timedelta(hours=since) >= _day_start(now):
+        return False, (f"today's reel already went out {since:.1f} h ago; nothing to do (the free picture allowance "
+                       "covers one reel a day: 5:30 AM to 5:30 AM IST)")
     if now < target - timedelta(hours=window):
         return False, (f"too early ({now:%H:%M} IST): a later scheduled run will make today's reel and post it at "
                        f"{target:%H:%M} IST")
@@ -135,6 +171,35 @@ def wait_for_post_time(cfg: dict, mode: str) -> None:
         if left > 1800:
             log("Orchestrator", f"… {max(0.0, left - 1800) / 60:.0f} min to go")
     log("Orchestrator", f"it's {datetime.now(IST):%H:%M} IST — posting")
+
+
+def _minutes_to_post(cfg: dict, mode: str) -> float:
+    """Minutes until tonight's posting time (auto mode), else 0."""
+    if mode != "auto":
+        return 0.0
+    now = datetime.now(timezone.utc)
+    return max(0.0, (_post_target(cfg, now) - now.astimezone(IST)).total_seconds() / 60)
+
+
+def instagram_already_posted(cfg: dict, ctx: Context, mode: str) -> str:
+    """A second safety net that doesn't rely on the memory file: asks Instagram when the newest reel went out.
+    Returns the reason to stop, or '' (also when Instagram can't be asked right now)."""
+    if mode not in ("auto", "post"):
+        return ""
+    h = publisher.recent_reel_hours(ctx)
+    if h is None:
+        return ""
+    sc = cfg.get("schedule", {})
+    limit = float(sc.get("post_mode_min_gap_hours", 3))
+    if mode == "auto":
+        # any reel on Instagram since this evening's window opened (4:17 PM by default) is tonight's reel
+        now = datetime.now(timezone.utc)
+        window_start = _post_target(cfg, now) - timedelta(hours=float(sc.get("start_window_hours", 5)))
+        limit = max(0.0, (now.astimezone(IST) - window_start).total_seconds() / 3600)
+    if h < limit:
+        return (f"Instagram already shows a reel posted {h * 60:.0f} min ago (today's reel is out, even if this run's "
+                "memory didn't know it); not posting another one")
+    return ""
 
 
 def _trim_for_preview(script: dict, cuts: int = 12) -> dict:
@@ -167,7 +232,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.13 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.1.15 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -176,8 +241,11 @@ def main() -> int:
     memory = Memory()
     if not args.mock:
         import atexit
+        import signal
         atexit.register(memory.save)     # even if the run crashes, remember what it used today
-    if mode in ("auto", "post") and not args.mock:
+        # a cancelled GitHub run gets SIGTERM: exit normally so today's picture use is still recorded
+        signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
+    if mode in ("auto", "post", "preview", "dry_run") and not args.mock:
         go, why = schedule_check(cfg, memory, mode, datetime.now(timezone.utc))
         log("Orchestrator", why)
         if not go:
@@ -185,7 +253,7 @@ def main() -> int:
             return 0
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.1.13")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.1.15")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -217,11 +285,40 @@ def main() -> int:
             log("Orchestrator", "STOPPED before making the reel: refresh IG_ACCESS_TOKEN (README step 8) and run again.")
             return 4
 
-    # 1. learn from past posts
-    analyst.run(ctx, memory)
+    if not dry and not args.mock:
+        why = instagram_already_posted(cfg, ctx, mode)
+        if why:
+            log("Orchestrator", why)
+            shutil.rmtree(work, ignore_errors=True)
+            return 0
 
-    # 2-4. today's part → script → critique loop
-    series, fmt, script, review = produce_script(ctx, memory)
+    # 1. learn from past posts (a bonus: never a reason to fail)
+    try:
+        analyst.run(ctx, memory)
+    except Exception as e:  # noqa: BLE001
+        log("Orchestrator", f"learning from past posts skipped today ({str(e).splitlines()[0][:120]})")
+
+    # 2-4. today's part → script → critique loop. When every writing service is overloaded, wait and try again
+    # while there is time before the posting time (Gemini's overload storms usually pass within minutes).
+    attempt = 0
+    while True:
+        attempt += 1
+        try:
+            series, fmt, script, review = produce_script(ctx, memory)
+            break
+        except (LLMError, RuntimeError) as e:
+            first = str(e).splitlines()[0][:160]
+            spare = _minutes_to_post(cfg, mode)
+            # retry while there is time before the posting time; a late or manual run gets one more try
+            if args.mock or attempt >= 3 or (spare < 80 and attempt > 1) or "quota is used up" in str(e):
+                log("Orchestrator", f"STOPPED: no story could be written ({first}). Nothing was posted; "
+                                    "the next scheduled run will try again.")
+                memory.save()
+                shutil.rmtree(work, ignore_errors=True)
+                return 8
+            log("Orchestrator", f"the writing services are overloaded right now ({first}); "
+                                f"waiting 10 min and trying again (attempt {attempt + 1} of 3)")
+            time.sleep(600)
     final = series["part"] >= series["total_parts"]
     script["voice_style"] = series.get("voice_style", "dialogue")
     script["series_voice_engine"] = series.get("voice_engine")
@@ -239,6 +336,8 @@ def main() -> int:
         # a gentle, pitch-preserving speed-up (max 8%) keeps the reel a YouTube Short (≤ 3:00)
         room = reel_cap - v["lead_in_seconds"] - v["tail_seconds"]
         speed = min(1.08, voice_len / room)
+        if voice_len / speed + v["lead_in_seconds"] + v["tail_seconds"] > 180:
+            speed = min(1.15, voice_len / (180 - v["lead_in_seconds"] - v["tail_seconds"]))   # stay a Short
         fast = work / "voice_fast.wav"
         import subprocess as _sp
         _sp.run(["ffmpeg", "-y", "-v", "error", "-i", str(voice_wav), "-af", f"atempo={speed:.4f}",
@@ -270,14 +369,20 @@ def main() -> int:
         ledger.update(date=day, used=0.0)
     affordable = studio.plan(len(script["images"]), sum(1 for c in script["characters"] if c["id"] not in saved),
                              ledger["used"])
+    # backup pictures (AI Horde) are slow: give them more time when the run has hours before the posting time
+    spare = _minutes_to_post(cfg, mode)
+    horde_min = float(cfg["visuals"].get("aihorde_minutes", 15))
+    illustrator.AIHorde.BUDGET_MIN = max(horde_min, min(120.0, spare - 60)) if spare > 75 else \
+        (max(horde_min, 30.0) if mode == "auto" else horde_min)
     if affordable < len(script["images"]):
         if affordable < 6 and not args.mock:
-            log("Orchestrator", f"STOPPED: today's free Cloudflare picture allowance is almost used up (earlier runs "
-                                f"today used ~{ledger['used']:.0f} of 10,000). It resets at 5:30 AM IST — run again after "
-                                "that. Tip: avoid test runs on the day of a post.")
-            memory.save()
-            shutil.rmtree(work, ignore_errors=True)
-            return 5
+            # not enough free Cloudflare pictures left today (earlier runs used them): fewer pictures, drawn by the
+            # slower backup, reused with new camera moves. A weaker reel beats no reel.
+            affordable = min(len(script["images"]), 8)
+            log("Orchestrator", f"today's free Cloudflare pictures are almost used up (earlier runs today used "
+                                f"~{ledger['used']:.0f} of 10,000; it resets at 5:30 AM IST). Making a simpler reel with "
+                                f"{affordable} pictures from the backup service (up to "
+                                f"{illustrator.AIHorde.BUDGET_MIN:.0f} min). Tip: avoid test runs on the day of a post.")
         merged = illustrator.limit_images(script, affordable)
         log("Orchestrator", f"today's allowance pays for {affordable} pictures: {merged} pictures merged into "
                             "earlier ones (reused, like the reference reels)")
@@ -380,23 +485,59 @@ def main() -> int:
         shutil.rmtree(work, ignore_errors=True)
         return 3
     else:
+        import atexit
+        atexit.register(publisher.GITHUB.cleanup)      # never leave the temporary release behind
+        why = instagram_already_posted(cfg, ctx, mode)
+        if why:
+            log("Orchestrator", why)
+            memory.save()
+            shutil.rmtree(work, ignore_errors=True)
+            return 0
+        container = None
+        if _minutes_to_post(cfg, mode) > 10:
+            # hours early: let Instagram process the video NOW, so a processing problem can still be fixed;
+            # at the posting time only the 'publish' click is left
+            try:
+                container = publisher.prepare_reel(ctx, reel, cap, cover_path)
+            except Exception as e:  # noqa: BLE001
+                log("Orchestrator", f"getting the video ready on Instagram early didn't work ({str(e)[:160]}); "
+                                    "trying again at the posting time")
         wait_for_post_time(cfg, mode)
+        result = None
+        if container:
+            try:
+                result = publisher.publish_prepared(ctx, container)
+            except Exception as e:  # noqa: BLE001
+                log("Orchestrator", f"publishing the prepared video failed ({str(e)[:160]}); uploading it again")
+                h = publisher.recent_reel_hours(ctx)
+                if h is not None and h < 0.25:
+                    log("Orchestrator", "Instagram shows a reel from the last few minutes: it did go out; not posting again")
+                    result = {"media_id": publisher.newest_media_id(ctx) or f"unknown-{container}", "permalink": ""}
+        error = ""
+        if result is None:
+            try:
+                result = publisher.publish_reel(ctx, reel, cap, cover_path)
+            except Exception as e:  # noqa: BLE001 — never lose the finished reel
+                error = str(e)[:200]
+        if result:
+            # remember the post at once (before YouTube), so nothing can make a later run post it again
+            post.update(result)
+            memory.add_post(post)
+            series["voice_engine"] = series.get("voice_engine") or ctx.notes.get("voice_engine")
+            memory.advance_series(series, script, refs)
+            memory.save()
         if cfg.get("youtube", {}).get("enabled", True) and youtube.ready():
             try:
                 post.update(youtube.upload(ctx, reel, series, cap))
+                if result:
+                    memory.save()
             except Exception as e:  # noqa: BLE001 — YouTube problems never stop the Instagram post
                 log("YouTube", f"not uploaded ({str(e)[:220]})")
-        try:
-            result = publisher.publish_reel(ctx, reel, cap, cover_path)
-        except Exception as e:  # noqa: BLE001 — never lose the finished reel
-            log("Orchestrator", f"NOT POSTED: the upload to Instagram failed ({str(e)[:200]}). The finished reel and its "
+        if not result:
+            log("Orchestrator", f"NOT POSTED: the upload to Instagram failed ({error}). The finished reel and its "
                                 f"cover are in this run's Artifacts (out/{reel.name}) — you can post them from the app.")
             memory.save()
             return 6
-        post.update(result)
-        memory.add_post(post)
-        series["voice_engine"] = series.get("voice_engine") or ctx.notes.get("voice_engine")
-        memory.advance_series(series, script, refs)
 
     if not args.mock:
         memory.save()

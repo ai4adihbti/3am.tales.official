@@ -276,3 +276,48 @@ the reel is posted as soon as it is ready, until midnight; it never posts in the
 While one run is waiting for 9:17 PM, GitHub keeps only one later trigger queued and marks the others "cancelled"
 (grey): that is normal. Change the time in `config.yaml` → `schedule.post_time_ist`.
 Manual runs: mode `post` posts at once (but never within 3 h of another post); `auto` behaves like the schedule.
+
+## v7.1.14 — fixes from the 31 Oct 8:09 PM run
+What went wrong: the manual post that morning had already used the day's free Cloudflare pictures (they cover ONE
+reel per day, 5:30 AM → 5:30 AM IST), the backup (AI Horde) was too slow and censored, so no picture could be drawn.
+Gemini was also heavily overloaded, and one Groq backup model (Llama 3.3) is no longer free.
+- **One reel per day, protected.** A reel posted since 5:30 AM counts as today's reel: the 9:17 PM run skips
+  cleanly instead of failing. Test runs (preview / dry_run) are refused until tonight's reel is out, because they
+  would use its pictures (`schedule.protect_daily_post`). Mode `post` still works and counts as today's reel.
+- **Realistic picture budget.** Cloudflare's real usage is ~1.6x the published price; the plan now uses that, so a
+  run never starts drawing pictures it can't afford.
+- **Cancelled runs** still record the pictures they used.
+- **Groq backup writers:** gpt-oss-120b + gpt-oss-20b (Llama 3.3 retired). A model Groq no longer offers is
+  dropped for the run; a "request too large" answer is retried with a shorter answer limit when it fits.
+
+## v7.1.15 — review fixes: never post twice, degrade instead of failing
+**Never twice, never forgetting**
+- A run that waited in GitHub's queue used to start from the memory of when it was queued, i.e. *before* the run
+  ahead of it saved tonight's post. It could then post a second reel and overwrite the memory (losing the post and
+  the series progress). Every run now loads the newest memory first, and the memory save always keeps the whole file.
+- A second safety net that doesn't depend on the memory: before making and before posting a reel, the system asks
+  Instagram when the newest reel went out. If a reel already went out this evening, it stops.
+- A damaged memory file no longer stops every later run: the last good copy (`state/history.bak.json`) is used.
+- The post is remembered the moment Instagram confirms it (before YouTube).
+
+**Posting**
+- Runs that start early upload the reel to Instagram and let it *process* right away; at 9:17 PM only the final
+  "publish" is left, so the reel goes out on the minute, and a processing problem is found hours early.
+- If Instagram can't process the video, it is asked once more with the same link; status-check hiccups (HTTP 500,
+  timeouts) are no longer failures; "publish" is retried, and a lost answer is checked so it can't post twice.
+- Instagram first, then YouTube (a slow YouTube upload can't delay Instagram).
+- An Instagram outage during the token check is no longer reported as an expired token.
+
+**A weaker reel beats no reel**
+- When every writing model is overloaded, the run waits 10 min and tries again (up to 3 times) while there is time.
+- If the Critic can't be reached, the writer's draft is used; if no draft reaches the bar, the best safe draft
+  (at least `story.last_resort_score: 45`) is posted.
+- If the caption writer is down, a simple caption is used. Learning from past posts can't stop a run any more.
+- Few free Cloudflare pictures left: a simpler reel with 8 pictures from the backup (AI Horde) instead of stopping.
+  AI Horde gets more time when the run has hours to spare (`visuals.aihorde_minutes` minimum), a censored picture no
+  longer switches it off for the whole run, and as a last try it draws the place without people (its filter mostly
+  reacts to people in horror scenes). Character portraits are skipped when only AI Horde is left (it can't use them).
+- The quality check posts reels with reused pictures as long as at least `qa.min_drawn_images: 5` real pictures were
+  drawn; a reel that runs long is a warning, not a reason to drop it. Voice speed-up goes up to 15% only if needed
+  to stay under 3:00 (a YouTube Short).
+- Groq "request too large": retried with a small answer room, enough for reviews and captions.
