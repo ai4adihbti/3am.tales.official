@@ -245,26 +245,88 @@
       "youtube_url": "https://youtube.com/shorts/5SiWouHqqv0",
       "media_id": "17956891071289398",
       "permalink": "https://www.instagram.com/reel/DfF9KqkiiUO/",
-      "posted_at": "2026-10-29T21:19:46+00:00"
+      "posted_at": "2026-10-29T21:19:46+00:00",
+      "metrics": {
+        "views": 135,
+        "reach": 125,
+        "likes": 5,
+        "comments": 0,
+        "shares": 0,
+        "saved": 1,
+        "total_interactions": 6
+      },
+      "score": 59.39,
+      "metrics_at": "2026-10-31T05:51:48+00:00"
+    },
+    {
+      "title": "Almora Bypass ka Safed Dhund — Part 1",
+      "series_title": "Almora Bypass ka Safed Dhund",
+      "series_id": "20261031-almora-bypass-ka-safed-dhund",
+      "part": 1,
+      "total_parts": 1,
+      "format": "family_bond",
+      "hook": "<whisper>Papa…?</whisper>",
+      "critic_score": 81,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare",
+        "cloudflare_hq"
+      ],
+      "duration_s": 142.271,
+      "file": "reel-20261031-055148.mp4",
+      "caption": "Almora Bypass ka Safed Dhund | Part 1/1 - Dhund mein awaaz? (fiction)\n\nAgar tumhari awaaz sunai deti, toh gaadi rok dete ya aage badhte? 👻\n\nPoori kahani khatam… agli kahani kal raat 🕯️ Follow karo\n.\n.\n#hindistory #horrorstories #bhootiyakahani #hindihorrorstory #almorafog #horrorseries #dhundkikahani #3amtales",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 142.3,
+        "loudness_lufs": -14.6,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare",
+          "cloudflare_hq"
+        ],
+        "redrawn": [
+          "I4",
+          "I10"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 6279,
+        "hq_images": 3,
+        "est_cost_usd": 0.09,
+        "month_spend_usd": 0.64
+      },
+      "youtube_id": "UsMVtXVKl_I",
+      "youtube_url": "https://youtube.com/shorts/UsMVtXVKl_I",
+      "media_id": "18145343968608772",
+      "permalink": "https://www.instagram.com/reel/DfJfgpFkc03/",
+      "posted_at": "2026-10-31T06:17:39+00:00"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 146, shares 0, saves 0, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 3, \"avg\": 55.5}}",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 146, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 135, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 135, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 3, \"avg\": 55.5}, \"lok_katha\": {\"n\": 1, \"avg\": 59.39}}\nLessons:\n- Prioritize 'lok_katha' (folklore) formats over serialized drama; it delivers the highest average engagement score (59.39 vs 55.5) and generates saves.\n- Hook with specific, eerie times and real locations (e.g., 'Raat ke dhai baje, Raniganj...') to drive the strongest raw views.\n- Settings centered on cursed village relics ('Jamni gaon ka kuan') and deserted transit ('sunsaan sadak par bus') clearly resonate best with this audience.\n- Avoid weak recap hooks like 'Pichhle part mein...', which caused significant view drops in subsequent episodes of multi-part series.\n- Eliminate reliance on slow-burn episodic cliffhangers; standalone stories or high-stakes standalone twists are needed to fix near-zero shares and comments.",
   "format_scores": {
     "family_bond": {
       "n": 3,
       "avg": 55.5
+    },
+    "lok_katha": {
+      "n": 1,
+      "avg": 59.39
     }
   },
   "series": null,
   "series_done": [
     "Choti Line Ki Akhri Bus",
     "Kosi Gaon ka Safed Peepal",
-    "Chhatarpur ka Ulti Pailo Kuan"
+    "Chhatarpur ka Ulti Pailo Kuan",
+    "Almora Bypass ka Safed Dhund"
   ],
   "spend": {
     "month": "2026-10",
-    "usd": 0.5455
+    "usd": 0.6355
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -288,11 +350,21 @@
       "entity": "Pichhal-Pairi (the backward-footed entity of the stepwell)",
       "protagonist": "Anandi, 20, a young newly-wed bahu",
       "emotion": "A bride's selfless devotion and a mother-in-law's sacrifice."
+    },
+    {
+      "title": "Almora Bypass ka Safed Dhund",
+      "format": "family_bond",
+      "parts": 1,
+      "region": "Garhwal, Uttarakhand",
+      "setting": "A narrow, fog-choked mountain bypass near an isolated pine forest late at night during a winter storm.",
+      "entity": "Chhal (a Pahadi shape-shifting mountain spirit that mimics loved ones in fog)",
+      "protagonist": "Karan, 22, driving his ailing father Ramesh, 54, back from a valley hospital at 2:30 AM.",
+      "emotion": "A father's quiet, unconditional protection and a final goodbye."
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "village_secret",
+    "format": "family_bond",
     "target": 2
   },
   "ig_token": {
@@ -304,7 +376,7 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-10-30",
-    "used": 0.0
+    "date": "2026-10-31",
+    "used": 6279
   }
 }
