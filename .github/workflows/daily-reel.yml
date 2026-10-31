@@ -37,6 +37,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # A run that waited in GitHub's queue was checked out at the commit from when it was QUEUED, i.e. before the
+      # run ahead of it saved tonight's post. Without this step it would think nothing was posted (double post) and
+      # then overwrite the memory. So: always start from the newest code and memory.
+      - name: Load the latest memory
+        run: |
+          for i in 1 2 3; do
+            if git fetch --depth=1 origin "${{ github.ref_name }}" && git reset --hard FETCH_HEAD; then
+              echo "using the newest memory ($(git log -1 --format=%h))"; exit 0
+            fi
+            sleep 10
+          done
+          echo "could not load the newest memory; continuing with the queued copy"
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -90,10 +103,24 @@ jobs:
         run: |
           git config user.name "night-stories-bot"
           git config user.email "night-stories-bot@users.noreply.github.com"
+          cp state/history.json /tmp/history.mine.json 2>/dev/null || true
           git add state/
           if ! git diff --cached --quiet; then
             git commit -m "memory: $(date -u +%F)"
-            for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+            for i in 1 2 3 4 5; do
+              if git pull --rebase -X theirs; then
+                # this run's memory file is the complete, newest one: keep it whole (a line-by-line merge of two
+                # versions could break the file and stop every later run)
+                if [ -f /tmp/history.mine.json ] && ! cmp -s /tmp/history.mine.json state/history.json; then
+                  cp /tmp/history.mine.json state/history.json
+                  git add state/history.json && git commit -m "memory: keep this run's copy"
+                fi
+                git push && break
+              else
+                git rebase --abort || true
+              fi
+              sleep $((i * 10))
+            done
           fi
 
       - name: Keep the reel for 3 days (download from this run's page)
