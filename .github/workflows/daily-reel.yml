@@ -2,14 +2,20 @@ name: Daily horror reel
 
 on:
   schedule:
-    # BACKUP schedule. The main trigger is the free timer at cron-job.org (exactly 9:17 PM IST, mode "auto").
-    # GitHub often starts scheduled runs hours late; in "auto" mode this run only posts if nothing was posted today.
-    # Change it with https://crontab.guru (times are UTC; IST = UTC + 5:30).
-    - cron: "47 15 * * *"
+    # GitHub starts scheduled runs late (we've seen ~4.5 h) and sometimes skips one, so it is triggered 7 times.
+    # The first run that starts after 4:17 PM IST makes the reel and POSTS IT AT 9:17 PM IST (config.yaml →
+    # schedule.post_time_ist); the others skip in ~2 minutes. Times are UTC (IST = UTC + 5:30).
+    - cron: "47 7 * * *"     # 1:17 PM IST (useful only when GitHub is very late)
+    - cron: "17 9 * * *"     # 2:47 PM IST
+    - cron: "47 10 * * *"    # 4:17 PM IST
+    - cron: "17 12 * * *"    # 5:47 PM IST
+    - cron: "47 13 * * *"    # 7:17 PM IST
+    - cron: "17 15 * * *"    # 8:47 PM IST
+    - cron: "47 15 * * *"    # 9:17 PM IST (last chance: posts as soon as ready)
   workflow_dispatch:
     inputs:
       mode:
-        description: "auto = post only if nothing was posted today · post = make and post now · preview = quick 30 s sample · dry_run = full reel, not posted · gpu_setup = GPU models (unused)"
+        description: "auto = make the reel now and post it at 9:17 PM IST (skips if today's reel already went out) · post = make and post now · preview = quick 30 s sample · dry_run = full reel, not posted · gpu_setup = GPU models (unused)"
         type: choice
         options: [auto, post, preview, dry_run, gpu_setup]
         default: preview
@@ -24,7 +30,7 @@ concurrency:
 jobs:
   reel:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 350        # a run can make the reel in the afternoon and wait to post at 9:17 PM (GitHub max: 360)
     env:
       MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
       MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
