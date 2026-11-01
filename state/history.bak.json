@@ -35,16 +35,16 @@
       "permalink": "https://www.instagram.com/reel/De99HISAvmE/",
       "posted_at": "2026-10-26T18:45:26+00:00",
       "metrics": {
-        "views": 146,
-        "reach": 132,
+        "views": 147,
+        "reach": 133,
         "likes": 12,
         "comments": 0,
         "shares": 0,
         "saved": 0,
         "total_interactions": 13
       },
-      "score": 82.34,
-      "metrics_at": "2026-10-30T20:19:26+00:00"
+      "score": 81.78,
+      "metrics_at": "2026-11-01T14:32:58+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 2",
@@ -97,7 +97,7 @@
         "total_interactions": 6
       },
       "score": 37.17,
-      "metrics_at": "2026-10-30T20:19:26+00:00"
+      "metrics_at": "2026-11-01T14:32:58+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 3",
@@ -149,7 +149,7 @@
         "total_interactions": 7
       },
       "score": 47.0,
-      "metrics_at": "2026-10-30T20:19:26+00:00"
+      "metrics_at": "2026-11-01T14:32:58+00:00"
     },
     {
       "title": "Kosi Gaon ka Safed Peepal — Part 1",
@@ -247,16 +247,16 @@
       "permalink": "https://www.instagram.com/reel/DfF9KqkiiUO/",
       "posted_at": "2026-10-29T21:19:46+00:00",
       "metrics": {
-        "views": 135,
-        "reach": 125,
+        "views": 136,
+        "reach": 126,
         "likes": 5,
         "comments": 0,
         "shares": 0,
         "saved": 1,
         "total_interactions": 6
       },
-      "score": 59.39,
-      "metrics_at": "2026-10-31T05:51:48+00:00"
+      "score": 58.96,
+      "metrics_at": "2026-11-01T14:32:58+00:00"
     },
     {
       "title": "Almora Bypass ka Safed Dhund — Part 1",
@@ -302,19 +302,75 @@
       "youtube_url": "https://youtube.com/shorts/UsMVtXVKl_I",
       "media_id": "18145343968608772",
       "permalink": "https://www.instagram.com/reel/DfJfgpFkc03/",
-      "posted_at": "2026-10-31T06:17:39+00:00"
+      "posted_at": "2026-10-31T06:17:39+00:00",
+      "metrics": {
+        "views": 126,
+        "reach": 110,
+        "likes": 3,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 3
+      },
+      "score": 23.94,
+      "metrics_at": "2026-11-01T14:32:58+00:00"
+    },
+    {
+      "title": "Pangri Ghat ka Lal Lantern — Part 1",
+      "series_title": "Pangri Ghat ka Lal Lantern",
+      "series_id": "20261101-pangri-ghat-ka-lal-lantern",
+      "part": 1,
+      "total_parts": 1,
+      "format": "family_bond",
+      "hook": "Us raat Rohan ko maut ke munh se kisne kheencha?",
+      "critic_score": 81,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 151.077,
+      "file": "reel-20261101-143258.mp4",
+      "caption": "Pangri Ghat ka Lal Lantern | Part 1/1 Raat ke 3 baje ki yeh patri... (fiction)\n\nKya aapne kabhi kisi aisi cheez ko feel kiya hai jo wahan thi hi nahi? 👀\n\nPoori kahani khatam… agli kahani kal raat 🕯️ Follow karo\n.\n.\n#hindistory #horrorstories #bhootiyakahani #hindihorrorstory #pangrighat #horrorstoryhindi #hinglishhorror #3amtales",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 151.1,
+        "loudness_lufs": -14.2,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I8",
+          "I12",
+          "I16"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 6523,
+        "hq_images": 0,
+        "est_cost_usd": 0.09,
+        "month_spend_usd": 0.09
+      },
+      "media_id": "18111021004908497",
+      "permalink": "https://www.instagram.com/reel/DfNAPiCj2_k/",
+      "posted_at": "2026-11-01T15:47:08+00:00",
+      "youtube_id": "5KJ-H-4Ki3o",
+      "youtube_url": "https://youtube.com/shorts/5KJ-H-4Ki3o"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 146, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 135, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 135, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 3, \"avg\": 55.5}, \"lok_katha\": {\"n\": 1, \"avg\": 59.39}}\nLessons:\n- Start with a vivid, time‑specific setting that drops the viewer into a creepy scene within the first few seconds\n- Use a clear narrative hook that promises a continuation or mystery (e.g., “Part 1/2/3”) and deliver a twist that resolves or deepens the tension in the next clip\n- Keep the format tight—15‑30 seconds, single‑scene focus, and a consistent visual style—audiences reward the familiar “family_bond” structure\n- Add a micro‑cliffhanger or unanswered question at the end to drive saves and comments; avoid static endings that give no reason to interact\n- Limit repetitive phrasing across episodes; each hook should introduce a new detail or angle rather than re‑using the same line",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 4, \"avg\": 47.47}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}}\nLessons:\n- Prioritize 'lok_katha' (folklore/local legends) over 'family_bond', as it outperforms family themes with a higher format average (58.96 vs 47.47) and drives direct intent (saves).\n- Open with specific, atmospheric place-and-time hooks (e.g., 'Raat ke dhai baje, Raniganj...') to grab attention, rather than abstract dialogue like '<whisper>Papa…?</whisper>'.\n- Avoid starting multi-part videos with recap hooks ('Pichhle part mein...'); continuous series suffer viewership drop-offs, making standalone hooks or self-contained stories preferable.\n- Ground settings in eerie, real-sounding regional locations (desolate roads, cursed village wells) which drive stronger views than generic road fog tropes.",
   "format_scores": {
     "family_bond": {
-      "n": 3,
-      "avg": 55.5
+      "n": 4,
+      "avg": 47.47
     },
     "lok_katha": {
       "n": 1,
-      "avg": 59.39
+      "avg": 58.96
     }
   },
   "series": null,
@@ -322,11 +378,12 @@
     "Choti Line Ki Akhri Bus",
     "Kosi Gaon ka Safed Peepal",
     "Chhatarpur ka Ulti Pailo Kuan",
-    "Almora Bypass ka Safed Dhund"
+    "Almora Bypass ka Safed Dhund",
+    "Pangri Ghat ka Lal Lantern"
   ],
   "spend": {
-    "month": "2026-10",
-    "usd": 0.6355
+    "month": "2026-11",
+    "usd": 0.09
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -360,6 +417,16 @@
       "entity": "Chhal (a Pahadi shape-shifting mountain spirit that mimics loved ones in fog)",
       "protagonist": "Karan, 22, driving his ailing father Ramesh, 54, back from a valley hospital at 2:30 AM.",
       "emotion": "A father's quiet, unconditional protection and a final goodbye."
+    },
+    {
+      "title": "Pangri Ghat ka Lal Lantern",
+      "format": "family_bond",
+      "parts": 1,
+      "region": "Konkan Region, Maharashtra",
+      "setting": "An isolated railway level-crossing surrounded by dense supari (areca nut) groves in Pangri village during heavy midnight monsoon rains.",
+      "entity": "Devachar (protective Konkan guardian entity) / Spirit of a loved one",
+      "protagonist": "Rohan, 22, grandson riding home on a scooter",
+      "emotion": "A grandmother's protective love transcending death"
     }
   ],
   "followers": 1,
@@ -372,11 +439,11 @@
     "first_seen": "2026-10-29"
   },
   "modal_spend": {
-    "month": "2026-10",
+    "month": "2026-11",
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-10-31",
-    "used": 10000.0
+    "date": "2026-11-01",
+    "used": 6523
   }
 }
