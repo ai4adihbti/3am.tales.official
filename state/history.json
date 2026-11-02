@@ -44,7 +44,7 @@
         "total_interactions": 13
       },
       "score": 81.78,
-      "metrics_at": "2026-11-01T14:32:58+00:00"
+      "metrics_at": "2026-11-02T15:33:17+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 2",
@@ -97,7 +97,7 @@
         "total_interactions": 6
       },
       "score": 37.17,
-      "metrics_at": "2026-11-01T14:32:58+00:00"
+      "metrics_at": "2026-11-02T15:33:17+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 3",
@@ -149,7 +149,7 @@
         "total_interactions": 7
       },
       "score": 47.0,
-      "metrics_at": "2026-11-01T14:32:58+00:00"
+      "metrics_at": "2026-11-02T15:33:17+00:00"
     },
     {
       "title": "Kosi Gaon ka Safed Peepal — Part 1",
@@ -256,7 +256,7 @@
         "total_interactions": 6
       },
       "score": 58.96,
-      "metrics_at": "2026-11-01T14:32:58+00:00"
+      "metrics_at": "2026-11-02T15:33:17+00:00"
     },
     {
       "title": "Almora Bypass ka Safed Dhund — Part 1",
@@ -313,7 +313,7 @@
         "total_interactions": 3
       },
       "score": 23.94,
-      "metrics_at": "2026-11-01T14:32:58+00:00"
+      "metrics_at": "2026-11-02T15:33:17+00:00"
     },
     {
       "title": "Pangri Ghat ka Lal Lantern — Part 1",
@@ -359,10 +359,58 @@
       "posted_at": "2026-11-01T15:47:08+00:00",
       "youtube_id": "5KJ-H-4Ki3o",
       "youtube_url": "https://youtube.com/shorts/5KJ-H-4Ki3o"
+    },
+    {
+      "title": "Bishnupur ka Kali Kamra — Part 1",
+      "series_title": "Bishnupur ka Kali Kamra",
+      "series_id": "20261102-bishnupur-ka-kali-kamra",
+      "part": 1,
+      "total_parts": 2,
+      "format": "village_secret",
+      "hook": "Us kali mitti ki murti ke gale mein... wahi taaviz tha!",
+      "critic_score": 66,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 129.434,
+      "file": "reel-20261102-153316.mp4",
+      "caption": "Bishnupur ka Kali Kamra | Part 1/2: Amavasya ki raat ka yeh raaz... (fiction)\n\nAgar Thakuma late night aise locked room me jayein, toh kya tum peeche jaate? 👀\n\nFollow karo, agla part jaldi aa raha hai 🕯️\n.\n.\n#hindistory #horrorstories #bhootiyakahani #hindihorrorstory #bishnupurrajbari #hindihorrorreels #horrorseries #desicreepypasta",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 129.5,
+        "loudness_lufs": -14.2,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I10",
+          "I16",
+          "I6",
+          "I15",
+          "I18",
+          "I5"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 6421,
+        "hq_images": 0,
+        "est_cost_usd": 0.09,
+        "month_spend_usd": 0.18
+      },
+      "media_id": "18642432829057690",
+      "permalink": "https://www.instagram.com/reel/DfPrH14D7DJ/",
+      "posted_at": "2026-11-02T15:54:34+00:00",
+      "youtube_id": "NbLL2-uhF30",
+      "youtube_url": "https://youtube.com/shorts/NbLL2-uhF30"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 4, \"avg\": 47.47}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}}\nLessons:\n- Prioritize 'lok_katha' (folklore/local legends) over 'family_bond', as it outperforms family themes with a higher format average (58.96 vs 47.47) and drives direct intent (saves).\n- Open with specific, atmospheric place-and-time hooks (e.g., 'Raat ke dhai baje, Raniganj...') to grab attention, rather than abstract dialogue like '<whisper>Papa…?</whisper>'.\n- Avoid starting multi-part videos with recap hooks ('Pichhle part mein...'); continuous series suffer viewership drop-offs, making standalone hooks or self-contained stories preferable.\n- Ground settings in eerie, real-sounding regional locations (desolate roads, cursed village wells) which drive stronger views than generic road fog tropes.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 4, \"avg\": 47.47}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}}\nLessons:\n- Use vivid, time‑specific settings (e.g., “Raat ke dhai baje… sunsaan sadak”) to create immediate tension; vague or generic backdrops get less engagement\n- Start with a hook that hints at a mystery or danger and then deliver a clear narrative twist in the next part to keep viewers returning\n- Keep the story arc tight: 1‑2 minute reels with a single, surprising reveal perform better than multi‑part sagas that stall on filler details\n- Avoid overly subtle audio cues (e.g., whispered “Papa…?”) without visual context, as they fail to capture attention and result in low saves and shares",
   "format_scores": {
     "family_bond": {
       "n": 4,
@@ -373,7 +421,62 @@
       "avg": 58.96
     }
   },
-  "series": null,
+  "series": {
+    "id": "20261102-bishnupur-ka-kali-kamra",
+    "title": "Bishnupur ka Kali Kamra",
+    "format": "village_secret",
+    "total_parts": 2,
+    "outline": [
+      "Ayan returns to his family's ancestral Bishnupur Rajbari for his grandfather's shraad, only to discover his fragile grandmother locking herself inside a windowless terracotta room every Amavasya midnight while holding an old brass lamp. Driven by curiosity on a pitch-black night, Ayan sneaks in and finds a terrifying life-sized clay idol weeping thick, dark liquid, bearing his missing uncle's silver amulet.",
+      "Ayan confronts Thakuma, expecting a sinister truth, only to learn that 20 years ago, his uncle accidentally awakened an ancient spirit—and to save Ayan's life as a baby, Thakuma bound the spirit inside clay, sacrificing her own speech every dark moon to keep the entity asleep."
+    ],
+    "concept": {
+      "setting": "An ancient, moss-covered terracotta mansion (Rajbari) in rural Bishnupur surrounded by dense bamboo groves on a pitch-black Amavasya night.",
+      "legend": "In Bengal's rural hamlets, ancient terracotta artisans sometimes sealed malevolent midnight spirits inside consecrated clay idols to spare their village. However, the idol requires a ritual offering of mustard oil and silent vigil on every dark Amavasya, or the spirit wakes to claim the eldest son.",
+      "final_twist": "The clay idol isn't holding an ancient demon—it holds the preserved, clay-encased body of his missing uncle, who willingly let himself be sealed to act as a permanent shield for Ayan's family."
+    },
+    "voice_style": "narrator",
+    "narrator_gender": "female",
+    "voice_engine": "sarvam",
+    "profile": {
+      "region": "Rarh Region, West Bengal",
+      "setting": "An ancient, moss-covered terracotta mansion (Rajbari) in rural Bishnupur surrounded by dense bamboo groves on a pitch-black Amavasya night.",
+      "entity": "Nishi/Shakchunni (Folk entity trapped in terracotta clay) / Protective Ancestral Oath",
+      "protagonist": "Ayan, 23, a college graduate visiting his estranged Thakuma (grandmother)",
+      "emotion": "A grandmother's unbearable guilt and a secret sacrifice made to protect the family lineage"
+    },
+    "characters": [
+      {
+        "id": "C1",
+        "name": "Ayan",
+        "gender": "male",
+        "age": 22,
+        "voice_type": "young_male",
+        "look": "Lean build, sharp features, wheatish skin tone, messy black hair, wearing a navy blue cotton kurta over denim jeans, silver watch on left wrist",
+        "personality": "Curious, protective, anxious, rational until confronted with the unexplained",
+        "is_entity": false
+      },
+      {
+        "id": "C2",
+        "name": "Thakuma",
+        "gender": "female",
+        "age": 74,
+        "voice_type": "old_female",
+        "look": "Frail frail frame, wrinkled dark skin, thin silver-white hair tied in a loose small knot, wearing a traditional white cotton Bengal saree with thin red border, red bindi on forehead",
+        "personality": "Silent, guarded, carrying a heavy ancient secret, intensely protective",
+        "is_entity": false
+      }
+    ],
+    "setting": "An ancient terracotta mansion (Rajbari) in rural Bishnupur, Bengal: carved red-clay bricks, overgrown moss, heavy wooden doors, surrounded by dark bamboo groves under a pitch-black night",
+    "ref_files": {
+      "C1": "state/series/20261102-bishnupur-ka-kali-kamra/C1.png",
+      "C2": "state/series/20261102-bishnupur-ka-kali-kamra/C2.png"
+    },
+    "parts_done": 1,
+    "previously": [
+      "Ayan returns to his family's ancestral Bishnupur Rajbari and catches his silent grandmother sneaking into a locked terracotta room on Amavasya midnight. Following her, he finds a weeping black clay idol wearing his missing uncle's silver amulet."
+    ]
+  },
   "series_done": [
     "Choti Line Ki Akhri Bus",
     "Kosi Gaon ka Safed Peepal",
@@ -383,7 +486,7 @@
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.09
+    "usd": 0.18
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -427,12 +530,22 @@
       "entity": "Devachar (protective Konkan guardian entity) / Spirit of a loved one",
       "protagonist": "Rohan, 22, grandson riding home on a scooter",
       "emotion": "A grandmother's protective love transcending death"
+    },
+    {
+      "title": "Bishnupur ka Kali Kamra",
+      "format": "village_secret",
+      "parts": 2,
+      "region": "Rarh Region, West Bengal",
+      "setting": "An ancient, moss-covered terracotta mansion (Rajbari) in rural Bishnupur surrounded by dense bamboo groves on a pitch-black Amavasya night.",
+      "entity": "Nishi/Shakchunni (Folk entity trapped in terracotta clay) / Protective Ancestral Oath",
+      "protagonist": "Ayan, 23, a college graduate visiting his estranged Thakuma (grandmother)",
+      "emotion": "A grandmother's unbearable guilt and a secret sacrifice made to protect the family lineage"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "family_bond",
-    "target": 2
+    "format": "village_secret",
+    "target": 3
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -443,7 +556,7 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-01",
-    "used": 6523
+    "date": "2026-11-02",
+    "used": 6421
   }
 }
