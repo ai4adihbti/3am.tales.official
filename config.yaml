@@ -1,13 +1,13 @@
 # ─────────────────────────────────────────────────────────────
-#  3AM Tales — multi-agent Instagram Reel system
+#  Darawni Kahani (formerly 3AM Tales) — multi-agent Instagram Reel system
 #  Illustrated Hindi horror/emotional stories in parts (Part 1, Part 2 …),
 #  with recurring characters, fast-cut voiced dialogue and an original score.
 #  (The posting time itself lives in .github/workflows/daily-reel.yml)
 # ─────────────────────────────────────────────────────────────
 
 channel:
-  name: "3AM Tales"
-  watermark: "@3am.tales.official"       # small text in the bottom-left corner of every reel
+  name: "Darawni Kahani"
+  watermark: "@darawnikahaniy"           # small text in the bottom-left corner of every reel
   audience: "Indian Gen Z and young adults (16-30), watch reels late at night, speak Hinglish, love emotional twists and suspense"
   cta: "Follow karo, agla part jaldi aa raha hai 🕯️"
   language: "Hindi-heavy Hinglish — natural spoken Hindi with the English words Indians use every day"
@@ -212,7 +212,7 @@ qa:
 
 caption:
   max_hashtags: 8
-  core_hashtags: ["#hindistory", "#horrorstories", "#bhootiyakahani", "#hindihorrorstory"]
+  core_hashtags: ["#darawnikahani", "#hindistory", "#horrorstories", "#bhootiyakahani", "#hindihorrorstory"]
   cover: true                            # custom cover: the most emotional close-up + big title (grid + Explore)
 
 youtube:
@@ -221,7 +221,7 @@ youtube:
   privacy: "public"            # "public", "unlisted" or "private"
   category_id: "24"            # 24 = Entertainment
   contains_synthetic_media: false   # YouTube's "altered or realistic synthetic content" label (needed only for realistic-looking content)
-  tags: ["hindi horror story", "bhoot ki kahani", "horror story in hindi", "hindi kahani", "horror shorts", "3am tales"]
+  tags: ["hindi horror story", "bhoot ki kahani", "horror story in hindi", "hindi kahani", "horror shorts", "darawni kahani", "bhutiya kahani"]
 
 schedule:
   # GitHub starts scheduled runs late (often hours), so the workflow triggers several times in the afternoon.

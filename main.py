@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""3AM Tales — the orchestrator.
+"""Darawni Kahani (formerly 3AM Tales) — the orchestrator.
 
 Runs the agent team end to end, one part of an illustrated horror series per day:
 
