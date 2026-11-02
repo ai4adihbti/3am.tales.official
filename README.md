@@ -1,4 +1,4 @@
-# 🕯️ 3AM Tales: a free, fully automated multi-agent Instagram Reels system
+# 🕯️ Darawni Kahani (formerly 3AM Tales): a free, fully automated multi-agent Instagram Reels system
 
 Every day a team of AI agents makes and posts one part of an **illustrated Hindi story series** (emotional
 family stories with a supernatural twist, friends and local legends, village secrets): animated-storybook
@@ -321,3 +321,8 @@ Gemini was also heavily overloaded, and one Groq backup model (Llama 3.3) is no 
   drawn; a reel that runs long is a warning, not a reason to drop it. Voice speed-up goes up to 15% only if needed
   to stay under 3:00 (a YouTube Short).
 - Groq "request too large": retried with a small answer room, enough for reviews and captions.
+
+## Channel renamed: Darawni Kahani (@darawnikahaniy)
+The reels now carry the watermark @darawnikahaniy, captions include #darawnikahani, YouTube tags include
+"darawni kahani" and "bhutiya kahani", and the story writer writes for "Darawni Kahani". The display names
+("Darawni Kahani | Hindi Horror Story") are set in the Instagram and YouTube apps themselves.
