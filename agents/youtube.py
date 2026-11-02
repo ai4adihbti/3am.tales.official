@@ -45,7 +45,7 @@ def _access_token() -> str:
 
 def _metadata(ctx: Context, series: dict, caption: str) -> dict:
     yt = ctx.cfg.get("youtube", {})
-    title_core = str(series.get("title") or "3AM Tale")
+    title_core = str(series.get("title") or "Darawni Kahani")
     total = int(series.get("total_parts") or 1)
     part = f" Part {series.get('part', 1)}" if total > 1 else ""
     title = f"{title_core}{part} 😨 | Hindi Horror Story #shorts"
@@ -90,7 +90,7 @@ def upload(ctx: Context, video: Path, series: dict, caption: str) -> dict:
         if "quotaExceeded" in msg or "uploadLimitExceeded" in msg:
             raise YouTubeError(f"YouTube's daily upload limit reached; try tomorrow ({msg[:120]})")
         if "youtubeSignupRequired" in msg:
-            raise YouTubeError("this Google account has no YouTube channel yet — create the 3AM Tales channel first")
+            raise YouTubeError("this Google account has no YouTube channel yet — create the Darawni Kahani channel first")
         raise YouTubeError(f"couldn't start the upload: HTTP {r.status_code} {msg}")
     with open(video, "rb") as fh:
         up = requests.put(r.headers["Location"], data=fh, timeout=1800,

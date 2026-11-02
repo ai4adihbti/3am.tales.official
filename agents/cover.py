@@ -66,7 +66,7 @@ def make(ctx: Context, script: dict, series: dict, image_paths: dict[str, Path],
     im = Image.composite(Image.new("RGB", (W, H), (6, 4, 12)), im, shade)
 
     draw = ImageDraw.Draw(im)
-    title = str(series.get("title") or "3AM Tale").strip()
+    title = str(series.get("title") or "Darawni Kahani").strip()
     size = 112
     while size > 64:
         font = _font(size)
