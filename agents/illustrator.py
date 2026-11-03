@@ -41,7 +41,7 @@ FRAMING = {
     "closeup": "close-up of the face and shoulders filling the frame, large glossy expressive eyes with catchlights, "
                "emotion clearly readable, detailed hair strands",
     "extreme_closeup": "dramatic extreme close-up on the face and wide glistening eyes filling the frame, "
-                       "every eyelash and tear drawn in detail",
+                       "every eyelash drawn in detail, clear glistening tears if crying",
     "object": "close-up insert shot of an object or detail, shallow depth of field",
     "over_shoulder": "over-the-shoulder shot",
 }
@@ -466,7 +466,9 @@ def shot_prompt(ctx: Context, shot: dict, chars: dict, ref_ids: list[str], limit
                         "pose, expression and angle change; references are for the people only, not the background")
         head.append(f"Exactly {len(people)} {'person' if len(people) == 1 else 'people'} in the picture")
     setting = no_text(ctx.notes.get("setting", ""))
-    tail = "One single scene, no panels or collage. No text, letters, signboards or writing anywhere"
+    tail = ("One single scene, no panels, collage or double exposure. Every person fully inside the frame with a "
+            "natural face and two normal hands, nothing merged into walls. Natural warm brown Indian skin in lantern "
+            "light (never grey or black skin); tears clear, never black. No text, letters, signboards or writing")
     style = v["style"]
     palette = v["night_palette"] if shot.get("night", True) else v["day_palette"]
     fixed = ". ".join(head)
@@ -764,10 +766,23 @@ def _contact_sheet(script: dict, refs: dict[str, Path], paths: dict[str, Path]) 
 
 def quality_check(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path],
                   paths: dict[str, Path]) -> list[str]:
-    """Gemini looks at all the illustrations at once and flags the bad ones; those get redrawn once."""
+    """Gemini inspects all the illustrations and flags the bad ones; those get redrawn, then checked once more
+    (a redraw can have new problems)."""
     v = ctx.cfg["visuals"]
     if not v.get("quality_check", True) or ctx.mock:
         return []
+    budget = int(v.get("max_redraws", 6))
+    fixed = _inspect(ctx, studio, script, refs, paths, budget, second=False)
+    if fixed and budget - len(fixed) > 0:
+        again = _inspect(ctx, studio, script, refs, paths, budget - len(fixed), second=True)
+        fixed += again
+    ctx.notes["redrawn"] = fixed
+    return fixed
+
+
+def _inspect(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path], paths: dict[str, Path],
+             budget: int, second: bool) -> list[str]:
+    v = ctx.cfg["visuals"]
     chars = {c["id"]: c for c in script["characters"]}
     expected = {im["id"]: {"shows": im["image"][:160], "visible": [chars[c]["name"] for c in im["characters"] if c in chars]}
                 for im in script["images"] if im["id"] in paths}
@@ -779,7 +794,13 @@ The story's setting: {script.get("setting") or "(not given)"}
 What each illustration should show:
 {json.dumps(expected, ensure_ascii=False, indent=1)}
 
-Flag ONLY serious problems a viewer would notice:
+{"This is a SECOND look after some pictures were redrawn: check the redrawn ones especially." if second else ""}
+Be strict: these pictures go to thousands of viewers, and one ugly picture makes them scroll away.
+Flag every problem a viewer would notice:
+- tears drawn as black ink or black streaks; skin drawn grey, black or ashen (Indian skin is warm brown)
+- a face or body part merged into a wall, building or sky, a double-exposure look, or a giant floating face
+- people cut off at the left/right edge of the frame (half faces at the edges)
+- duplicated objects in hands (two identical lanterns), extra fingers, extra arms, twisted limbs
 - a character clearly doesn't match their reference (different face, hair, age, gender or outfit)
 - wrong people in the picture (missing, extra or duplicated person)
 - deformed faces, eyes, hands or extra limbs
@@ -793,7 +814,7 @@ Flag ONLY serious problems a viewer would notice:
 - anything gory or unsafe
 
 Return JSON: {{"redraw": [{{"id": "I4", "problem": "short", "fix": "one sentence to add to the drawing prompt"}}]}}
-At most {v.get('max_redraws', 6)} items, worst first. Return an empty list if everything is fine."""
+At most {budget} items, worst first. Return an empty list if everything is fine."""
     try:
         result = ctx.llm.json(prompt, temperature=0.2, list_key="redraw", images=[("image/jpeg", _contact_sheet(script, refs, paths))],
                               mock={"redraw": []})
@@ -801,7 +822,7 @@ At most {v.get('max_redraws', 6)} items, worst first. Return an empty list if ev
         log(NAME, f"quality check skipped ({str(e)[:120]})")
         return []
     items = [x for x in (result.get("redraw") or []) if isinstance(x, dict) and x.get("id") in paths]
-    items = items[: v.get("max_redraws", 6)]
+    items = items[:budget]
     if not items:
         log(NAME, "quality check: all illustrations passed")
         return []
@@ -809,7 +830,7 @@ At most {v.get('max_redraws', 6)} items, worst first. Return an empty list if ev
     fixed = []
     for x in items:
         iid = x["id"]
-        dest = paths[iid].with_name(f"{iid}_redraw.png")
+        dest = paths[iid].with_name(f"{iid}_redraw{'2' if second else ''}.png")
         try:
             _draw_image(ctx, studio, ims[iid], chars, refs, dest, random.randint(1, 2**30),
                         extra=str(x.get("fix", ""))[:200], premium=iid in ctx.notes.get("heroes", []))
@@ -818,7 +839,6 @@ At most {v.get('max_redraws', 6)} items, worst first. Return an empty list if ev
             log(NAME, f"redrew {iid}: {str(x.get('problem', ''))[:80]}")
         except ImageError as e:
             log(NAME, f"redraw of {iid} failed ({str(e)[:80]}); keeping the original")
-    ctx.notes["redrawn"] = fixed
     return fixed
 
 

@@ -355,3 +355,14 @@ twist in the last line; most people watch muted; top creators post about twice a
 - **YouTube titles start with the curiosity hook**, e.g. "Thakuma raat ko kahan jaati hai… 😨 | Bishnupur ka Kali
   Kamra #shorts #horrorstory".
 - The daily starter fires at 9:23 AM and 4:23 PM IST; the GitHub hourly timer is the backup.
+
+## v7.3.1 — picture and story quality (from the 3 Nov reel)
+The 3 Nov reel had black ink tears, an almost black-skinned girl, a face merged into a wall, half people at the frame
+edges, a man with two identical lanterns, one close-up shown 6 times, and a weak story written by a backup model
+while Google's Gemini was overloaded.
+- Every picture prompt now asks for natural warm brown skin, clear tears, everyone fully inside the frame, normal
+  hands, nothing merged into walls (rules kept even when the prompt is shortened).
+- The picture check is stricter (names these exact defects) and takes a second look after redrawing.
+- No picture more than twice in a reel.
+- When there are hours before posting, the story waits up to ~9 min per step for Google's strong writers instead of
+  switching to the weaker backups after a minute.

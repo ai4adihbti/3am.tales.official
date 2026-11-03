@@ -218,7 +218,9 @@ class LLM:
         errors: list[str] = []
         patience = int(self._cfg_llm.get("patience_rounds", 2))
         for rnd in range(4 + patience):
-            strong = [m for m in self.models if "lite" not in m]
+            # the strong Gemini models write far better stories than the backups (Groq, "lite"): wait for them first
+            strong = [m for m in self.models if "lite" not in m and not m.startswith("groq:")
+                      and (m not in self.slow or rnd % 4 == 3)]      # a model that timed out is retried only now and then
             # when Google is overloaded, wait for a strong model a little before settling for a "lite" one:
             # lite models write noticeably weaker stories
             pool = strong if (rnd < patience and strong) else list(self.models)

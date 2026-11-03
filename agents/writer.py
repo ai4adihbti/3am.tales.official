@@ -73,7 +73,7 @@ RULES = """Rules:
   close-ups); every image must be used at least once.
 - Total spoken length {min_s}-{max_s} seconds: roughly {min_w}-{max_w} words in total.
 - {voice_rule}
-- Reuse is limited: the motif wide shot appears at most 2 times, no other image more than 3 times, and never the
+- Reuse is limited: the motif wide shot appears at most 2 times, no other image more than 2 times, and never the
   same image on two cuts in a row. Prefer a NEW image (an insert of a hand, a lantern, eyes, feet, a clue) over a repeat.
 - Every image's background must match the "setting" (same region, buildings, trees). Never put in things the story
   doesn't have (cars, phones, modern objects in a village story; hills or pine forest in a plains village).

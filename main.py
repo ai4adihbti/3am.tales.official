@@ -318,6 +318,12 @@ def main() -> int:
             shutil.rmtree(work, ignore_errors=True)
             return 0
 
+    # hours before the posting time: be patient with Google's strong writers (backups write weaker stories)
+    spare_min = _minutes_to_post(cfg, mode)
+    if spare_min > 120:
+        ctx.llm._cfg_llm["patience_rounds"] = 12          # up to ~9 min of waiting per request before backups
+        log("Orchestrator", f"{spare_min / 60:.1f} h before posting: waiting for the best writing models when busy")
+
     # 1. learn from past posts (a bonus: never a reason to fail)
     try:
         analyst.run(ctx, memory)

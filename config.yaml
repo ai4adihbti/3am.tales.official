@@ -108,7 +108,7 @@ visuals:
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
   quality_check: true               # Gemini inspects every illustration and redraws bad ones
   upscale: true                     # Real-ESRGAN sharpens every picture before animation (free, runs on the CPU)
-  max_redraws: 4
+  max_redraws: 5             # picture check: first look + a second look after redraws
   # Nano Banana (Gemini's image model) — best faces and consistency, paid from the Gemini API
   # (~$0.034 ≈ ₹3 per picture; your Google AI Pro plan includes $10/month of credit for this).
   gemini_image_model: "gemini-nano-banana-2.1"
