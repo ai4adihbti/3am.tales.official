@@ -366,3 +366,8 @@ while Google's Gemini was overloaded.
 - No picture more than twice in a reel.
 - When there are hours before posting, the story waits up to ~9 min per step for Google's strong writers instead of
   switching to the weaker backups after a minute.
+
+### Reel review sheets (v7.3.2)
+Every run saves a frame sheet of its reel (one frame per 2 s), its first 3 seconds and its script in
+`state/reviews/` (last 14 kept), so each reel can be reviewed without downloading it. The daily starter now also
+re-fires at 11:23 AM and 6:53 PM IST: if a run failed, the slot gets a second chance the same day.

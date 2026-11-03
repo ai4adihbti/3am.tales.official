@@ -228,6 +228,33 @@ def instagram_already_posted(cfg: dict, ctx: Context, mode: str) -> str:
     return ""
 
 
+def save_review_sheet(reel, stamp: str, script: dict, review: dict) -> None:
+    """A small frame sheet of every reel (one frame per 2 s) + its first 3 s, saved with the memory, so each reel
+    can be reviewed later without downloading it. Keeps the last 14."""
+    import subprocess as _sp
+    d = ROOT / "state" / "reviews"
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+        _sp.run(["ffmpeg", "-y", "-v", "error", "-i", str(reel), "-vf",
+                 "fps=1/2,scale=144:256,tile=10x4:padding=2:color=black", "-frames:v", "1", "-q:v", "4",
+                 str(d / f"{stamp}-sheet.jpg")], check=True, timeout=120)
+        _sp.run(["ffmpeg", "-y", "-v", "error", "-t", "3", "-i", str(reel), "-vf",
+                 "fps=4,scale=180:320,tile=12x1", "-frames:v", "1", "-q:v", "4",
+                 str(d / f"{stamp}-first3s.jpg")], check=True, timeout=120)
+        (d / f"{stamp}-script.json").write_text(json.dumps({
+            "hook": script.get("hook", ""), "hook_text": script.get("hook_text", ""),
+            "critic": review.get("score"), "feedback": str(review.get("feedback", ""))[:600],
+            "lines": [ln["roman"] for sh in script["shots"] for ln in sh.get("lines", [])]},
+            ensure_ascii=False, indent=1), encoding="utf-8")
+        files = sorted(d.glob("*"))
+        stamps = sorted({f.name.split("-sheet")[0].split("-first3s")[0].split("-script")[0] for f in files})
+        for old in stamps[:-14]:
+            for f in d.glob(f"{old}-*"):
+                f.unlink()
+    except Exception as e:  # noqa: BLE001 — a review sheet is a bonus, never a reason to fail
+        log("Orchestrator", f"review sheet skipped ({str(e)[:100]})")
+
+
 def _trim_for_preview(script: dict, cuts: int = 12) -> dict:
     """Preview mode: keep the first cuts only (about 25-30 s) to check look and sound cheaply."""
     shots = script["shots"][:cuts]
@@ -466,6 +493,8 @@ def main() -> int:
 
     # 9. final quality gate
     report = qa.check(ctx, reel, script, total)
+    if not args.mock:
+        save_review_sheet(reel, stamp, script, review)
 
     # paid Gemini usage estimate for this run (images + voices + writing), counted against the monthly budget
     run_cost = (studio.gemini_images * illustrator.NanoBanana.PRICE
