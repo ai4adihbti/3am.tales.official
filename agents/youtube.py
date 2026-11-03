@@ -48,13 +48,18 @@ def _metadata(ctx: Context, series: dict, caption: str) -> dict:
     title_core = str(series.get("title") or "Darawni Kahani")
     total = int(series.get("total_parts") or 1)
     part = f" Part {series.get('part', 1)}" if total > 1 else ""
-    title = f"{title_core}{part} 😨 | Hindi Horror Story #shorts"
+    hook = str(series.get("hook_text") or "").strip(" .…")
+    # curiosity first (that's what makes people tap), then the story name and the search words
+    title = (f"{hook}… 😨 | {title_core}{part} #shorts #horrorstory" if hook else
+             f"{title_core}{part} 😨 | Hindi Horror Story #shorts")
+    if len(title) > 100:
+        title = f"{hook}… 😨 | Hindi Horror Story #shorts" if hook else title
     if len(title) > 100:
         title = f"{title_core[:60]}{part} | Hindi Horror #shorts"[:100]
     handle = ctx.cfg["channel"].get("watermark", "")
     body = caption.replace("Follow karo", "Subscribe karo").replace(handle, "")
     body = re.sub(r"\s*#aistory\b", "", body, flags=re.I).strip()
-    desc = (f"{body}\n\n🕯️ Roz raat ek nayi bhootiya kahani — Subscribe karo!\n"
+    desc = (f"{body}\n\n🕯️ Roz do nayi darawni kahaniyan (1 PM aur 9 PM) — Subscribe karo!\n"
             f"Instagram: {handle}\nAll stories are fiction.\n#shorts")
     tags = re.findall(r"#(\w+)", caption) + list(yt.get("tags", []))
     tags = list(dict.fromkeys(t for t in tags if t.lower() != "aistory"))

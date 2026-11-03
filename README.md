@@ -344,3 +344,14 @@ pushes it further if people watch to the end and send it to friends. So:
 GitHub created the scheduled runs 4-10 hours late (1-2 Nov 2026). The main starter is now a daily scheduled task
 (set up by Claude) that starts this workflow at ~4:20 PM IST; the GitHub timer fires every hour from 8:17 AM to
 9:17 PM IST as a backup. Whichever starts first makes the reel and posts it at 9:17 PM; the rest skip.
+
+## v7.3 — two short reels a day, subtitles, curiosity titles (growth plan, Nov 2026)
+From studying fast-growing horror Shorts/Reels: viral horror shorts are 30-60 s with a creepy first frame and a
+twist in the last line; most people watch muted; top creators post about twice a day.
+- **Two reels a day: 1:17 PM and 9:17 PM IST** (`schedule.post_times_ist`). Each run makes its reel up to 5 h early
+  and posts on time; the morning run leaves enough free pictures for the evening reel.
+- **~45-60 s reels** (40-55 s spoken, 9 pictures, 16-24 cuts).
+- **Big Hinglish subtitles** burned into every reel (bold white, black outline, above Instagram's caption area).
+- **YouTube titles start with the curiosity hook**, e.g. "Thakuma raat ko kahan jaati hai… 😨 | Bishnupur ka Kali
+  Kamra #shorts #horrorstory".
+- The daily starter fires at 9:23 AM and 4:23 PM IST; the GitHub hourly timer is the backup.

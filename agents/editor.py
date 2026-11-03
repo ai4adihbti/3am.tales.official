@@ -138,7 +138,8 @@ def build_overlay(ctx: Context, timeline: list[dict], speakers: list[str], lead:
     font = v["subtitle_font"]
     serif = v.get("end_card_font", "DejaVu Serif")
     colors = v.get("speaker_colors", ["#FFFFFF", "#FFD34D", "#9BE7FF", "#FFB4A2"])
-    base = "&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,1,0,1,5,2,2,80,80,520,1"
+    # bold white with a thick black outline, in the lower-middle: above Instagram's caption/buttons area
+    base = "&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,1,0,1,6,2,2,90,90,620,1"
     styles = [f"Style: S{i},{font},{fs},{_ass_color(colors[i % len(colors)])},{base}" for i in range(5)]
     styles.append(f"Style: Hook,{font},{int(fs * 1.06)},{_ass_color(v['hook_color'])},{base}")
     styles.append(f"Style: Mark,{font},34,&H00F2F2F2,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,1,0,1,2,1,1,40,40,46,1")

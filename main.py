@@ -95,10 +95,37 @@ def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
+def _slots(cfg: dict, now_ist: datetime) -> list[datetime]:
+    """Today's posting times (India time), earliest first."""
+    sc = cfg.get("schedule", {})
+    times = sc.get("post_times_ist") or [sc.get("post_time_ist", "21:17")]
+    out = []
+    for t in times:
+        hh, mm = (int(x) for x in str(t).split(":"))
+        out.append(now_ist.replace(hour=hh, minute=mm, second=0, microsecond=0))
+    return sorted(out)
+
+
+def _window(cfg: dict) -> timedelta:
+    return timedelta(hours=float(cfg.get("schedule", {}).get("start_window_hours", 5)))
+
+
 def _post_target(cfg: dict, now_utc: datetime) -> datetime:
-    """Today's posting time (India time) as an aware datetime."""
-    hh, mm = (int(x) for x in str(cfg.get("schedule", {}).get("post_time_ist", "21:17")).split(":"))
-    return now_utc.astimezone(IST).replace(hour=hh, minute=mm, second=0, microsecond=0)
+    """The posting time this run belongs to: the first of today's slots whose 'late' limit hasn't passed
+    (a slot may still post late until the next slot's window opens; the last one until midnight)."""
+    now = now_utc.astimezone(IST)
+    slots = _slots(cfg, now)
+    for i, s in enumerate(slots):
+        late = slots[i + 1] - _window(cfg) if i + 1 < len(slots) else s.replace(hour=23, minute=59)
+        if now <= late:
+            return s
+    return slots[-1]
+
+
+def _later_slots(cfg: dict, now_utc: datetime) -> int:
+    """How many of today's posting times come after this run's one (their pictures must be kept free)."""
+    target = _post_target(cfg, now_utc)
+    return sum(1 for s in _slots(cfg, now_utc.astimezone(IST)) if s > target)
 
 
 def _day_start(now_ist: datetime) -> datetime:
@@ -125,32 +152,31 @@ def schedule_check(cfg: dict, memory: Memory, mode: str, now_utc: datetime) -> t
     """Should this run make a reel? (auto = the daily schedule; post = a manual 'post now')"""
     sc = cfg.get("schedule", {})
     since = _hours_since_last_post(memory, now_utc)
+    now = now_utc.astimezone(IST)
+    posted_at = now - timedelta(hours=since) if since is not None else None
     if mode in ("preview", "dry_run"):
-        now = now_utc.astimezone(IST)
-        done = since is not None and now - timedelta(hours=since) >= _day_start(now)
-        if sc.get("protect_daily_post", True) and not done:
-            return False, (f"NOT RUN: a {mode} now would use the free pictures that tonight's "
-                           f"{_post_target(cfg, now_utc):%H:%M} IST reel needs (Cloudflare gives enough for one reel a "
-                           "day). Run tests after tonight's post, or set schedule.protect_daily_post: false in config.yaml.")
+        last_start = _slots(cfg, now)[-1] - _window(cfg)
+        done = posted_at is not None and posted_at >= last_start
+        if sc.get("protect_daily_post", True) and not done and now >= _day_start(now):
+            return False, (f"NOT RUN: a {mode} now would use the free pictures that today's scheduled reels need "
+                           "(Cloudflare gives enough for the day's reels only). Run tests after the last post of the "
+                           "day, or set schedule.protect_daily_post: false in config.yaml.")
         return True, f"mode '{mode}': making a reel without posting it"
     if mode == "post":
         gap = float(sc.get("post_mode_min_gap_hours", 3))
         if since is not None and since < gap:
             return False, (f"a reel went out only {since * 60:.0f} min ago; not posting another one so soon "
                            f"(wait {gap:.0f} h between posts, or use mode 'dry_run' to just make one)")
-        return True, ("mode 'post': making and posting a reel now (it counts as today's reel: the 9:17 PM run will "
-                      "skip today, because the free pictures cover one reel a day)")
+        return True, "mode 'post': making and posting a reel now (it counts as the current slot's reel)"
     target = _post_target(cfg, now_utc)
-    window = float(sc.get("start_window_hours", 5))
-    now = now_utc.astimezone(IST)
-    if since is not None and now - timedelta(hours=since) >= _day_start(now):
-        return False, (f"today's reel already went out {since:.1f} h ago; nothing to do (the free picture allowance "
-                       "covers one reel a day: 5:30 AM to 5:30 AM IST)")
-    if now < target - timedelta(hours=window):
-        return False, (f"too early ({now:%H:%M} IST): a later scheduled run will make today's reel and post it at "
+    start = target - _window(cfg)
+    if posted_at is not None and posted_at >= start:
+        return False, (f"the {target:%H:%M} IST reel already went out {since:.1f} h ago; nothing to do")
+    if now < start:
+        return False, (f"too early ({now:%H:%M} IST): a later scheduled run will make the next reel and post it at "
                        f"{target:%H:%M} IST")
     if now <= target:
-        return True, f"making today's reel now; it will be posted at {target:%H:%M} IST"
+        return True, f"making the reel now; it will be posted at {target:%H:%M} IST"
     return True, f"GitHub started this run late ({now:%H:%M} IST): making the reel and posting it as soon as it's ready"
 
 
@@ -367,8 +393,9 @@ def main() -> int:
     ledger = memory.data.setdefault("cf_day", {"date": day, "used": 0.0})
     if ledger.get("date") != day:
         ledger.update(date=day, used=0.0)
+    later = _later_slots(cfg, datetime.now(timezone.utc)) if mode == "auto" else 0
     affordable = studio.plan(len(script["images"]), sum(1 for c in script["characters"] if c["id"] not in saved),
-                             ledger["used"])
+                             ledger["used"], later_runs=later)
     # backup pictures (AI Horde) are slow: give them more time when the run has hours before the posting time
     spare = _minutes_to_post(cfg, mode)
     horde_min = float(cfg["visuals"].get("aihorde_minutes", 15))
@@ -422,7 +449,7 @@ def main() -> int:
             log("Orchestrator", f"sound effects skipped ({str(e)[:120]})")
 
     # 8. edit
-    end_card = ("The End", "Roz raat 9 baje ek nayi kahani") if final else \
+    end_card = ("The End", "Roz 1 PM aur 9 PM nayi kahani") if final else \
         ("To Be Continued", f"Follow For Part {series['part'] + 1}")
     overlay = work / "overlay.ass"
     speakers = ["N"] + [c["id"] for c in script["characters"]]
@@ -528,7 +555,7 @@ def main() -> int:
             memory.save()
         if cfg.get("youtube", {}).get("enabled", True) and youtube.ready():
             try:
-                post.update(youtube.upload(ctx, reel, series, cap))
+                post.update(youtube.upload(ctx, reel, {**series, "hook_text": script.get("hook_text", "")}, cap))
                 if result:
                     memory.save()
             except Exception as e:  # noqa: BLE001 — YouTube problems never stop the Instagram post

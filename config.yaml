@@ -61,12 +61,12 @@ llm:
 
 story:
   # SHORT, complete stories: completion rate is Instagram's #1 signal and 2-2.5 min reels were mostly abandoned
-  min_seconds: 55           # spoken length target (the finished reel is ~60-80 s)
-  max_seconds: 72
+  min_seconds: 40           # spoken length target: viral horror shorts are 30-60 s (finished reel ~45-60 s)
+  max_seconds: 55
   max_reel_seconds: 175     # hard cap for the finished reel (YouTube Shorts must be 3:00 or less)
-  min_cuts: 22              # ~2-3 s per cut, faster at the peaks
-  max_cuts: 32
-  max_images: 14            # unique illustrations per reel (fewer, better pictures; leaves room for high-quality redraws)
+  min_cuts: 16              # ~2-3 s per cut, faster at the peaks
+  max_cuts: 24
+  max_images: 9             # unique illustrations per reel (two reels a day share the free picture allowance)
   parts_per_series: [1, 1]  # ONE complete story per reel: strangers never saw "Part 1", so parts lose them
   min_critic_score: 78
   close_enough_margin: 6    # a draft within this many points of the bar is used after the revisions
@@ -108,7 +108,7 @@ visuals:
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker
   quality_check: true               # Gemini inspects every illustration and redraws bad ones
   upscale: true                     # Real-ESRGAN sharpens every picture before animation (free, runs on the CPU)
-  max_redraws: 6
+  max_redraws: 4
   # Nano Banana (Gemini's image model) — best faces and consistency, paid from the Gemini API
   # (~$0.034 ≈ ₹3 per picture; your Google AI Pro plan includes $10/month of credit for this).
   gemini_image_model: "gemini-nano-banana-2.1"
@@ -191,9 +191,9 @@ video:
   crossfade: 0.12                        # near-hard cuts, like the references
   grade: "eq=contrast=1.04:saturation=1.04"
   grain: false
-  subtitles: false                       # the reference style has none; set true for Hinglish subtitles
+  subtitles: true                        # big Hinglish subtitles: most people scroll with the sound off
   subtitle_font: "DejaVu Sans"
-  subtitle_size: 68
+  subtitle_size: 78
   hook_color: "#FF3B3B"
   end_sub_color: "#FFD34D"
   speaker_colors: ["#FFFFFF", "#FFD34D", "#9BE7FF", "#FFB4A2", "#C8F7C5"]
@@ -229,7 +229,8 @@ schedule:
   # GitHub starts scheduled runs late (often hours), so the workflow triggers several times in the afternoon.
   # The first "auto" run that starts within start_window_hours of post_time makes the reel at once, then WAITS and
   # posts at exactly post_time (India time). Later triggers see the post and skip. Runs that start too early skip too.
-  post_time_ist: "21:17"
+  post_time_ist: "21:17"         # (used only if post_times_ist is empty)
+  post_times_ist: ["13:17", "21:17"]   # two reels a day: top Shorts/Reels creators post 2x daily
   start_window_hours: 5          # GitHub stops any job after 6 h, so a run may not start earlier than this
   # Cloudflare's free pictures cover ONE reel per day (5:30 AM to 5:30 AM IST). So "auto" skips if a reel already
   # went out since 5:30 AM today (e.g. a manual post), and test runs (preview / dry_run) are refused until

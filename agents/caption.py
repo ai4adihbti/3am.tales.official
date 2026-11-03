@@ -16,7 +16,7 @@ def write_caption(ctx: Context, script: dict, series: dict, fmt: dict) -> str:
     part_tag = f"Part {series['part']}/{series['total_parts']}" if multi else ""
     title_part = f"{series['title']} | {part_tag}" if multi else series["title"]
     share = ch.get("share_line", "Ye reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀")
-    follow = ("Agla part kal raat 9 baje 🕯️ Follow karo" if not final else ch.get("follow_line", "Roz raat 9 baje ek nayi darawni kahani 🕯️ Follow karo"))
+    follow = ("Agla part jaldi 🕯️ Follow karo" if not final else ch.get("follow_line", "Roz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo"))
     brief = {"story": series["title"], "part": part_tag or "complete story", "summary": script.get("summary"),
              "characters": [x.get("name") for x in script.get("characters", [])]}
     prompt = f"""Write the Instagram caption for an illustrated Hindi horror story reel on "{ch['name']}"

@@ -524,7 +524,7 @@ class Studio:
     def gemini_images(self) -> int:
         return self.premium.count if self.premium else 0
 
-    def plan(self, n_images: int, n_portraits: int, used_today: float = 0.0) -> int:
+    def plan(self, n_images: int, n_portraits: int, used_today: float = 0.0, later_runs: int = 0) -> int:
         """Share what is LEFT of today's free Cloudflare neurons (earlier runs today count too): every picture,
         portrait and a few redraws on the 4B model first; only the rest goes to the high-quality 9B model.
         Returns how many pictures today's allowance can still pay for."""
@@ -533,8 +533,12 @@ class Studio:
         if not any(p.name == "cloudflare" for p in self.base):
             return n_images
         daily = float(v.get("cloudflare_daily_neurons", 10000)) * 0.85     # safety margin on our estimate
-        left = max(0.0, daily - used_today)
         per = neurons(v["cloudflare_model"], v["width"], v["height"], 2)
+        # keep enough for the reels still to come today (two reels a day share one free allowance)
+        keep = later_runs * (int(self.ctx.cfg["story"].get("max_images", 14)) + 2 + int(v.get("max_redraws", 6))) * per
+        left = max(0.0, daily - used_today - keep)
+        if later_runs:
+            log(NAME, f"keeping ~{keep:.0f} neurons for {later_runs} more reel(s) today")
         reserve = (n_portraits + min(3, int(v.get("max_redraws", 6)))) * per
         affordable = max(0, int((left - reserve) // per))
         need = (min(n_images, affordable) + n_portraits + int(v.get("max_redraws", 6))) * per
