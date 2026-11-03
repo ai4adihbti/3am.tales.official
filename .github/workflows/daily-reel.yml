@@ -2,16 +2,25 @@ name: Daily horror reel
 
 on:
   schedule:
-    # GitHub starts scheduled runs late (we've seen ~4.5 h) and sometimes skips one, so it is triggered 7 times.
-    # The first run that starts after 4:17 PM IST makes the reel and POSTS IT AT 9:17 PM IST (config.yaml →
-    # schedule.post_time_ist); the others skip in ~2 minutes. Times are UTC (IST = UTC + 5:30).
-    - cron: "47 7 * * *"     # 1:17 PM IST (useful only when GitHub is very late)
-    - cron: "17 9 * * *"     # 2:47 PM IST
-    - cron: "47 10 * * *"    # 4:17 PM IST
-    - cron: "17 12 * * *"    # 5:47 PM IST
-    - cron: "47 13 * * *"    # 7:17 PM IST
-    - cron: "17 15 * * *"    # 8:47 PM IST
-    - cron: "47 15 * * *"    # 9:17 PM IST (last chance: posts as soon as ready)
+    # BACKUP starter. The main starter is a daily scheduled task that starts this workflow at ~4:20 PM IST.
+    # GitHub creates scheduled runs 4-10 hours late (measured 1-2 Nov 2026), so this timer fires every hour from
+    # 8:17 AM to 9:17 PM IST: whatever the delay, one run lands between 4:17 and 9:17 PM. That run makes the reel and
+    # posts it at 9:17 PM IST; every other run skips in ~2 minutes ("too early" / "today's reel already went out").
+    # Times are UTC (IST = UTC + 5:30).
+    - cron: "47 2 * * *"
+    - cron: "47 3 * * *"
+    - cron: "47 4 * * *"
+    - cron: "47 5 * * *"
+    - cron: "47 6 * * *"
+    - cron: "47 7 * * *"
+    - cron: "47 8 * * *"
+    - cron: "47 9 * * *"
+    - cron: "47 10 * * *"
+    - cron: "47 11 * * *"
+    - cron: "47 12 * * *"
+    - cron: "47 13 * * *"
+    - cron: "47 14 * * *"
+    - cron: "47 15 * * *"
   workflow_dispatch:
     inputs:
       mode:

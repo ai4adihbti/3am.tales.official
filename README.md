@@ -339,3 +339,8 @@ pushes it further if people watch to the end and send it to friends. So:
 - **Stricter Critic:** the bar is 78/100 with up to 3 rewrites (the day's post is still never lost).
 - 14 pictures per reel (fewer, better; leaves free allowance for high-quality redraws). End card: "Roz raat 9 baje
   ek nayi kahani".
+
+### Starting on time without GitHub's timer (v7.2)
+GitHub created the scheduled runs 4-10 hours late (1-2 Nov 2026). The main starter is now a daily scheduled task
+(set up by Claude) that starts this workflow at ~4:20 PM IST; the GitHub timer fires every hour from 8:17 AM to
+9:17 PM IST as a backup. Whichever starts first makes the reel and posts it at 9:17 PM; the rest skip.
