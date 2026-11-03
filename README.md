@@ -326,3 +326,16 @@ Gemini was also heavily overloaded, and one Groq backup model (Llama 3.3) is no 
 The reels now carry the watermark @darawnikahaniy, captions include #darawnikahani, YouTube tags include
 "darawni kahani" and "bhutiya kahani", and the story writer writes for "Darawni Kahani". The display names
 ("Darawni Kahani | Hindi Horror Story") are set in the Instagram and YouTube apps themselves.
+
+## v7.2 — built for growth (from the 3 Nov channel audit)
+Every reel stalled at ~110-135 accounts reached with 0 shares: Instagram tests a reel on a small group and only
+pushes it further if people watch to the end and send it to friends. So:
+- **~1-minute complete stories** (55-72 s spoken, ~60-80 s reel) instead of 2-2.5 minutes; no more multi-part
+  series (strangers never saw Part 1). An unfinished series is completed first.
+- **Something new every 15-20 s** and the biggest shock in the last 10 s, so people watch to the end.
+- **Shareable twists**, and every caption asks viewers to send the reel to a friend.
+- **Captions people can find:** line 1 = hook + "Bhoot ki kahani | Hindi horror story"; no "Part 1/1", "(fiction)"
+  moved to a small "(kalpanik kahani)" line.
+- **Stricter Critic:** the bar is 78/100 with up to 3 rewrites (the day's post is still never lost).
+- 14 pictures per reel (fewer, better; leaves free allowance for high-quality redraws). End card: "Roz raat 9 baje
+  ek nayi kahani".

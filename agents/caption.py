@@ -12,8 +12,12 @@ def write_caption(ctx: Context, script: dict, series: dict, fmt: dict) -> str:
     c = ctx.cfg["caption"]
     ch = ctx.cfg["channel"]
     final = series["part"] >= series["total_parts"]
-    part_tag = f"Part {series['part']}/{series['total_parts']}"
-    brief = {"series": series["title"], "part": part_tag, "summary": script.get("summary"),
+    multi = int(series.get("total_parts") or 1) > 1
+    part_tag = f"Part {series['part']}/{series['total_parts']}" if multi else ""
+    title_part = f"{series['title']} | {part_tag}" if multi else series["title"]
+    share = ch.get("share_line", "Ye reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀")
+    follow = ("Agla part kal raat 9 baje 🕯️ Follow karo" if not final else ch.get("follow_line", "Roz raat 9 baje ek nayi darawni kahani 🕯️ Follow karo"))
+    brief = {"story": series["title"], "part": part_tag or "complete story", "summary": script.get("summary"),
              "characters": [x.get("name") for x in script.get("characters", [])]}
     prompt = f"""Write the Instagram caption for an illustrated Hindi horror story reel on "{ch['name']}"
 (audience: {ch['audience']}).
@@ -23,20 +27,20 @@ Story brief (do NOT reveal the {'twist' if final else 'cliffhanger'}):
 {json.dumps(brief, indent=1, ensure_ascii=False)}
 
 Caption rules (Roman Hinglish, the way Indian Gen Z writes):
-- Line 1: "{series['title']} | {part_tag}" followed by a short curiosity hook (max 90 chars total). End with "(fiction)".
-- Line 2: one question that makes people comment, e.g. "Tum hote toh qabristan jaate ya nahi? 👀".
-- Line 3: {"'Poori kahani khatam… agli kahani kal raat 🕯️ Follow karo'" if final else f"exactly this call to action: {ch['cta']}"}
+- Line 1 (people SEARCH these words on Instagram): a short curiosity hook about this story, then
+  " | Bhoot ki kahani | Hindi horror story". Max 110 characters. Do not write "Part 1/1" or "(fiction)".
+- Line 2: one question that makes people comment, about a choice the viewer would make
+  (e.g. "Tum hote toh darwaza kholte ya nahi? 👀").
 - 0-2 emojis total, no cringe.
-- Then {c['max_hashtags'] - len(c['core_hashtags'])} niche hashtags for this story (mix Hindi-English, e.g. #qabristan #horrorseries).
+- Then {c['max_hashtags'] - len(c['core_hashtags'])} niche hashtags for this story (mix Hindi-English, e.g. #qabristan #bhootiyahaveli).
 
-Return JSON: {{"line1": "...", "line2": "...", "line3": "...", "hashtags": ["#..."]}}"""
+Return JSON: {{"line1": "...", "line2": "...", "hashtags": ["#..."]}}"""
 
-    plain = {"line1": f"{series['title']} | {part_tag} (fiction)",
+    plain = {"line1": f"{title_part} | Bhoot ki kahani | Hindi horror story",
              "line2": "Tum hote toh kya karte? 👀",
-             "line3": "Poori kahani khatam… agli kahani kal raat 🕯️ Follow karo" if final else ch["cta"],
-             "hashtags": ["#bhootkikahani", "#desihorror", "#raatkikahani", "#horrorseries"]}
+             "hashtags": ["#bhootkikahani", "#desihorror", "#raatkikahani", "#darawnikahani"]}
     try:
-        r = _ask(ctx, prompt, ch, series, part_tag)
+        r = _ask(ctx, prompt, ch, series, part_tag or "complete story")
     except Exception as e:  # noqa: BLE001 — the reel is finished; a plain caption beats not posting
         log(NAME, f"the caption writer is unavailable ({str(e).splitlines()[0][:100]}); using a simple caption")
         r = plain
@@ -51,8 +55,11 @@ Return JSON: {{"line1": "...", "line2": "...", "line3": "...", "hashtags": ["#..
         if len(t) > 1 and t not in tags and t != "#aistory":
             tags.append(t)
     tags = tags[: c["max_hashtags"]]
-    caption = (f"{str(r['line1']).strip()}\n\n{str(r.get('line2') or plain['line2']).strip()}\n\n"
-               f"{str(r.get('line3') or ch['cta']).strip()}\n.\n.\n{' '.join(tags)}")
+    line1 = str(r["line1"]).strip().replace("(fiction)", "").replace("Part 1/1", "").strip(" |")
+    if multi and part_tag not in line1:
+        line1 = f"{part_tag} · {line1}"
+    caption = (f"{line1}\n\n{str(r.get('line2') or plain['line2']).strip()}\n\n{share}\n{follow}\n\n"
+               f"(kalpanik kahani)\n.\n.\n{' '.join(tags)}")
     log(NAME, f"caption ready ({len(tags)} hashtags)")
     return caption[:2200]
 

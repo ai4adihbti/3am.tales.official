@@ -96,7 +96,12 @@ RULES = """Rules:
   * Cut 2 = a short turn back in time (max 8 words, e.g. "Par ye sab shuru hua teen din pehle…"), mood "tense".
   * Only then the motif wide shot and the calm set-up. {recap_rule}
   * The final line of the part echoes the cold-open line or image, so the reel loops when it replays.
-- No single line longer than 22 words (long sentences become long frozen pictures). {ending_rule}"""
+- KEEP THEM WATCHING TO THE END (the #1 signal): it is a ~1-minute story, so no slow stretch. Every 15-20 seconds
+  something new happens — a sound, a clue, a reveal, a question the viewer needs answered. The biggest shock comes
+  in the last 10 seconds, never earlier.
+- MAKE IT WORTH SENDING: the twist should make a viewer want to send it to a friend ("bhai ye dekh…") — a
+  relatable fear (a late-night bus, a call from an old number, a grandmother's warning) with a clever reveal.
+- No single line longer than 18 words (long sentences become long frozen pictures). {ending_rule}"""
 
 
 DIALOGUE_RULE = ("At least 80% of lines are CHARACTER dialogue. The narrator \"N\" only opens the part (one or two "
@@ -104,14 +109,14 @@ DIALOGUE_RULE = ("At least 80% of lines are CHARACTER dialogue. The narrator \"N
 NARRATOR_RULE = ("STORYTELLER STYLE: one {g} storyteller \"N\" tells the whole kahani like the best late-night Hindi "
                  "horror-story reels — warm, intimate, emotional, in simple spoken Hindi, describing what the characters "
                  "feel, see and hear, and quoting what they say (\"Maa ne dheere se kaha, 'beta, darwaza mat kholna'\"). "
-                 "85-95% of lines are narration. Characters speak in their own voice only 2-5 times, at the biggest "
+                 "85-95% of lines are narration. Characters speak in their own voice only 1-3 times, at the biggest "
                  "moments (a scream, a warning, a whispered question, a final sting).")
 
 STORYTELLER_CRAFT = """How the reference reels are built (copy this rhythm exactly):
 - After the cold open (see the rules), a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a few
   lit windows. The storyteller sets the scene over it in 1-2 sentences ("Ye kahani hai Rampur gaon ki…"). This motif
   image comes back once more as a breathing space (same image id, different camera motion), not more.
-- INTRODUCE the heroine/hero with a medium shot and a close-up of their face; make us love them in 15 seconds
+- INTRODUCE the heroine/hero with a medium shot and a close-up of their face; make us care about them in 8 seconds
   (who they live with, what they long for, a small sweet detail).
 - RHYTHM: calm narration sits on longer holds (one 10-20 word sentence on a wide or medium shot, motion zoom_in or
   pan); as fear rises, the cuts get short — 4-8 words per cut, alternating extreme close-ups of the frightened eyes,
@@ -171,7 +176,8 @@ def _series_block(series: dict) -> str:
     if series.get("previously"):
         out.append("What happened in earlier parts:\n" + "\n".join(f"- Part {i + 1}: {p}"
                                                                   for i, p in enumerate(series["previously"])))
-        out.append("After the cold open (cuts 1-2), the narrator gives a one-line recap ('Pichhle part mein…'), then "
+        out.append("Most viewers never saw the earlier parts: this part must make sense ON ITS OWN. "
+                   "After the cold open (cuts 1-2), the narrator gives a one-line recap ('Pichhle part mein…'), then "
                    "continue straight from the cliffhanger.")
     return "\n".join(out)
 

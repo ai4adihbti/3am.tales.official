@@ -38,7 +38,9 @@ Score each 0-10:
 - hook: would a viewer stop scrolling in the first 3 seconds? (cut 1 must be a scary close-up flash-forward with a
   short shocking line, cut 2 a turn back in time; a calm scenic opening scores at most 4)
 - emotion: do we care about these people? is there a real bond/feeling at the centre?
-- tension: does it escalate cut by cut through small, concrete details? any dead lines?
+- tension: does it escalate cut by cut through small, concrete details? any dead lines? Does something new happen
+  every 15-20 seconds, with the biggest shock in the last 10 seconds? Would a viewer watch to the very end?
+- shareable (part of "ending"): would a viewer send this to a friend?
 - ending: {'does the twist land emotionally and pay off earlier parts?' if final else 'is the cliffhanger strong enough to make people follow for the next part?'}
 - dialogue: natural spoken Hindi for each character's age? short one-breath lines? distinct voices?
   does it follow this voice style: {voice_rule(series)} "hi" Devanagari + English words in English letters?
@@ -79,9 +81,9 @@ Return JSON:
             notes.append("COLD OPEN: cut 1 must be a close-up flash-forward of the scariest moment with ONE gripping "
                          "line of at most 10 words; the calm motif shot comes only after cut 2.")
         longest = max((len(ln["roman"].split()) for ln in lines), default=0)
-        if longest > 24:
+        if longest > 20:
             # feedback only (no penalty): the editor splits long lines anyway, and a missed post is worse
-            notes.append(f"LONG LINES: a line has {longest} words; keep every line under 22 words (split it).")
+            notes.append(f"LONG LINES: a line has {longest} words; keep every line under 18 words (split it).")
         uses: dict[str, int] = {}
         for sh in shots:
             uses[sh["image_id"]] = uses.get(sh["image_id"], 0) + 1

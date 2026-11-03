@@ -60,15 +60,17 @@ llm:
   patience_rounds: 2        # when Gemini is overloaded, wait up to ~2 x 45 s for a strong model before using "lite"
 
 story:
-  min_seconds: 135          # spoken length target; the finished reel stays ≤ 2:55 so it is a YouTube Short too
-  max_seconds: 165
+  # SHORT, complete stories: completion rate is Instagram's #1 signal and 2-2.5 min reels were mostly abandoned
+  min_seconds: 55           # spoken length target (the finished reel is ~60-80 s)
+  max_seconds: 72
   max_reel_seconds: 175     # hard cap for the finished reel (YouTube Shorts must be 3:00 or less)
-  min_cuts: 40              # like the reference: slow 6-8 s holds on wide shots, fast 1-2 s cuts at the peaks
-  max_cuts: 56
-  max_images: 24            # unique illustrations per part (more pictures = fewer repeats; ~170 neurons each)
-  parts_per_series: [1, 3]  # the Researcher decides how many daily parts each story needs (1 = a single reel)
-  min_critic_score: 75
-  max_revisions: 2
+  min_cuts: 22              # ~2-3 s per cut, faster at the peaks
+  max_cuts: 32
+  max_images: 14            # unique illustrations per reel (fewer, better pictures; leaves room for high-quality redraws)
+  parts_per_series: [1, 1]  # ONE complete story per reel: strangers never saw "Part 1", so parts lose them
+  min_critic_score: 78
+  close_enough_margin: 6    # a draft within this many points of the bar is used after the revisions
+  max_revisions: 3
   max_ideas_per_run: 2
   last_resort_score: 45     # if no draft reaches the bar, the best safe draft at or above this is still posted
 
@@ -205,7 +207,7 @@ billing:
 
 qa:
   # The final check before posting. If a reel fails, it is NOT posted (it's still saved for you to see).
-  min_seconds: 60
+  min_seconds: 40
   max_seconds: 230
   max_reused_image_ratio: 0.35           # above this, a warning (pictures were reused because drawing failed)
   min_drawn_images: 6                    # NOT posted only if fewer real pictures than this could be drawn

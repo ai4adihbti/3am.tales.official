@@ -75,7 +75,7 @@ def produce_script(ctx: Context, memory: Memory) -> tuple[dict, dict, dict, dict
         score, script, review = best
         if review.get("safety_ok") and script["shots"] and (overall is None or score > overall[0]):
             overall = (score, series, fmt, script, review)
-        if review.get("safety_ok") and score >= s["min_critic_score"] - 10:
+        if review.get("safety_ok") and score >= s["min_critic_score"] - int(s.get("close_enough_margin", 10)):
             log("Orchestrator", f"using the best draft ({score}/100), close enough to the bar")
             return series, fmt, script, review
         if series.get("characters"):
@@ -422,7 +422,7 @@ def main() -> int:
             log("Orchestrator", f"sound effects skipped ({str(e)[:120]})")
 
     # 8. edit
-    end_card = ("The End", "Follow for more kahaniyan") if final else \
+    end_card = ("The End", "Roz raat 9 baje ek nayi kahani") if final else \
         ("To Be Continued", f"Follow For Part {series['part'] + 1}")
     overlay = work / "overlay.ass"
     speakers = ["N"] + [c["id"] for c in script["characters"]]
