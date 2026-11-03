@@ -27,27 +27,27 @@ formats:
     label: "Family bond, supernatural twist"
     brief: "A deeply emotional story between family members (maa-beta, papa-beti, dadi-pota, bhai-behen, a newly married couple) in an everyday Indian situation at night — a lonely highway, a hospital corridor, a village bus stop, a power cut at home. Something is quietly wrong; small details build a mystery; the twist is supernatural AND emotional (love, sacrifice, a promise, a goodbye). Gentle dread, not gore. Fiction."
   - id: village_secret
-    unlock_after: 4
+    unlock_after: 2
     label: "Village / family secret"
     brief: "Someone returns to their nani's or dada's village or old family house and uncovers what the elders never talk about: a locked room, a name nobody says, a ritual done every amavas. Emotional reveal about the family's past. Fiction."
   - id: friends_dare
-    unlock_after: 8
+    unlock_after: 3
     label: "Friends and a local legend"
     brief: "3-4 young friends hear a local legend (a cemetery, an old haveli, a closed hospital, a highway, a forest temple ruin) and go there at night. Banter turns to fear; friendship and loyalty are tested. Fiction."
   - id: safar
-    unlock_after: 12
+    unlock_after: 4
     label: "Night journey"
     brief: "A night journey somewhere in India — a sleeper train, an overnight bus through the ghats, a truck on a desert highway, a lonely ferry — and a fellow passenger or a stop that isn't what it seems. Emotional twist about who they really are. Fiction."
   - id: shehar
-    unlock_after: 16
+    unlock_after: 5
     label: "City night mystery"
     brief: "A young person alone in a big Indian city at night — a PG room, a girls' hostel, a hospital night shift, a call centre, the last metro, an old chawl — and something that slowly doesn't add up. Modern, relatable, lonely, with an emotional sting. Fiction."
   - id: purani_haveli
-    unlock_after: 22
+    unlock_after: 10
     label: "Old haveli / royal legend"
     brief: "A legend from the past — a Rajasthani haveli, a Bengal zamindar bari, a hill-station British bungalow, a ruined fort — told across two timelines (then and now), with a love, a betrayal or a promise that never ended. Fiction."
   - id: rahasya
-    unlock_after: 30
+    unlock_after: 14
     label: "Mind-bending mystery"
     brief: "A psychological mystery where the scare may not be a ghost at all — a time loop, a missing day, a person nobody else remembers, a message from the future — with a clever twist that makes viewers rewatch. Fiction."
 
@@ -207,7 +207,7 @@ billing:
 
 qa:
   # The final check before posting. If a reel fails, it is NOT posted (it's still saved for you to see).
-  min_seconds: 40
+  min_seconds: 25
   max_seconds: 230
   max_reused_image_ratio: 0.35           # above this, a warning (pictures were reused because drawing failed)
   min_drawn_images: 6                    # NOT posted only if fewer real pictures than this could be drawn

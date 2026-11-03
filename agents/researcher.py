@@ -159,8 +159,17 @@ What our analytics say so far:
 Titles ALREADY done (never repeat or closely imitate):
 {chr(10).join('- ' + t for t in avoid[-60:]) or '- (none yet)'}
 
-Brainstorm 6 very different story ideas internally, judge each like a viewer scrolling at 1 AM (would they stop,
-feel something, and wait for the next part?), then return ONLY the strongest one.
+Brainstorm 8 very different story ideas internally, judge each like a viewer scrolling at 1 AM (would they stop in
+the first 2 seconds, watch the whole minute, and send it to a friend?), then return ONLY the strongest one.
+What works in 1-minute horror reels (use these patterns, invent fresh content):
+- ONE simple premise a viewer gets in 3 seconds, rooted in an everyday fear young Indians know: a call from someone
+  who died, a WhatsApp "online" at 3 AM, a knock in a parent's voice, a lift stopping at a floor that doesn't
+  exist, a sleeper-berth neighbour, a PG/hostel rule nobody explains, a CCTV replay with one extra person, a
+  wedding photo with an extra face, a delivery to a house that burned down, a mirror that lags.
+- "RULES" stories: a place with a strict rule ("raat ko naam pukare toh jawab mat dena") and what happens when
+  someone breaks it.
+- A twist in the last line that REFRAMES everything (the caller was protecting her; he was the ghost all along;
+  the date on the ticket is 1998) — the kind people rewatch and tag friends on.
 Strong = a concrete Indian setting young Indians recognise, a local legend or rule with one unforgettable creepy
 image, 2-4 characters we care about, an emotional core, escalating events, and a twist that lands.
 Use fresh Indian place and character names (invent the village/town names); vary the region of India.
@@ -177,6 +186,7 @@ Return JSON:
   "region": "state/region of India", "setting": "...", "entity": "the legend / entity / mystery in a few words",
   "protagonist": "hero: age, gender, relation", "emotion": "the emotional core in a few words",
   "legend": "the local legend in 2 sentences",
+  "logline": "the premise in at most 12 words (it becomes the hook)",
   "outline": ["part 1 in 1-2 sentences (ending on its cliffhanger if more parts follow)", "…"],
   "final_twist": "...", "why_it_will_work": "1 sentence"}}"""
 
@@ -185,6 +195,7 @@ Return JSON:
         "region": "Madhya Pradesh", "setting": "a college town near a village with an abandoned hill cemetery",
         "entity": "a voice that calls names", "protagonist": "19-year-old college boy", "emotion": "friendship",
         "legend": "Whoever enters the cemetery after midnight hears their name called from inside.",
+        "logline": "Qabristan se aadhi raat ko tumhara naam pukara jaata hai",
         "outline": ["Friends decide to go; an old man warns them; a handprint appears. Cliffhanger: a figure behind them.",
                     "Inside the cemetery they find a grave with one of their names. Twist."],
         "final_twist": "The old man died years ago.", "why_it_will_work": "College dares are relatable."})
@@ -198,7 +209,7 @@ Return JSON:
     series = {"id": memory.new_series_id(idea.get("title", "series")), "title": idea.get("title", "Untitled"),
               "format": fmt["id"], "total_parts": total, "part": 1, "parts_done": 0,
               "outline": outline, "characters": None, "previously": [],
-              "concept": {k: idea.get(k) for k in ("setting", "legend", "final_twist")},
+              "concept": {k: idea.get(k) for k in ("logline", "setting", "legend", "final_twist")},
               "profile": {k: idea.get(k) for k in ("region", "setting", "entity", "protagonist", "emotion")}}
     series.update(_voice_style(ctx, memory))
     log(NAME, f'new story "{series["title"]}" · {total} part{"s" if total > 1 else ""} '

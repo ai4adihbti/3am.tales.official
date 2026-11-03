@@ -371,3 +371,8 @@ while Google's Gemini was overloaded.
 Every run saves a frame sheet of its reel (one frame per 2 s), its first 3 seconds and its script in
 `state/reviews/` (last 14 kept), so each reel can be reviewed without downloading it. The daily starter now also
 re-fires at 11:23 AM and 6:53 PM IST: if a run failed, the slot gets a second chance the same day.
+
+### Story ideas built for 1-minute reels (v7.3.3)
+The head-of-story agent now brainstorms 8 ideas around proven 1-minute horror patterns (everyday fears young
+Indians know, "rules" stories, a last-line twist that reframes everything) and writes a 12-word logline that becomes
+the hook. City, travel and friends stories unlock within the first few days instead of weeks.
