@@ -40,11 +40,30 @@ def _fetch_insights(graph: str, media_id: str, token: str) -> dict | None:
     return None
 
 
-def score(m: dict) -> float:
+def _watch_time(graph: str, media_id: str, token: str) -> dict:
+    """Average watch time (Instagram's #1 ranking signal). Asked separately: older API versions may not have it."""
+    try:
+        r = requests.get(f"{graph}/{media_id}/insights",
+                         params={"metric": "ig_reels_avg_watch_time", "access_token": token}, timeout=30)
+        if r.status_code != 200:
+            return {}
+        for item in r.json().get("data", []):
+            vals = item.get("values") or [{}]
+            v = vals[0].get("value", item.get("total_value", {}).get("value", 0)) or 0
+            return {"avg_watch_s": round(float(v) / 1000, 1)}          # Instagram reports milliseconds
+    except (requests.RequestException, ValueError, TypeError):
+        pass
+    return {}
+
+
+def score(m: dict, duration: float | None = None) -> float:
+    """What the algorithm rewards: people watching to the end and sending it on, then saves/comments/likes."""
     views = m.get("views") or m.get("reach") or 0
-    eng = 3 * m.get("shares", 0) + 3 * m.get("saved", 0) + 2 * m.get("comments", 0) + m.get("likes", 0)
-    # engagement per 1,000 views, plus a little credit for raw reach
-    return round((eng / max(views, 1)) * 1000 + views / 1000, 2)
+    eng = 5 * m.get("shares", 0) + 3 * m.get("saved", 0) + 2 * m.get("comments", 0) + m.get("likes", 0)
+    out = (eng / max(views, 1)) * 1000 + views / 1000
+    if m.get("avg_watch_s") and duration:
+        out += 100 * min(1.5, m["avg_watch_s"] / duration)        # completion counts most
+    return round(out, 2)
 
 
 def run(ctx: Context, memory: Memory) -> None:
@@ -75,7 +94,9 @@ def run(ctx: Context, memory: Memory) -> None:
             log(NAME, f"post \"{p.get('title', p['media_id'])}\" no longer exists on Instagram; skipping it from now on")
             continue
         if m:
-            p["metrics"], p["score"] = m, score(m)
+            if not m.get("_deleted"):
+                m.update(_watch_time(graph, p["media_id"], token))
+            p["metrics"], p["score"] = m, score(m, p.get("duration_s"))
             p["metrics_at"] = now.isoformat(timespec="seconds")
             updated += 1
 
@@ -99,7 +120,9 @@ def run(ctx: Context, memory: Memory) -> None:
         m = p.get("metrics", {})
         return (f"- [{p['format']}] \"{p['title']}\" · hook: \"{p.get('hook', '')}\" · "
                 f"views {m.get('views', m.get('reach', '?'))}, shares {m.get('shares', 0)}, "
-                f"saves {m.get('saved', 0)}, comments {m.get('comments', 0)}")
+                f"saves {m.get('saved', 0)}, comments {m.get('comments', 0)}"
+                + (f", watched on average {m['avg_watch_s']}s of {p.get('duration_s', 0):.0f}s "
+                   f"({100 * m['avg_watch_s'] / max(1, p.get('duration_s') or 1):.0f}%)" if m.get("avg_watch_s") else ""))
 
     learnings = "Best performers:\n" + "\n".join(row(p) for p in top)
     if bottom:
@@ -110,6 +133,7 @@ def run(ctx: Context, memory: Memory) -> None:
         summary = ctx.llm.json(
             f"""You analyse a horror Reels account. From this data, write 3-5 short, concrete lessons
 about which settings, hooks, twists and formats the audience responds to, and what to avoid.
+Watch time (how much of the reel people watch) and shares matter most to Instagram and YouTube.
 
 {learnings}
 
