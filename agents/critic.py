@@ -71,7 +71,7 @@ Return JSON:
             total -= 12
             notes.append(f"LENGTH: about {secs:.0f}s; it must be {s['min_seconds']}-{s['max_seconds']}s "
                          f"(roughly {int(s['min_seconds'] * 2.0)}-{int(s['max_seconds'] * 2.0)} spoken words).")
-        if cuts < s["min_cuts"] - 6:
+        if cuts < s["min_cuts"] - 2:
             total -= 10
             notes.append(f"CUTS: only {cuts}; write {s['min_cuts']}-{s['max_cuts']} cuts of ~2-3 s each, one line per cut, "
                          "cutting between speaker and listener close-ups.")

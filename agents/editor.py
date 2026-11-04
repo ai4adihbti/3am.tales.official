@@ -77,7 +77,7 @@ def split_long_shots(ctx: Context, script: dict, shot_starts: list[float], voice
         d = b - a
         if d <= max_len:
             continue
-        n = max(2, math.ceil(d / 4.5))
+        n = max(2, math.ceil(d / (max_len * 0.8)))
         cuts, prev = [], a
         for k in range(1, n):
             target = a + d * k / n

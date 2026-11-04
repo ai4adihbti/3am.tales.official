@@ -284,7 +284,7 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
                     frame = cv2.convertScaleAbs(frame, alpha=flick)
                 dust = (dust_night if night else dust_day).layer(t, 0.55 if night else 0.35)
                 frame = cv2.add(frame, cv2.resize(dust, (W, H), interpolation=cv2.INTER_LINEAR))
-            if scare and f < 5:
+            if scare and f < 5 and i > 0:      # never a white first frame (feeds show frame one)
                 frame = cv2.addWeighted(frame, 1 - (5 - f) / 6, np.full_like(frame, 255), (5 - f) / 6, 0)
             proc.stdin.write(frame.tobytes())
         proc.stdin.close()

@@ -127,7 +127,7 @@ def run(ctx: Context, memory: Memory) -> None:
     learnings = "Best performers:\n" + "\n".join(row(p) for p in top)
     if bottom:
         learnings += "\nWeakest performers:\n" + "\n".join(row(p) for p in bottom)
-    learnings += "\nFormat averages (higher is better): " + json.dumps(memory.data["format_scores"])
+    learnings += "\nStory-type average SCORES (a points score, not seconds; higher is better): " + json.dumps(memory.data["format_scores"])
 
     if len(measured) >= 4:
         summary = ctx.llm.json(

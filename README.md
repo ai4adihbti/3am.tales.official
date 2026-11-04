@@ -376,3 +376,9 @@ re-fires at 11:23 AM and 6:53 PM IST: if a run failed, the slot gets a second ch
 The head-of-story agent now brainstorms 8 ideas around proven 1-minute horror patterns (everyday fears young
 Indians know, "rules" stories, a last-line twist that reframes everything) and writes a 12-word logline that becomes
 the hook. City, travel and friends stories unlock within the first few days instead of weeks.
+
+### v7.3.4 — from the review of the first one-minute reel (4 Nov, 1:17 PM)
+- No white flash on the very first frame (feeds show frame one); the shake and boom stay.
+- The picture changes at least every ~4 s (new angles at the storyteller's breaths), and the Critic sends back
+  screenplays with too few cuts.
+- The learning step labels story-type scores as scores (it had read them as seconds of watch time).
