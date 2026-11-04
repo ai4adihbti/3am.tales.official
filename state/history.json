@@ -524,10 +524,51 @@
       "posted_at": "2026-11-04T07:47:11+00:00",
       "youtube_id": "3Nnp1eNceOI",
       "youtube_url": "https://youtube.com/shorts/3Nnp1eNceOI"
+    },
+    {
+      "title": "Malhar Ka Bhua Kuan — Part 1",
+      "series_title": "Malhar Ka Bhua Kuan",
+      "series_id": "20261104-malhar-ka-bhua-kuan",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Raat ke teen baje, sukhe kuan se kisi ne mera naam pukara.",
+      "critic_score": 63,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 43.509,
+      "file": "reel-20261104-105434.mp4",
+      "caption": "Raat 3 baje, khali kuaan mein ek pathar ki goonj... kya sunoge? | Bhoot ki kahani | Hindi horror story\n\nAgar tum waha hote, pebble daalte ya chup rehte? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #kahani #hindihorror",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 43.6,
+        "loudness_lufs": -13.9,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 1943,
+        "hq_images": 0,
+        "est_cost_usd": 0.2,
+        "month_spend_usd": 0.54
+      },
+      "media_id": "18108024878221752",
+      "permalink": "https://www.instagram.com/reel/DfUVj5WAsUd/",
+      "posted_at": "2026-11-04T15:47:08+00:00",
+      "youtube_id": "5MkCWP4rpJM",
+      "youtube_url": "https://youtube.com/shorts/5MkCWP4rpJM"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 46.18}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}, \"village_secret\": {\"n\": 1, \"avg\": 29.49}}\nLessons:\n- Focus on 'lok_katha' (folklore) formats over 'village_secret'; lok_katha achieved the highest watch time average (58.96s) compared to village_secret's low retention (29.49s, 7% completion).\n- Hook audiences with concrete situational setups (e.g., specific times like 'Raat ke dhai baje' and named real locations like 'Raniganj' or 'Chhatarpur') rather than vague audio cues like '<whisper>Papa…?</whisper>'.\n- Avoid weak cliffhanger recaps in multi-part series; part 1 setups perform significantly better than mid-series updates like Part 2 which lose initial momentum.\n- Cut down video length or restructure the opening pacing for 'village_secret' themes to prevent extreme viewer drop-off within the first 8.8 seconds.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 46.18}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}, \"village_secret\": {\"n\": 1, \"avg\": 29.49}}\nLessons:\n- Prioritize local folklore ('lok_katha') themes over generic village secrets ('village_secret'), as folklore achieved the highest audience engagement score (58.96 vs 29.49).\n- Hook viewers immediately with specific settings and times (e.g., 'Raat ke dhai baje, Raniganj ki is sunsaan sadak par...') rather than abstract audio cues like whispers, which lead to weak overall performance.\n- Avoid overly long video formats without strong initial retention triggers; the 129-second format suffered massive drop-offs, retaining viewers for only 8.8 seconds (7% completion).\n- Ensure recap hooks for multi-part series focus on specific plot twists (e.g., giving a fake name to a ghost conductor) to drive comment engagement and maintain viewer continuation across parts.",
   "format_scores": {
     "family_bond": {
       "n": 5,
@@ -550,11 +591,12 @@
     "Almora Bypass ka Safed Dhund",
     "Pangri Ghat ka Lal Lantern",
     "Bishnupur ka Kali Kamra",
-    "Mikir Hills ka Band Darwaza"
+    "Mikir Hills ka Band Darwaza",
+    "Malhar Ka Bhua Kuan"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.34
+    "usd": 0.54
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -618,11 +660,21 @@
       "entity": "Jakh (Assamese treasure-guarding forest entity) / Protective Ancestral Curse",
       "protagonist": "Priyam, 21, visiting his frail Kaka (paternal uncle)",
       "emotion": "A uncle's silent sacrifice to protect his nephew from a family debt."
+    },
+    {
+      "title": "Malhar Ka Bhua Kuan",
+      "format": "lok_katha",
+      "parts": 1,
+      "region": "Haryana / Mewat region",
+      "setting": "A dusty village with mustard fields, an abandoned brick kiln, and a dry community well under a blazing summer full moon.",
+      "entity": "Bhua's warning spirit tied to the dry village well",
+      "protagonist": "Sameer, 21, college student visiting his ancestral village",
+      "emotion": "A protective aunt's final warning to save her nephew"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "village_secret",
+    "format": "lok_katha",
     "target": 3
   },
   "ig_token": {
@@ -635,6 +687,6 @@
   },
   "cf_day": {
     "date": "2026-11-04",
-    "used": 2894
+    "used": 4837
   }
 }
