@@ -417,7 +417,19 @@
       "permalink": "https://www.instagram.com/reel/DfPrH14D7DJ/",
       "posted_at": "2026-11-02T15:54:34+00:00",
       "youtube_id": "NbLL2-uhF30",
-      "youtube_url": "https://youtube.com/shorts/NbLL2-uhF30"
+      "youtube_url": "https://youtube.com/shorts/NbLL2-uhF30",
+      "metrics": {
+        "views": 133,
+        "reach": 116,
+        "likes": 3,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 3,
+        "avg_watch_s": 8.8
+      },
+      "score": 29.49,
+      "metrics_at": "2026-11-04T03:54:32+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 2",
@@ -468,10 +480,54 @@
       "posted_at": "2026-11-03T15:48:38+00:00",
       "youtube_id": "PQka60hMkEc",
       "youtube_url": "https://youtube.com/shorts/PQka60hMkEc"
+    },
+    {
+      "title": "Mikir Hills ka Band Darwaza — Part 1",
+      "series_title": "Mikir Hills ka Band Darwaza",
+      "series_id": "20261104-mikir-hills-ka-band-darwaza",
+      "part": 1,
+      "total_parts": 1,
+      "format": "village_secret",
+      "hook": "Raat ke do baje, band darwaze par dastak hui...",
+      "critic_score": 83,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 46.495,
+      "file": "reel-20261104-035431.mp4",
+      "caption": "Mikir Hills ki band darwaza ka raaz ab khulega? | Bhoot ki kahani | Hindi horror story\n\nAgar tumhe 2 baje bhoot ka samna karna ho, Kaka ko sacrifice karoge ya khud? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #mikirhills #bhootiyasecrets #nightreel",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 46.6,
+        "loudness_lufs": -14.2,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I4",
+          "I5"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 2894,
+        "hq_images": 0,
+        "est_cost_usd": 0.08,
+        "month_spend_usd": 0.34
+      },
+      "media_id": "18129881821810887",
+      "permalink": "https://www.instagram.com/reel/DfTkG17G8_N/",
+      "posted_at": "2026-11-04T07:47:11+00:00",
+      "youtube_id": "3Nnp1eNceOI",
+      "youtube_url": "https://youtube.com/shorts/3Nnp1eNceOI"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 46.18}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}}\nLessons:\n- Focus on 'Lok Katha' (folklore) formats as they generate higher average performance (58.96 score) compared to 'Family Bond' themes (46.18 score).\n- Use specific atmospheric hooks that establish exact times and desolate settings (e.g., 'Raat ke dhai baje, Raniganj ki is sunsaan sadak par...') to capture early interest.\n- Avoid minimalist audio-only hooks like silent whispers ('<whisper>Papa…?</whisper>') which yielded the lowest view count (126 views).\n- Multi-part series suffer from sharp audience drop-off; ensure follow-up episodes include strong narrative progression or cliffhangers to maintain engagement across parts.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nFormat averages (higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 46.18}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}, \"village_secret\": {\"n\": 1, \"avg\": 29.49}}\nLessons:\n- Focus on 'lok_katha' (folklore) formats over 'village_secret'; lok_katha achieved the highest watch time average (58.96s) compared to village_secret's low retention (29.49s, 7% completion).\n- Hook audiences with concrete situational setups (e.g., specific times like 'Raat ke dhai baje' and named real locations like 'Raniganj' or 'Chhatarpur') rather than vague audio cues like '<whisper>Papa…?</whisper>'.\n- Avoid weak cliffhanger recaps in multi-part series; part 1 setups perform significantly better than mid-series updates like Part 2 which lose initial momentum.\n- Cut down video length or restructure the opening pacing for 'village_secret' themes to prevent extreme viewer drop-off within the first 8.8 seconds.",
   "format_scores": {
     "family_bond": {
       "n": 5,
@@ -480,6 +536,10 @@
     "lok_katha": {
       "n": 1,
       "avg": 58.96
+    },
+    "village_secret": {
+      "n": 1,
+      "avg": 29.49
     }
   },
   "series": null,
@@ -489,11 +549,12 @@
     "Chhatarpur ka Ulti Pailo Kuan",
     "Almora Bypass ka Safed Dhund",
     "Pangri Ghat ka Lal Lantern",
-    "Bishnupur ka Kali Kamra"
+    "Bishnupur ka Kali Kamra",
+    "Mikir Hills ka Band Darwaza"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.26
+    "usd": 0.34
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -547,6 +608,16 @@
       "entity": "Nishi/Shakchunni (Folk entity trapped in terracotta clay) / Protective Ancestral Oath",
       "protagonist": "Ayan, 23, a college graduate visiting his estranged Thakuma (grandmother)",
       "emotion": "A grandmother's unbearable guilt and a secret sacrifice made to protect the family lineage"
+    },
+    {
+      "title": "Mikir Hills ka Band Darwaza",
+      "format": "village_secret",
+      "parts": 1,
+      "region": "Assam (North-East India)",
+      "setting": "An old wooden ancestral bungalow near the dense tea gardens of Mikir Hills, misty 2:00 AM weather.",
+      "entity": "Jakh (Assamese treasure-guarding forest entity) / Protective Ancestral Curse",
+      "protagonist": "Priyam, 21, visiting his frail Kaka (paternal uncle)",
+      "emotion": "A uncle's silent sacrifice to protect his nephew from a family debt."
     }
   ],
   "followers": 1,
@@ -563,7 +634,7 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-03",
-    "used": 7571
+    "date": "2026-11-04",
+    "used": 2894
   }
 }
