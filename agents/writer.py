@@ -113,9 +113,13 @@ NARRATOR_RULE = ("STORYTELLER STYLE: one {g} storyteller \"N\" tells the whole k
                  "moments (a scream, a warning, a whispered question, a final sting).")
 
 STORYTELLER_CRAFT = """How the reference reels are built (copy this rhythm exactly):
-- After the cold open (see the rules), a wide MOTIF shot: the village (or setting) under a huge full moon, mist, a few
-  lit windows. The storyteller sets the scene over it in 1-2 sentences ("Ye kahani hai Rampur gaon ki…"). This motif
-  image comes back once more as a breathing space (same image id, different camera motion), not more.
+- After the cold open (see the rules), a wide MOTIF shot of the setting under a huge full moon, with ONE sentence that
+  drops us straight into the situation (who, where, what is wrong tonight). Never a slow "Ye kahani hai … gaon ki"
+  introduction and never generic names like Rampur. The motif image may come back once more, not more.
+- ONE point of view for the whole reel: the storyteller tells it about the hero ("Sameer ne…"); the cold-open line
+  is said the same way (or is the hero's own spoken line in quotes).
+- EVERY person who appears in a picture or speaks (mother, uncle, stranger…) is listed in "characters" with their
+  age and fixed look, so they are drawn the right age.
 - INTRODUCE the heroine/hero with a medium shot and a close-up of their face; make us care about them in 8 seconds
   (who they live with, what they long for, a small sweet detail).
 - RHYTHM: calm narration sits on longer holds (one 10-20 word sentence on a wide or medium shot, motion zoom_in or
@@ -238,7 +242,7 @@ def _norm_line(ln, ids: set) -> dict | None:
     hi = str(ln.get("hi") or "").strip()
     if (sp not in ids and sp != "N") or not hi:
         return None
-    return {"speaker": sp, "hi": hi, "roman": str(ln.get("roman") or "").strip() or strip_tags(hi),
+    return {"speaker": sp, "hi": hi, "roman": strip_tags(str(ln.get("roman") or "").strip()) or strip_tags(hi),
             "style": str(ln.get("style") or "").strip()[:60]}
 
 

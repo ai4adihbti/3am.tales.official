@@ -71,7 +71,7 @@ Return JSON:
             total -= 12
             notes.append(f"LENGTH: about {secs:.0f}s; it must be {s['min_seconds']}-{s['max_seconds']}s "
                          f"(roughly {int(s['min_seconds'] * 2.0)}-{int(s['max_seconds'] * 2.0)} spoken words).")
-        if cuts < s["min_cuts"] - 2:
+        if cuts < 8:                       # the editor adds new angles every ~4 s, so only a truly thin script costs points
             total -= 10
             notes.append(f"CUTS: only {cuts}; write {s['min_cuts']}-{s['max_cuts']} cuts of ~2-3 s each, one line per cut, "
                          "cutting between speaker and listener close-ups.")
@@ -94,8 +94,8 @@ Return JSON:
                          "(hands, eyes, lantern, a clue) instead.")
         ratio = narr / len(lines) if lines else 0
         if series.get("voice_style") == "narrator":
-            if lines and not 0.78 <= ratio <= 0.98:
-                total -= 8
+            if lines and not 0.6 <= ratio <= 1.0:      # short reels: 1-3 character lines out of ~10 is right
+                total -= 4
                 notes.append("STYLE: this series is told by a storyteller: make 85-95% of lines narration, "
                              "with only 2-5 short key character lines.")
         elif lines and ratio > 0.25:

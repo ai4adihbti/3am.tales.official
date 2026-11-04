@@ -382,3 +382,10 @@ the hook. City, travel and friends stories unlock within the first few days inst
 - The picture changes at least every ~4 s (new angles at the storyteller's breaths), and the Critic sends back
   screenplays with too few cuts.
 - The learning step labels story-type scores as scores (it had read them as seconds of watch time).
+
+### v7.3.5 — from the review of the 4 Nov 9:17 PM reel
+- Voice tags like <short pause> can no longer appear in the subtitles.
+- No slow "Ye kahani hai … gaon ki" opener or generic names; one point of view; every person in a picture is a
+  defined character with an age (the mother had been drawn as a little girl).
+- The Critic no longer punishes short cut lists (the editor adds a new angle every ~4 s) or 1-3 character lines in
+  a short reel; on 4 Nov these penalties had sunk every draft to 33-63 and forced the fallback story.
