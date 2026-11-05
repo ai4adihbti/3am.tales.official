@@ -41,10 +41,11 @@
         "comments": 0,
         "shares": 0,
         "saved": 0,
-        "total_interactions": 13
+        "total_interactions": 13,
+        "avg_watch_s": 12.1
       },
-      "score": 81.78,
-      "metrics_at": "2026-11-03T15:07:01+00:00"
+      "score": 92.13,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 2",
@@ -94,10 +95,11 @@
         "comments": 0,
         "shares": 0,
         "saved": 0,
-        "total_interactions": 6
+        "total_interactions": 6,
+        "avg_watch_s": 17.8
       },
-      "score": 37.17,
-      "metrics_at": "2026-11-03T15:07:01+00:00"
+      "score": 52.65,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 3",
@@ -146,10 +148,11 @@
         "comments": 1,
         "shares": 0,
         "saved": 0,
-        "total_interactions": 7
+        "total_interactions": 7,
+        "avg_watch_s": 9.6
       },
-      "score": 47.0,
-      "metrics_at": "2026-11-03T15:07:01+00:00"
+      "score": 55.24,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Kosi Gaon ka Safed Peepal — Part 1",
@@ -253,10 +256,11 @@
         "comments": 0,
         "shares": 0,
         "saved": 1,
-        "total_interactions": 6
+        "total_interactions": 6,
+        "avg_watch_s": 19.1
       },
-      "score": 58.96,
-      "metrics_at": "2026-11-03T15:07:01+00:00"
+      "score": 71.02,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Almora Bypass ka Safed Dhund — Part 1",
@@ -310,10 +314,11 @@
         "comments": 0,
         "shares": 0,
         "saved": 0,
-        "total_interactions": 3
+        "total_interactions": 3,
+        "avg_watch_s": 11.3
       },
-      "score": 23.94,
-      "metrics_at": "2026-11-03T15:07:01+00:00"
+      "score": 31.88,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Pangri Ghat ka Lal Lantern — Part 1",
@@ -366,10 +371,11 @@
         "comments": 0,
         "shares": 1,
         "saved": 0,
-        "total_interactions": 6
+        "total_interactions": 6,
+        "avg_watch_s": 16.4
       },
-      "score": 41.01,
-      "metrics_at": "2026-11-03T15:07:01+00:00"
+      "score": 62.07,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 1",
@@ -429,7 +435,7 @@
         "avg_watch_s": 8.8
       },
       "score": 29.49,
-      "metrics_at": "2026-11-04T03:54:32+00:00"
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 2",
@@ -479,7 +485,19 @@
       "permalink": "https://www.instagram.com/reel/DfSPOOKitMh/",
       "posted_at": "2026-11-03T15:48:38+00:00",
       "youtube_id": "PQka60hMkEc",
-      "youtube_url": "https://youtube.com/shorts/PQka60hMkEc"
+      "youtube_url": "https://youtube.com/shorts/PQka60hMkEc",
+      "metrics": {
+        "views": 135,
+        "reach": 122,
+        "likes": 2,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 2,
+        "avg_watch_s": 34.0
+      },
+      "score": 40.63,
+      "metrics_at": "2026-11-05T03:54:46+00:00"
     },
     {
       "title": "Mikir Hills ka Band Darwaza — Part 1",
@@ -565,22 +583,69 @@
       "posted_at": "2026-11-04T15:47:08+00:00",
       "youtube_id": "5MkCWP4rpJM",
       "youtube_url": "https://youtube.com/shorts/5MkCWP4rpJM"
+    },
+    {
+      "title": "Bhandardara ki Akhri Rail — Part 1",
+      "series_title": "Bhandardara ki Akhri Rail",
+      "series_id": "20261105-bhandardara-ki-akhri-rail",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Ticket ka nishaan... mere khoon ka nishaan",
+      "critic_score": 87,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 41.138,
+      "file": "reel-20261105-035445.mp4",
+      "caption": "Midnight ki rail pe kya hua? Jaane is darawni kahani ko | Bhoot ki kahani | Hindi horror story\n\nAgar tumhe train ke andar se aawaz aati, toh kya tum ticket punch karte ya bhagte? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #bhandardara #railkarahasya #ghosttale",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 41.2,
+        "loudness_lufs": -14.3,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I7",
+          "I1",
+          "I5",
+          "I7",
+          "I1"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3645,
+        "hq_images": 0,
+        "est_cost_usd": 0.19,
+        "month_spend_usd": 0.73
+      },
+      "media_id": "17996823458843117",
+      "permalink": "https://www.instagram.com/reel/DfWJH8xk3RE/",
+      "posted_at": "2026-11-05T07:47:09+00:00",
+      "youtube_id": "b8SQq0KD-es",
+      "youtube_url": "https://youtube.com/shorts/b8SQq0KD-es"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 3\" · hook: \"Pichhle part mein... Kabir ne bus ke conductor ko apna galat naam bata diya tha.\" · views 128, shares 0, saves 0, comments 1\nWeakest performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 2\" · hook: \"Pichhle part mein, kohre mein doobi is sunsaan sadak par ek darawani bus ruki thi.\" · views 135, shares 0, saves 0, comments 0\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 46.18}, \"lok_katha\": {\"n\": 1, \"avg\": 58.96}, \"village_secret\": {\"n\": 1, \"avg\": 29.49}}\nLessons:\n- Prioritize local folklore ('lok_katha') themes over generic village secrets ('village_secret'), as folklore achieved the highest audience engagement score (58.96 vs 29.49).\n- Hook viewers immediately with specific settings and times (e.g., 'Raat ke dhai baje, Raniganj ki is sunsaan sadak par...') rather than abstract audio cues like whispers, which lead to weak overall performance.\n- Avoid overly long video formats without strong initial retention triggers; the 129-second format suffered massive drop-offs, retaining viewers for only 8.8 seconds (7% completion).\n- Ensure recap hooks for multi-part series focus on specific plot twists (e.g., giving a fake name to a ghost conductor) to drive comment engagement and maintain viewer continuation across parts.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 2\" · hook: \"Us raat, usne aankhon mein aag jalayi.\" · views 135, shares 0, saves 0, comments 0, watched on average 34.0s of 132s (26%)\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0, watched on average 11.3s of 142s (8%)\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 1, \"avg\": 71.02}, \"village_secret\": {\"n\": 2, \"avg\": 35.06}}\nLessons:\n- Focus on 'Lok Katha' (folklore) and 'Family Bond' tropes over generic 'Village Secrets', as folklore achieved the highest performance score (71.02) and family themes generated the most overall views and engagement.\n- Use specific location names paired with intriguing narrative questions in hooks (e.g., 'Raniganj ki is sunsaan sadak par...', 'Us raat Rohan ko maut ke munh se kisne kheencha?') to draw viewers in better than vague audio cues like whispers.\n- Avoid overly abstract or visual-only hooks like 'Us raat, usne aankhon mein aag jalayi' or audio tricks like '<whisper>Papa…?</whisper>', which caused drop-offs leading to retention as low as 7-8%.\n- Significantly trim total reel lengths; current videos average over 2 minutes (117s-158s) but only retain viewers for 8-12% of the runtime, hurting algorithmic reach on Instagram and YouTube.",
   "format_scores": {
     "family_bond": {
       "n": 5,
-      "avg": 46.18
+      "avg": 58.79
     },
     "lok_katha": {
       "n": 1,
-      "avg": 58.96
+      "avg": 71.02
     },
     "village_secret": {
-      "n": 1,
-      "avg": 29.49
+      "n": 2,
+      "avg": 35.06
     }
   },
   "series": null,
@@ -592,11 +657,12 @@
     "Pangri Ghat ka Lal Lantern",
     "Bishnupur ka Kali Kamra",
     "Mikir Hills ka Band Darwaza",
-    "Malhar Ka Bhua Kuan"
+    "Malhar Ka Bhua Kuan",
+    "Bhandardara ki Akhri Rail"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.54
+    "usd": 0.73
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -670,6 +736,16 @@
       "entity": "Bhua's warning spirit tied to the dry village well",
       "protagonist": "Sameer, 21, college student visiting his ancestral village",
       "emotion": "A protective aunt's final warning to save her nephew"
+    },
+    {
+      "title": "Bhandardara ki Akhri Rail",
+      "format": "lok_katha",
+      "parts": 1,
+      "region": "Konkan / Western Ghats, Maharashtra",
+      "setting": "An abandoned, moss-covered colonial-era railway tunnel cutting through the Sahyadri hills near an isolated tribal hamlet.",
+      "entity": "The phantom stationmaster who checks tickets of those who aren't alive.",
+      "protagonist": "Sameer, 22, returning home to his worried mother on the midnight passenger train.",
+      "emotion": "A mother's relentless prayer waiting at the station gate."
     }
   ],
   "followers": 1,
@@ -686,7 +762,7 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-04",
-    "used": 4837
+    "date": "2026-11-05",
+    "used": 3645
   }
 }
