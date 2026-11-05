@@ -395,3 +395,8 @@ the hook. City, travel and friends stories unlock within the first few days inst
   nearest good picture instead.
 - Each picture must show what its line says is happening, with no unexplained people; a character's beard /
   clean-shaven face is part of their fixed look.
+
+### v7.3.7 — fresh posts
+The video is handed to Instagram ~20 min before the posting time instead of hours early
+(`schedule.upload_minutes_before_post`). The first one-minute reel, uploaded 3.5 h early, reached 23 accounts
+against the usual 110-190; an early upload may make a reel look hours old when it goes live.
