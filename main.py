@@ -180,11 +180,11 @@ def schedule_check(cfg: dict, memory: Memory, mode: str, now_utc: datetime) -> t
     return True, f"GitHub started this run late ({now:%H:%M} IST): making the reel and posting it as soon as it's ready"
 
 
-def wait_for_post_time(cfg: dict, mode: str) -> None:
-    """auto mode: the reel is ready early; hold it until the posting time."""
+def wait_for_post_time(cfg: dict, mode: str, minutes_before: float = 0.0) -> None:
+    """auto mode: the reel is ready early; hold it until the posting time (or until `minutes_before` it)."""
     if mode != "auto":
         return
-    target = _post_target(cfg, datetime.now(timezone.utc))
+    target = _post_target(cfg, datetime.now(timezone.utc)) - timedelta(minutes=minutes_before)
     left = (target - datetime.now(IST)).total_seconds()
     if left <= 0:
         return
@@ -196,7 +196,8 @@ def wait_for_post_time(cfg: dict, mode: str) -> None:
         time.sleep(min(left, 1800))
         if left > 1800:
             log("Orchestrator", f"… {max(0.0, left - 1800) / 60:.0f} min to go")
-    log("Orchestrator", f"it's {datetime.now(IST):%H:%M} IST — posting")
+    log("Orchestrator", f"it's {datetime.now(IST):%H:%M} IST — " + ("posting" if not minutes_before else
+                        f"handing the video to Instagram ({minutes_before:.0f} min before posting)"))
 
 
 def _minutes_to_post(cfg: dict, mode: str) -> float:
@@ -556,9 +557,12 @@ def main() -> int:
             shutil.rmtree(work, ignore_errors=True)
             return 0
         container = None
+        lead_min = float(cfg.get("schedule", {}).get("upload_minutes_before_post", 20))
         if _minutes_to_post(cfg, mode) > 10:
-            # hours early: let Instagram process the video NOW, so a processing problem can still be fixed;
-            # at the posting time only the 'publish' click is left
+            # hand the video to Instagram only ~20 min before posting: an upload made hours earlier may make the
+            # reel look hours old when it goes live (the 4 Nov 1:17 PM reel, uploaded 3.5 h early, reached 23
+            # accounts against the usual 110-190); 20 min still leaves time to fix a processing problem
+            wait_for_post_time(cfg, mode, minutes_before=lead_min)
             try:
                 container = publisher.prepare_reel(ctx, reel, cap, cover_path)
             except Exception as e:  # noqa: BLE001

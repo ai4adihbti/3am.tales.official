@@ -236,6 +236,7 @@ schedule:
   # went out since 5:30 AM today (e.g. a manual post), and test runs (preview / dry_run) are refused until
   # tonight's reel is out, because they would use its pictures.
   protect_daily_post: true
+  upload_minutes_before_post: 20   # the video goes to Instagram this long before posting (not hours early)
   post_mode_min_gap_hours: 3     # even mode "post" won't post twice within 3 h (protects against a double click)
 
 instagram:
