@@ -541,7 +541,19 @@
       "permalink": "https://www.instagram.com/reel/DfTkG17G8_N/",
       "posted_at": "2026-11-04T07:47:11+00:00",
       "youtube_id": "3Nnp1eNceOI",
-      "youtube_url": "https://youtube.com/shorts/3Nnp1eNceOI"
+      "youtube_url": "https://youtube.com/shorts/3Nnp1eNceOI",
+      "metrics": {
+        "views": 25,
+        "reach": 23,
+        "likes": 0,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 0,
+        "avg_watch_s": 5.2
+      },
+      "score": 11.21,
+      "metrics_at": "2026-11-05T10:54:26+00:00"
     },
     {
       "title": "Malhar Ka Bhua Kuan — Part 1",
@@ -630,10 +642,57 @@
       "posted_at": "2026-11-05T07:47:09+00:00",
       "youtube_id": "b8SQq0KD-es",
       "youtube_url": "https://youtube.com/shorts/b8SQq0KD-es"
+    },
+    {
+      "title": "Mithila ka Shraapit Pokhar — Part 1",
+      "series_title": "Mithila ka Shraapit Pokhar",
+      "series_id": "20261105-mithila-ka-shraapit-pokhar",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Aadhi raat ko pokhar se Dadi ki roti hui aawaaz aayi!",
+      "critic_score": 81,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 70.075,
+      "file": "reel-20261105-105426.mp4",
+      "caption": "Mithila ke pokhar se kiski aawaaz aayi? | Bhoot ki kahani | Hindi horror story\n\nRaat ke 12 baje Dadi aawaaz deti toh tum jaate ya nahi? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #shraapitpokhar #mithilakikahani #gaonkahorror",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 70.1,
+        "loudness_lufs": -14.1,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I5",
+          "I6",
+          "I8",
+          "I1",
+          "I9"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4139,
+        "hq_images": 0,
+        "est_cost_usd": 0.06,
+        "month_spend_usd": 0.79
+      },
+      "media_id": "17967693155983822",
+      "permalink": "https://www.instagram.com/reel/DfW6AjVgqS3/",
+      "posted_at": "2026-11-05T15:47:10+00:00",
+      "youtube_id": "d-TQ_Gq8EIM",
+      "youtube_url": "https://youtube.com/shorts/d-TQ_Gq8EIM"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 2\" · hook: \"Us raat, usne aankhon mein aag jalayi.\" · views 135, shares 0, saves 0, comments 0, watched on average 34.0s of 132s (26%)\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0, watched on average 11.3s of 142s (8%)\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 1, \"avg\": 71.02}, \"village_secret\": {\"n\": 2, \"avg\": 35.06}}\nLessons:\n- Focus on 'Lok Katha' (folklore) and 'Family Bond' tropes over generic 'Village Secrets', as folklore achieved the highest performance score (71.02) and family themes generated the most overall views and engagement.\n- Use specific location names paired with intriguing narrative questions in hooks (e.g., 'Raniganj ki is sunsaan sadak par...', 'Us raat Rohan ko maut ke munh se kisne kheencha?') to draw viewers in better than vague audio cues like whispers.\n- Avoid overly abstract or visual-only hooks like 'Us raat, usne aankhon mein aag jalayi' or audio tricks like '<whisper>Papa…?</whisper>', which caused drop-offs leading to retention as low as 7-8%.\n- Significantly trim total reel lengths; current videos average over 2 minutes (117s-158s) but only retain viewers for 8-12% of the runtime, hurting algorithmic reach on Instagram and YouTube.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0, watched on average 11.3s of 142s (8%)\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 1, \"avg\": 71.02}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}}\nLessons:\n- Prioritize local folklore ('lok_katha') themes over isolated village secrets ('village_secret'), as folklore scored significantly higher in audience retention (71.02 vs 27.11).\n- Avoid starting Reels with atmospheric audio effects like whispers; narrative hooks establishing a specific real-world setting ('Raat ke dhai baje, Raniganj...') drive better initial engagement.\n- Keep overall Reel duration significantly tighter: all top performers had video lengths over 1.5 minutes but retained only 10-12% of watch time, indicating the current pacing is too slow for short-form video platforms.\n- Hooks framed around direct danger or survival questions ('Us raat Rohan ko maut ke munh se kisne kheencha?') generate higher overall view counts and initial audience retention than generic plot reveals.",
   "format_scores": {
     "family_bond": {
       "n": 5,
@@ -644,8 +703,8 @@
       "avg": 71.02
     },
     "village_secret": {
-      "n": 2,
-      "avg": 35.06
+      "n": 3,
+      "avg": 27.11
     }
   },
   "series": null,
@@ -658,11 +717,12 @@
     "Bishnupur ka Kali Kamra",
     "Mikir Hills ka Band Darwaza",
     "Malhar Ka Bhua Kuan",
-    "Bhandardara ki Akhri Rail"
+    "Bhandardara ki Akhri Rail",
+    "Mithila ka Shraapit Pokhar"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.73
+    "usd": 0.79
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -746,6 +806,16 @@
       "entity": "The phantom stationmaster who checks tickets of those who aren't alive.",
       "protagonist": "Sameer, 22, returning home to his worried mother on the midnight passenger train.",
       "emotion": "A mother's relentless prayer waiting at the station gate."
+    },
+    {
+      "title": "Mithila ka Shraapit Pokhar",
+      "format": "lok_katha",
+      "parts": 1,
+      "region": "Mithila region, Bihar",
+      "setting": "A moonlit village pokhar (pond) bordered by dense lotus weeds, an old ruined ghat, and a lone banyan tree on a chill midnight.",
+      "entity": "Pokhar ki Khetrapali (A guardian spirit of the pond who demands a tribute of blood or a loved one's voice)",
+      "protagonist": "Babu, 21, a young man who returned to his village to care for his ill Dadi.",
+      "emotion": "A grandmother's silent, protective sacrifice to trick a sinister curse and save her grandson."
     }
   ],
   "followers": 1,
@@ -763,6 +833,6 @@
   },
   "cf_day": {
     "date": "2026-11-05",
-    "used": 3645
+    "used": 7784
   }
 }
