@@ -389,3 +389,9 @@ the hook. City, travel and friends stories unlock within the first few days inst
   defined character with an age (the mother had been drawn as a little girl).
 - The Critic no longer punishes short cut lists (the editor adds a new angle every ~4 s) or 1-3 character lines in
   a short reel; on 4 Nov these penalties had sunk every draft to 33-63 and forced the fallback story.
+
+### v7.3.6 — from the review of the 5 Nov 1:17 PM reel
+- A picture the check flags in both looks is no longer used (its last redraw is unchecked): those cuts show the
+  nearest good picture instead.
+- Each picture must show what its line says is happening, with no unexplained people; a character's beard /
+  clean-shaven face is part of their fixed look.

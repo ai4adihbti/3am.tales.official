@@ -775,9 +775,32 @@ def quality_check(ctx: Context, studio: Studio, script: dict, refs: dict[str, Pa
     fixed = _inspect(ctx, studio, script, refs, paths, budget, second=False)
     if fixed and budget - len(fixed) > 0:
         again = _inspect(ctx, studio, script, refs, paths, budget - len(fixed), second=True)
+        # flagged in BOTH looks: the picture model keeps failing at it, and the last redraw is unchecked — don't use it
+        retire_images(script, [i for i in again if i in fixed])
         fixed += again
     ctx.notes["redrawn"] = fixed
     return fixed
+
+
+def retire_images(script: dict, bad: list[str]) -> int:
+    """Cuts that use an untrusted picture show the nearest trusted picture instead (with its own camera move)."""
+    bad = set(bad)
+    if not bad:
+        return 0
+    shots = script["shots"]
+    good = [i for i, sh in enumerate(shots) if sh["image_id"] not in bad]
+    if not good:
+        return 0
+    moved = 0
+    for i, sh in enumerate(shots):
+        if sh["image_id"] in bad:
+            j = min(good, key=lambda g: (abs(g - i), g > i))       # nearest, earlier first
+            donor = shots[j]
+            for k in ("image_id", "image", "framing", "characters", "night"):
+                sh[k] = donor[k]
+            moved += 1
+    log(NAME, f"{', '.join(sorted(bad))} failed the picture check twice; {moved} cut(s) show a neighbouring picture instead")
+    return moved
 
 
 def _inspect(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path], paths: dict[str, Path],

@@ -43,7 +43,8 @@ CRAFT = """What makes these reels work (study this):
 CHARACTER_SPEC = """"characters": [
     {{"id": "C1", "name": "Indian first name", "gender": "male|female", "age": 30,
       "voice_type": one of {types},
-      "look": "FIXED design used in every illustration: build, face shape, skin tone, hairstyle, facial hair,
+      "look": "FIXED design used in every illustration: build, face shape, skin tone, hairstyle, facial hair (say
+               'clean-shaven' or the exact beard),
                jewellery (bindi, mangalsutra, kada…) and one exact outfit with colours
                (e.g. 'maroon cotton saree with beige blouse, black hair in a low bun, small red bindi, glass bangles')",
       "personality": "how they talk and react",
@@ -82,7 +83,8 @@ RULES = """Rules:
 - Images: mostly single-character close-ups and medium shots (they draw best), plus establishing, two-shots and
   object inserts. "characters" lists only who is VISIBLE (max 3). Children are drawn as clearly young kids.
   Each "image" description is 25-50 words: where, light source (moonlight / lantern / diya), pose, exact facial
-  expression, one or two vivid props. Never a crowd.
+  expression, one or two vivid props. Never a crowd. Each picture shows what ITS line says is happening (if the
+  line is about the train stopping in a tunnel, the picture is the train in the tunnel), and no unexplained people.
 - "hi": Devanagari for Hindi words, English words in English letters (e.g. "माँ, phone में network नहीं है").
   Numbers as words. At most one vocal tag per line, only from: <whisper>, <sigh>, <gasp>, <short pause>,
   <laugh>, <long pause>, <crying>, in English angle brackets.
