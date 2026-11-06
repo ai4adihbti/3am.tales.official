@@ -45,7 +45,7 @@
         "avg_watch_s": 12.1
       },
       "score": 92.13,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 2",
@@ -99,7 +99,7 @@
         "avg_watch_s": 17.8
       },
       "score": 52.65,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Choti Line Ki Akhri Bus — Part 3",
@@ -152,7 +152,7 @@
         "avg_watch_s": 9.6
       },
       "score": 55.24,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Kosi Gaon ka Safed Peepal — Part 1",
@@ -260,7 +260,7 @@
         "avg_watch_s": 19.1
       },
       "score": 71.02,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Almora Bypass ka Safed Dhund — Part 1",
@@ -318,7 +318,7 @@
         "avg_watch_s": 11.3
       },
       "score": 31.88,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Pangri Ghat ka Lal Lantern — Part 1",
@@ -375,7 +375,7 @@
         "avg_watch_s": 16.4
       },
       "score": 62.07,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 1",
@@ -435,7 +435,7 @@
         "avg_watch_s": 8.8
       },
       "score": 29.49,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 2",
@@ -497,7 +497,7 @@
         "avg_watch_s": 34.0
       },
       "score": 40.63,
-      "metrics_at": "2026-11-05T03:54:46+00:00"
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Mikir Hills ka Band Darwaza — Part 1",
@@ -594,7 +594,19 @@
       "permalink": "https://www.instagram.com/reel/DfUVj5WAsUd/",
       "posted_at": "2026-11-04T15:47:08+00:00",
       "youtube_id": "5MkCWP4rpJM",
-      "youtube_url": "https://youtube.com/shorts/5MkCWP4rpJM"
+      "youtube_url": "https://youtube.com/shorts/5MkCWP4rpJM",
+      "metrics": {
+        "views": 171,
+        "reach": 147,
+        "likes": 3,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 3,
+        "avg_watch_s": 4.1
+      },
+      "score": 27.14,
+      "metrics_at": "2026-11-06T03:54:53+00:00"
     },
     {
       "title": "Bhandardara ki Akhri Rail — Part 1",
@@ -689,18 +701,63 @@
       "posted_at": "2026-11-05T15:47:10+00:00",
       "youtube_id": "d-TQ_Gq8EIM",
       "youtube_url": "https://youtube.com/shorts/d-TQ_Gq8EIM"
+    },
+    {
+      "title": "Mandawa Ki Parchhai Haveli — Part 1",
+      "series_title": "Mandawa Ki Parchhai Haveli",
+      "series_id": "20261106-mandawa-ki-parchhai-haveli",
+      "part": 1,
+      "total_parts": 1,
+      "format": "purani_haveli",
+      "hook": "Us raat, us laal haath ne Kabir ki jaan bachai!",
+      "critic_score": 80,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 53.842,
+      "file": "reel-20261106-035452.mp4",
+      "caption": "Mandawa Ki Parchhai Haveli ki kahani, laal ghunghat ka raaz kya hai? | Bhoot ki kahani | Hindi horror story\n\nAgar tumhein laal ghunghat pakadne ka mauka mile, to kya pakdoge? 👻\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #bhootihaveli #mandawakiparchhai",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 53.9,
+        "loudness_lufs": -14.2,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I1",
+          "I8",
+          "I9"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3403,
+        "hq_images": 0,
+        "est_cost_usd": 0.1,
+        "month_spend_usd": 0.89
+      },
+      "media_id": "18097403243390361",
+      "permalink": "https://www.instagram.com/reel/DfZEYBclMVi/",
+      "posted_at": "2026-11-06T07:47:11+00:00",
+      "youtube_id": "c9G0uaYsXGM",
+      "youtube_url": "https://youtube.com/shorts/c9G0uaYsXGM"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [family_bond] \"Almora Bypass ka Safed Dhund — Part 1\" · hook: \"<whisper>Papa…?</whisper>\" · views 126, shares 0, saves 0, comments 0, watched on average 11.3s of 142s (8%)\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 1, \"avg\": 71.02}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}}\nLessons:\n- Prioritize local folklore ('lok_katha') themes over isolated village secrets ('village_secret'), as folklore scored significantly higher in audience retention (71.02 vs 27.11).\n- Avoid starting Reels with atmospheric audio effects like whispers; narrative hooks establishing a specific real-world setting ('Raat ke dhai baje, Raniganj...') drive better initial engagement.\n- Keep overall Reel duration significantly tighter: all top performers had video lengths over 1.5 minutes but retained only 10-12% of watch time, indicating the current pacing is too slow for short-form video platforms.\n- Hooks framed around direct danger or survival questions ('Us raat Rohan ko maut ke munh se kisne kheencha?') generate higher overall view counts and initial audience retention than generic plot reveals.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [lok_katha] \"Malhar Ka Bhua Kuan — Part 1\" · hook: \"Raat ke teen baje, sukhe kuan se kisi ne mera naam pukara.\" · views 171, shares 0, saves 0, comments 0, watched on average 4.1s of 44s (9%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 2, \"avg\": 49.08}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}}\nLessons:\n- Prioritize 'family_bond' and 'lok_katha' themes over 'village_secret', as stories rooted in family dynamics significantly outperform others in overall audience retention scores (58.79 vs 27.11).\n- Use direct, character-centric mystery hooks that pose a survival or rescue question (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') to generate higher initial curiosity than generic late-night tropes.\n- Avoid generic, overused atmospheric hooks mentioning specific late-night times (e.g., 'Raat ke teen baje...', 'Raat ke do baje...'), which consistently yield the lowest watch durations (4-5 seconds).\n- Keep overall video lengths significantly shorter to boost retention percentages; long scripts (110-150s) suffer from massive drop-off, capturing only 10-12% average watch time.",
   "format_scores": {
     "family_bond": {
       "n": 5,
       "avg": 58.79
     },
     "lok_katha": {
-      "n": 1,
-      "avg": 71.02
+      "n": 2,
+      "avg": 49.08
     },
     "village_secret": {
       "n": 3,
@@ -718,11 +775,12 @@
     "Mikir Hills ka Band Darwaza",
     "Malhar Ka Bhua Kuan",
     "Bhandardara ki Akhri Rail",
-    "Mithila ka Shraapit Pokhar"
+    "Mithila ka Shraapit Pokhar",
+    "Mandawa Ki Parchhai Haveli"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.79
+    "usd": 0.89
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -816,12 +874,22 @@
       "entity": "Pokhar ki Khetrapali (A guardian spirit of the pond who demands a tribute of blood or a loved one's voice)",
       "protagonist": "Babu, 21, a young man who returned to his village to care for his ill Dadi.",
       "emotion": "A grandmother's silent, protective sacrifice to trick a sinister curse and save her grandson."
+    },
+    {
+      "title": "Mandawa Ki Parchhai Haveli",
+      "format": "purani_haveli",
+      "parts": 1,
+      "region": "Shekhawati, Rajasthan",
+      "setting": "A decaying 19th-century royal haveli with peeling murals, cracked jharokhas, and a moonlit courtyard.",
+      "entity": "Maharani Roopvati / Ancestral Guarding Spirit",
+      "protagonist": "Kabir, 22, architecture student restoring his family's ancestral haveli",
+      "emotion": "A royal mother's century-old unbroken promise to save her lineage"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "lok_katha",
-    "target": 3
+    "format": "purani_haveli",
+    "target": 2
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -832,7 +900,7 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-05",
-    "used": 7784
+    "date": "2026-11-06",
+    "used": 3403
   }
 }
