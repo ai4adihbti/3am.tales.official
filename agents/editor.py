@@ -71,10 +71,23 @@ def split_long_shots(ctx: Context, script: dict, shot_starts: list[float], voice
         pauses = []
     shots, starts, splits = [], [], 0
     ends = shot_starts[1:] + [voice_len]
-    for sh, a, b in zip(script["shots"], shot_starts, ends):
+    first_len = float(ctx.cfg["video"].get("first_shot_seconds", 1.2))
+    for idx, (sh, a, b) in enumerate(zip(script["shots"], shot_starts, ends)):
         shots.append(sh)
         starts.append(a)
         d = b - a
+        if idx == 0 and first_len > 0 and d > first_len * 1.6:
+            # the first seconds decide everything: fast punch-ins on the opening picture (~1 s each)
+            cuts, at = [], a + first_len
+            while b - at >= 0.8:
+                cuts.append(at)
+                at += first_len
+            for k, at in enumerate(cuts):
+                shots.append({**sh, "lines": [], "motion": "push_fast", "punch": k % 2 == 0, "mood": "tense",
+                              "split_of": 0})
+                starts.append(round(at, 3))
+                splits += 1
+            continue
         if d <= max_len:
             continue
         n = max(2, math.ceil(d / (max_len * 0.8)))
@@ -156,7 +169,10 @@ def build_overlay(ctx: Context, timeline: list[dict], speakers: list[str], lead:
 
     if v.get("subtitles"):
         order = {sp: i for i, sp in enumerate(speakers)}
+        hook_until = float(v.get("hook_text_seconds", 3.0)) if hook_text and v.get("hook_text", True) else 0.0
         for idx, ln in enumerate(timeline):
+            if lead + ln["start"] < hook_until - 0.2 and lead + ln["end"] <= hook_until + 1.5:
+                continue                  # one bold line at a time: the big hook text carries the opening line
             parts = _chunks(ln["roman"])
             weights = [len(p) + 3 for p in parts]
             span = max(0.4, ln["end"] - ln["start"])

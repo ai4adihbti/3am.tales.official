@@ -400,3 +400,11 @@ the hook. City, travel and friends stories unlock within the first few days inst
 The video is handed to Instagram ~20 min before the posting time instead of hours early
 (`schedule.upload_minutes_before_post`). The first one-minute reel, uploaded 3.5 h early, reached 23 accounts
 against the usual 110-190; an early upload may make a reel look hours old when it goes live.
+
+### v7.3.8 — the first 3 seconds (from the 6 Nov data)
+Viewers left after 4-5 s on every one-minute reel, and every reel opened on the same still, front-on crying face for
+3 s with two blocks of text. Now:
+- Cut 1 shows THE THREAT (the ghost, a hand from the water, a figure behind the door), never a crying face; the
+  automatic cold open prefers a picture of the entity.
+- The opening picture gets a new punch-in angle every ~1.2 s, and the first 3 s have at least 3 pictures.
+- Only the big hook line is on screen during the hook (no second block of subtitles); crying faces at most twice.

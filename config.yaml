@@ -183,6 +183,7 @@ video:
   fps: 30
   lead_in_seconds: 0.15                  # the voice starts almost at once (cold open)
   tail_seconds: 3.0                      # end card: short, readable, then the reel loops
+  first_shot_seconds: 1.2               # the opening picture gets a new punch-in angle every ~1.2 s
   max_shot_seconds: 4.0                  # the picture changes at least every ~4 s (new angles at the storyteller's breaths)
   hook_text: true                        # big on-screen hook for the first 3 s (most people scroll muted)
   hook_text_seconds: 3.0

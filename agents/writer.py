@@ -90,12 +90,16 @@ RULES = """Rules:
   <laugh>, <long pause>, <crying>, in English angle brackets.
 - "roman": the same line in natural Roman Hinglish, no tags.
 - THE FIRST 5 SECONDS DECIDE EVERYTHING (cold open):
-  * Cut 1 = a flash-forward to the most frightening or heart-stopping moment of THIS part: an extreme_closeup or
-    closeup (terrified eyes, a hand reaching from the dark, a figure behind her), mood "scare", motion "push_fast",
+  * Cut 1 = a flash-forward to the most frightening moment of THIS part, and the picture shows THE THREAT, not the
+    victim: the ghost's face in the window, a pale hand rising from the well, a red figure behind the door, eyes in
+    the dark (characters = the entity or nobody). Never a crying or frightened face as cut 1 — every reel opening on
+    a sad face looks the same and people scroll past. extreme_closeup or closeup, mood "scare", motion "push_fast",
     with ONE gripping line of at most 10 words, spoken tensely — a shocking fact, a whispered warning or a question
     viewers need answered ("Us raat Meera ne apni hi awaaz suni… kuen ke andar se."). No "Ye kahani hai…", no
     greetings, no calm scenery first.
-  * Cut 2 = a short turn back in time (max 8 words, e.g. "Par ye sab shuru hua teen din pehle…"), mood "tense".
+  * Cut 2 = the hero's reaction or a second creepy detail, then the turn back in time (max 8 words, e.g. "Par ye sab
+    shuru hua teen din pehle…"), mood "tense". The first 3 seconds have at least 3 different pictures.
+- Crying faces at most twice in the whole reel; show fear through action and the threat instead.
   * Only then the motif wide shot and the calm set-up. {recap_rule}
   * The final line of the part echoes the cold-open line or image, so the reel loops when it replays.
 - KEEP THEM WATCHING TO THE END (the #1 signal): it is a ~1-minute story, so no slow stretch. Every 15-20 seconds
@@ -318,6 +322,7 @@ def _clean(script: dict, series: dict, max_images: int = 40) -> dict:
     script["images"] = [images[i] for i in used_order if i in allowed]
     script["shots"] = shots
     script.pop("cuts", None)
+    ensure_cold_open.entities = {c["id"] for c in script.get("characters", []) if c.get("is_entity")}
     if ensure_cold_open(shots):
         # list pictures in order of first use, so the flash-forward picture is never the one merged away
         by_id = {im["id"]: im for im in script["images"]}
@@ -363,13 +368,15 @@ def ensure_cold_open(shots: list[dict]) -> bool:
         return False
     rank = {"scare": 0, "tense": 1, "uneasy": 2}
     best = None
+    entities = set(getattr(ensure_cold_open, "entities", set()))
     for i, sh in enumerate(shots[1:], 1):
         if not sh["lines"] or sh["framing"] in ("establishing", "wide") or sh.get("mood") not in rank:
             continue
         words = len(sh["lines"][0]["roman"].split())
         if not 3 <= words <= 12:
             continue
-        key = (rank[sh["mood"]], -i)            # scariest first, then the latest (the climax)
+        threat = 0 if (set(sh.get("characters", [])) & entities or not sh.get("characters")) else 1
+        key = (threat, rank[sh["mood"]], -i)    # a picture of the threat first, then the scariest, then the latest
         if best is None or key < best[0]:
             best = (key, i)
     if best is None:
