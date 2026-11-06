@@ -553,7 +553,7 @@
         "avg_watch_s": 5.2
       },
       "score": 11.21,
-      "metrics_at": "2026-11-05T10:54:26+00:00"
+      "metrics_at": "2026-11-06T10:54:57+00:00"
     },
     {
       "title": "Malhar Ka Bhua Kuan — Part 1",
@@ -653,7 +653,19 @@
       "permalink": "https://www.instagram.com/reel/DfWJH8xk3RE/",
       "posted_at": "2026-11-05T07:47:09+00:00",
       "youtube_id": "b8SQq0KD-es",
-      "youtube_url": "https://youtube.com/shorts/b8SQq0KD-es"
+      "youtube_url": "https://youtube.com/shorts/b8SQq0KD-es",
+      "metrics": {
+        "views": 110,
+        "reach": 99,
+        "likes": 1,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 1,
+        "avg_watch_s": 5.0
+      },
+      "score": 21.36,
+      "metrics_at": "2026-11-06T10:54:57+00:00"
     },
     {
       "title": "Mithila ka Shraapit Pokhar — Part 1",
@@ -746,18 +758,65 @@
       "posted_at": "2026-11-06T07:47:11+00:00",
       "youtube_id": "c9G0uaYsXGM",
       "youtube_url": "https://youtube.com/shorts/c9G0uaYsXGM"
+    },
+    {
+      "title": "Kasauli Ki Parchhai Gramophone — Part 1",
+      "series_title": "Kasauli Ki Parchhai Gramophone",
+      "series_id": "20261106-kasauli-ki-parchhai-gramophone",
+      "part": 1,
+      "total_parts": 1,
+      "format": "purani_haveli",
+      "hook": "Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.",
+      "critic_score": 87,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 54.39,
+      "file": "reel-20261106-105456.mp4",
+      "caption": "Kasauli ki haveli mein raat 12:05 baje gramophone kyun bajta hai? | Bhoot ki kahani | Hindi horror story\n\nRaat ko 12 baje purana gramophone khud bajne lage toh tum kya karoge? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #kasaulidaries #puranihaveli #horrorkahani",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 54.5,
+        "loudness_lufs": -14.5,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I1",
+          "I5",
+          "I7",
+          "I1",
+          "I7"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3878,
+        "hq_images": 0,
+        "est_cost_usd": 0.1,
+        "month_spend_usd": 0.99
+      },
+      "media_id": "18103377503374093",
+      "permalink": "https://www.instagram.com/reel/DfZ7Tv7jz82/",
+      "posted_at": "2026-11-06T15:47:09+00:00",
+      "youtube_id": "Zjn_TpM3Bsk",
+      "youtube_url": "https://youtube.com/shorts/Zjn_TpM3Bsk"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Bishnupur ka Kali Kamra — Part 1\" · hook: \"Us kali mitti ki murti ke gale mein... wahi taaviz tha!\" · views 133, shares 0, saves 0, comments 0, watched on average 8.8s of 129s (7%)\n- [lok_katha] \"Malhar Ka Bhua Kuan — Part 1\" · hook: \"Raat ke teen baje, sukhe kuan se kisi ne mera naam pukara.\" · views 171, shares 0, saves 0, comments 0, watched on average 4.1s of 44s (9%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 2, \"avg\": 49.08}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}}\nLessons:\n- Prioritize 'family_bond' and 'lok_katha' themes over 'village_secret', as stories rooted in family dynamics significantly outperform others in overall audience retention scores (58.79 vs 27.11).\n- Use direct, character-centric mystery hooks that pose a survival or rescue question (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') to generate higher initial curiosity than generic late-night tropes.\n- Avoid generic, overused atmospheric hooks mentioning specific late-night times (e.g., 'Raat ke teen baje...', 'Raat ke do baje...'), which consistently yield the lowest watch durations (4-5 seconds).\n- Keep overall video lengths significantly shorter to boost retention percentages; long scripts (110-150s) suffer from massive drop-off, capturing only 10-12% average watch time.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [lok_katha] \"Malhar Ka Bhua Kuan — Part 1\" · hook: \"Raat ke teen baje, sukhe kuan se kisi ne mera naam pukara.\" · views 171, shares 0, saves 0, comments 0, watched on average 4.1s of 44s (9%)\n- [lok_katha] \"Bhandardara ki Akhri Rail — Part 1\" · hook: \"Ticket ka nishaan... mere khoon ka nishaan\" · views 110, shares 0, saves 0, comments 0, watched on average 5.0s of 41s (12%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 3, \"avg\": 39.84}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}}\nLessons:\n- Prioritize longer, immersive video formats (110s–160s) over short clips (~40s); longer videos consistently retained audience attention for much higher total seconds (12s–19s avg watch time vs 4s–5s).\n- Focus on 'family_bond' themes as they achieve the highest average story performance score (58.79), significantly outperforming 'village_secret' (27.11) and 'lok_katha' (39.84).\n- Use curiosity-driven, character-focused hooks (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') which generate higher view counts and engagement compared to generic time-based tropes.\n- Avoid generic 'knocks on a door' or 'disembodied voice calling a name' tropes in shorter formats, as seen in the lowest performing reels like 'Mikir Hills ka Band Darwaza' and 'Malhar Ka Bhua Kuan'.",
   "format_scores": {
     "family_bond": {
       "n": 5,
       "avg": 58.79
     },
     "lok_katha": {
-      "n": 2,
-      "avg": 49.08
+      "n": 3,
+      "avg": 39.84
     },
     "village_secret": {
       "n": 3,
@@ -776,11 +835,12 @@
     "Malhar Ka Bhua Kuan",
     "Bhandardara ki Akhri Rail",
     "Mithila ka Shraapit Pokhar",
-    "Mandawa Ki Parchhai Haveli"
+    "Mandawa Ki Parchhai Haveli",
+    "Kasauli Ki Parchhai Gramophone"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 0.89
+    "usd": 0.99
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -884,6 +944,16 @@
       "entity": "Maharani Roopvati / Ancestral Guarding Spirit",
       "protagonist": "Kabir, 22, architecture student restoring his family's ancestral haveli",
       "emotion": "A royal mother's century-old unbroken promise to save her lineage"
+    },
+    {
+      "title": "Kasauli Ki Parchhai Gramophone",
+      "format": "purani_haveli",
+      "parts": 1,
+      "region": "Himachal Pradesh (Kasauli / Solan district)",
+      "setting": "A fog-wrapped 1940s British colonial timber bungalow with a dimly lit attic and an antique brass gramophone.",
+      "entity": "The unfulfilled promise of a 1947 musician spirit",
+      "protagonist": "Radhika, 24, a young freelance archivist visiting her grandfather's old heritage property",
+      "emotion": "Longing and reincarnation reframe (a promise across lifetimes)"
     }
   ],
   "followers": 1,
@@ -901,6 +971,6 @@
   },
   "cf_day": {
     "date": "2026-11-06",
-    "used": 3403
+    "used": 7281
   }
 }
