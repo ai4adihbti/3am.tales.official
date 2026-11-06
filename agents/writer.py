@@ -323,7 +323,8 @@ def _clean(script: dict, series: dict, max_images: int = 40) -> dict:
     script["shots"] = shots
     script.pop("cuts", None)
     ensure_cold_open.entities = {c["id"] for c in script.get("characters", []) if c.get("is_entity")}
-    if ensure_cold_open(shots):
+    rescued = ensure_cold_open(shots)
+    if threat_first(shots, ensure_cold_open.entities) or rescued:
         # list pictures in order of first use, so the flash-forward picture is never the one merged away
         by_id = {im["id"]: im for im in script["images"]}
         script["images"] = [by_id[i] for i in dict.fromkeys(sh["image_id"] for sh in shots) if i in by_id]
@@ -385,6 +386,36 @@ def ensure_cold_open(shots: list[dict]) -> bool:
     shots.insert(0, {**src, "lines": [dict(src["lines"][0])], "mood": "scare", "motion": "push_fast",
                      "flash_forward": True})
     log(NAME, f"cold open added: cut {best[1] + 1}'s line moved to the front as a flash-forward")
+    return True
+
+
+def threat_first(shots: list[dict], entities: set[str]) -> bool:
+    """Cut 1 must SHOW the threat (the ghost, the bleeding gramophone, the hand in the water), not a frightened
+    face: if it shows a person who isn't the entity, it borrows the picture of the scariest threat shot (an entity
+    or an object/no-person shot) from later in the reel. The opening line stays."""
+    if not shots:
+        return False
+    first = shots[0]
+    people = set(first.get("characters", []))
+    if not people or people & entities:
+        return False                                   # already the threat (or an object)
+    rank = {"scare": 0, "tense": 1, "uneasy": 2}
+    best = None
+    for i, sh in enumerate(shots[1:], 1):
+        chars = set(sh.get("characters", []))
+        if chars and not chars & entities:
+            continue
+        if sh["framing"] in ("establishing", "wide") and not chars & entities:
+            continue
+        key = (0 if chars & entities else 1, rank.get(sh.get("mood"), 3), -i)
+        if best is None or key < best[0]:
+            best = (key, i)
+    if best is None:
+        return False
+    donor = shots[best[1]]
+    for k in ("image_id", "image", "framing", "characters", "night"):
+        first[k] = donor[k]
+    log(NAME, f"cut 1 now shows the threat (picture of cut {best[1] + 1}) instead of a frightened face")
     return True
 
 

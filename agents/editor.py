@@ -171,8 +171,6 @@ def build_overlay(ctx: Context, timeline: list[dict], speakers: list[str], lead:
         order = {sp: i for i, sp in enumerate(speakers)}
         hook_until = float(v.get("hook_text_seconds", 3.0)) if hook_text and v.get("hook_text", True) else 0.0
         for idx, ln in enumerate(timeline):
-            if lead + ln["start"] < hook_until - 0.2 and lead + ln["end"] <= hook_until + 1.5:
-                continue                  # one bold line at a time: the big hook text carries the opening line
             parts = _chunks(ln["roman"])
             weights = [len(p) + 3 for p in parts]
             span = max(0.4, ln["end"] - ln["start"])
@@ -180,6 +178,11 @@ def build_overlay(ctx: Context, timeline: list[dict], speakers: list[str], lead:
             nxt = lead + timeline[idx + 1]["start"] if idx + 1 < len(timeline) else lead + ln["end"] + 0.8
             for k, (p, wgt) in enumerate(zip(parts, weights)):
                 dur = span * wgt / sum(weights)
+                if t + dur <= hook_until + 0.05:
+                    t += dur
+                    continue             # one bold line at a time: while the big hook shows, no subtitle under it
+                if t < hook_until:
+                    dur, t = dur - (hook_until - t), hook_until
                 end = t + dur if k < len(parts) - 1 else max(t + dur, min(nxt, t + dur + 0.6))
                 style = "Hook" if idx == 0 else f"S{order.get(ln['speaker'], 0)}"
                 ev.append(f"Dialogue: 0,{_ass_time(t)},{_ass_time(end)},{style},,0,0,0,,"

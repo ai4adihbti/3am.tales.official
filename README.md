@@ -408,3 +408,8 @@ Viewers left after 4-5 s on every one-minute reel, and every reel opened on the 
   automatic cold open prefers a picture of the entity.
 - The opening picture gets a new punch-in angle every ~1.2 s, and the first 3 s have at least 3 pictures.
 - Only the big hook line is on screen during the hook (no second block of subtitles); crying faces at most twice.
+
+### v7.3.9 — enforce the threat-first opening
+The 6 Nov 9:17 PM reel still opened on a frightened face with a subtitle under the hook. Now enforced in code:
+cut 1 borrows the picture of the scariest threat shot (the entity, or an object like the bleeding gramophone) if
+the writer put a frightened person there, and subtitles start only after the hook line has gone.
