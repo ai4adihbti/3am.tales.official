@@ -553,7 +553,7 @@
         "avg_watch_s": 5.2
       },
       "score": 11.21,
-      "metrics_at": "2026-11-06T10:54:57+00:00"
+      "metrics_at": "2026-11-07T10:54:57+00:00"
     },
     {
       "title": "Malhar Ka Bhua Kuan — Part 1",
@@ -665,7 +665,7 @@
         "avg_watch_s": 5.0
       },
       "score": 21.36,
-      "metrics_at": "2026-11-06T10:54:57+00:00"
+      "metrics_at": "2026-11-07T10:54:57+00:00"
     },
     {
       "title": "Mithila ka Shraapit Pokhar — Part 1",
@@ -769,7 +769,19 @@
       "permalink": "https://www.instagram.com/reel/DfZEYBclMVi/",
       "posted_at": "2026-11-06T07:47:11+00:00",
       "youtube_id": "c9G0uaYsXGM",
-      "youtube_url": "https://youtube.com/shorts/c9G0uaYsXGM"
+      "youtube_url": "https://youtube.com/shorts/c9G0uaYsXGM",
+      "metrics": {
+        "views": 133,
+        "reach": 120,
+        "likes": 0,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 0,
+        "avg_watch_s": 4.4
+      },
+      "score": 8.31,
+      "metrics_at": "2026-11-07T10:54:57+00:00"
     },
     {
       "title": "Kasauli Ki Parchhai Gramophone — Part 1",
@@ -864,10 +876,57 @@
       "posted_at": "2026-11-07T07:47:09+00:00",
       "youtube_id": "sV4M-rLRcx4",
       "youtube_url": "https://youtube.com/shorts/sV4M-rLRcx4"
+    },
+    {
+      "title": "Kasol Ki Raat Aur Safed Peepal — Part 1",
+      "series_title": "Kasol Ki Raat Aur Safed Peepal",
+      "series_id": "20261107-kasol-ki-raat-aur-safed-peepal",
+      "part": 1,
+      "total_parts": 1,
+      "format": "friends_dare",
+      "hook": "Jo tumhare saath soya hai, wo tumhara dost nahi hai...",
+      "critic_score": 79,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 58.537,
+      "file": "reel-20261107-105457.mp4",
+      "caption": "Kasol ki raat, safed peepal ki chhaya... kya aap darege? | Bhoot ki kahani | Hindi horror story\n\nAgar tumhe awaaz aaye, tent ke andar jaoge ya bahar? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #kasolkaafra #safedpeepal #horrornight",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 58.6,
+        "loudness_lufs": -14.4,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I6",
+          "I1",
+          "I6",
+          "I1",
+          "I8"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3846,
+        "hq_images": 0,
+        "est_cost_usd": 0.06,
+        "month_spend_usd": 1.16
+      },
+      "media_id": "18111998945216420",
+      "permalink": "https://www.instagram.com/reel/DfcgLLSAosQ/",
+      "posted_at": "2026-11-07T15:47:07+00:00",
+      "youtube_id": "6WoRgdAe27Y",
+      "youtube_url": "https://youtube.com/shorts/6WoRgdAe27Y"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [lok_katha] \"Malhar Ka Bhua Kuan — Part 1\" · hook: \"Raat ke teen baje, sukhe kuan se kisi ne mera naam pukara.\" · views 171, shares 0, saves 0, comments 0, watched on average 4.1s of 44s (9%)\n- [lok_katha] \"Bhandardara ki Akhri Rail — Part 1\" · hook: \"Ticket ka nishaan... mere khoon ka nishaan\" · views 110, shares 0, saves 0, comments 0, watched on average 5.0s of 41s (12%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}}\nLessons:\n- Prioritize longer-form narrative reels (110s-160s+) over short clips (40s-46s); longer reels retain viewers significantly more total seconds (12s-19s avg) and drive overall higher performance scores.\n- Lean into 'family_bond' themes, which dramatically outperform 'village_secret' and 'lok_katha' with an average score of 58.79 versus 27.11.\n- Hook viewers using intriguing personal questions or specific folklore locations (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') rather than generic late-night tropes ('Raat ke teen baje...') which drop retention quickly.\n- Avoid overly short 40-second videos with immediate gore/cliché hooks like 'mere khoon ka nishaan', as they suffer from immediate drop-off and fail to generate shares or saves.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [lok_katha] \"Bhandardara ki Akhri Rail — Part 1\" · hook: \"Ticket ka nishaan... mere khoon ka nishaan\" · views 110, shares 0, saves 0, comments 0, watched on average 5.0s of 41s (12%)\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.4s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}, \"purani_haveli\": {\"n\": 1, \"avg\": 8.31}}\nLessons:\n- Prioritize longer, narrative-driven formats (110s-160s) over ultra-short Reels, as top performers consistently retained viewers for 12-19 seconds versus just 4-5 seconds on ~45s clips.\n- Focus on 'family_bond' and localized 'lok_katha' themes, which significantly outperformed 'purani_haveli' and 'village_secret' in overall engagement scores.\n- Craft hooks around specific real-world locations and mysterious questions (e.g., 'Raniganj ki sunsaan sadak', 'kisne kheencha?') rather than abstract imagery like bloodstains to improve initial view counts.\n- Avoid generic haunted-house tropes ('purani_haveli') and weak 'band darwaze' tropes, which resulted in the lowest overall audience score (8.31) and view counts (25 views).",
   "format_scores": {
     "family_bond": {
       "n": 5,
@@ -880,6 +939,10 @@
     "village_secret": {
       "n": 3,
       "avg": 27.11
+    },
+    "purani_haveli": {
+      "n": 1,
+      "avg": 8.31
     }
   },
   "series": null,
@@ -896,11 +959,12 @@
     "Mithila ka Shraapit Pokhar",
     "Mandawa Ki Parchhai Haveli",
     "Kasauli Ki Parchhai Gramophone",
-    "Orchha Kinare Ki Shraapit Baoli"
+    "Orchha Kinare Ki Shraapit Baoli",
+    "Kasol Ki Raat Aur Safed Peepal"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 1.1
+    "usd": 1.16
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1024,6 +1088,16 @@
       "entity": "Chhalava / Shape-shifting spirit of the stepwell",
       "protagonist": "Dhruv, 21, college student searching for his missing best friend",
       "emotion": "Brotherly loyalty and tragic realization"
+    },
+    {
+      "title": "Kasol Ki Raat Aur Safed Peepal",
+      "format": "friends_dare",
+      "parts": 1,
+      "region": "Parvati Valley, Himachal Pradesh",
+      "setting": "A moonlit forest clearing near a roaring river, dominated by an ancient white pine tree with red threads tied around its trunk.",
+      "entity": "Nishi Daak / Chhalava (A forest mimic spirit that calls out in a close friend's voice)",
+      "protagonist": "Aman, 22, a college student on a trek with two close friends",
+      "emotion": "Brotherly loyalty tested by paranoia"
     }
   ],
   "followers": 1,
@@ -1041,6 +1115,6 @@
   },
   "cf_day": {
     "date": "2026-11-07",
-    "used": 4122
+    "used": 7968
   }
 }
