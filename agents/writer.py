@@ -105,6 +105,9 @@ RULES = """Rules:
 - KEEP THEM WATCHING TO THE END (the #1 signal): it is a ~1-minute story, so no slow stretch. Every 15-20 seconds
   something new happens — a sound, a clue, a reveal, a question the viewer needs answered. The biggest shock comes
   in the last 10 seconds, never earlier.
+- Lines are flowing spoken storytelling, full sentences with feeling ("Raat ke do baje Varun ka phone baja…"),
+  never telegraphic fragments ("Torch pakdi, dhyaan se.").
+- "hook_text" is about what the first picture and first line show (the same mystery), not a different detail.
 - MAKE IT WORTH SENDING: the twist should make a viewer want to send it to a friend ("bhai ye dekh…") — a
   relatable fear (a late-night bus, a call from an old number, a grandmother's warning) with a clever reveal.
 - No single line longer than 18 words (long sentences become long frozen pictures). {ending_rule}"""
@@ -509,5 +512,7 @@ def word_count(script: dict) -> int:
 
 def estimate_seconds(ctx: Context, script: dict) -> float:
     silent = sum(1 for sh in script["shots"] if not sh["lines"])
-    return (word_count(script) / 2.3 + 0.3 * line_count(script)
-            + silent * ctx.cfg["voice"]["silent_shot_seconds"])
+    # calibrated on real Sarvam runs (4-7 Nov): the old formula read ~15% long, so the Critic kept asking
+    # writers to cut good-length stories down to choppy 30-second telegrams
+    return 0.85 * (word_count(script) / 2.3 + 0.3 * line_count(script)) \
+        + silent * ctx.cfg["voice"]["silent_shot_seconds"]

@@ -38,6 +38,8 @@ Score each 0-10:
 - hook: would a viewer stop scrolling in the first 3 seconds? (cut 1 must be a scary close-up flash-forward with a
   short shocking line, cut 2 a turn back in time; a calm scenic opening scores at most 4)
 - emotion: do we care about these people? is there a real bond/feeling at the centre?
+- flow: are the lines natural, flowing spoken sentences? Choppy telegraphic fragments ("Torch pakdi, dhyaan se.")
+  or a story too compressed to follow score at most 4 on "emotion" and "tension".
 - tension: does it escalate cut by cut through small, concrete details? any dead lines? Does something new happen
   every 15-20 seconds, with the biggest shock in the last 10 seconds? Would a viewer watch to the very end?
 - shareable (part of "ending"): would a viewer send this to a friend?
@@ -67,7 +69,7 @@ Return JSON:
     result["safety_issues"] = str(result.get("safety_issues") or "")
     notes = []
     if not ctx.mock:
-        if secs < s["min_seconds"] - 15 or secs > s["max_seconds"] + 10:
+        if secs < s["min_seconds"] - 8 or secs > s["max_seconds"] + 15:
             total -= 12
             notes.append(f"LENGTH: about {secs:.0f}s; it must be {s['min_seconds']}-{s['max_seconds']}s "
                          f"(roughly {int(s['min_seconds'] * 2.0)}-{int(s['max_seconds'] * 2.0)} spoken words).")

@@ -772,7 +772,9 @@ def quality_check(ctx: Context, studio: Studio, script: dict, refs: dict[str, Pa
     if not v.get("quality_check", True) or ctx.mock:
         return []
     budget = int(v.get("max_redraws", 6))
-    fixed = _inspect(ctx, studio, script, refs, paths, budget, second=False)
+    # keep 2 redraws for the second look: a redraw can fail too (7 Nov: a redrawn "giant floating face" went out
+    # because the first look had used every redraw)
+    fixed = _inspect(ctx, studio, script, refs, paths, max(1, budget - 2), second=False)
     if fixed and budget - len(fixed) > 0:
         again = _inspect(ctx, studio, script, refs, paths, budget - len(fixed), second=True)
         # flagged in BOTH looks: the picture model keeps failing at it, and the last redraw is unchecked — don't use it
@@ -818,11 +820,14 @@ What each illustration should show:
 {json.dumps(expected, ensure_ascii=False, indent=1)}
 
 {"This is a SECOND look after some pictures were redrawn: check the redrawn ones especially." if second else ""}
+Pictures must NEVER contain readable text (phone screens, letters, signs are drawn without words): never flag
+"missing text" or "text readability" — flag text that IS visible instead.
 Be strict: these pictures go to thousands of viewers, and one ugly picture makes them scroll away.
 Flag every problem a viewer would notice:
 - tears drawn as black ink or black streaks; skin drawn grey, black or ashen (Indian skin is warm brown)
 - a face or body part merged into a wall, building or sky, a double-exposure look, or a giant floating face
 - people cut off at the left/right edge of the frame (half faces at the edges)
+- a head too big for the body (bobblehead / caricature proportions)
 - duplicated objects in hands (two identical lanterns), extra fingers, extra arms, twisted limbs
 - a character clearly doesn't match their reference (different face, hair, age, gender or outfit)
 - wrong people in the picture (missing, extra or duplicated person)

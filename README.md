@@ -413,3 +413,11 @@ Viewers left after 4-5 s on every one-minute reel, and every reel opened on the 
 The 6 Nov 9:17 PM reel still opened on a frightened face with a subtitle under the hook. Now enforced in code:
 cut 1 borrows the picture of the scariest threat shot (the entity, or an object like the bleeding gramophone) if
 the writer put a frightened person there, and subtitles start only after the hook line has gone.
+
+### v7.3.10 — from the 7 Nov 1:17 PM reel
+- The length estimate is calibrated on real runs (it read ~15% long, so the Critic pushed writers to cut good
+  stories into choppy 30 s telegrams); the length penalty only fires for clearly wrong lengths (32-73 s spoken).
+- Writer and Critic require flowing spoken sentences (no telegraphic fragments); the hook text must be about the
+  same mystery as the first picture and line.
+- The picture check keeps 2 redraws for its second look (a redrawn bobblehead had gone out unchecked), flags
+  oversized heads, and never asks for readable text on phones or signs.

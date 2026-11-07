@@ -61,8 +61,8 @@ llm:
 
 story:
   # SHORT, complete stories: completion rate is Instagram's #1 signal and 2-2.5 min reels were mostly abandoned
-  min_seconds: 40           # spoken length target: viral horror shorts are 30-60 s (finished reel ~45-60 s)
-  max_seconds: 55
+  min_seconds: 40           # spoken length target: viral horror shorts are 30-60 s (finished reel ~45-65 s)
+  max_seconds: 58
   max_reel_seconds: 175     # hard cap for the finished reel (YouTube Shorts must be 3:00 or less)
   min_cuts: 16              # ~2-3 s per cut, faster at the peaks
   max_cuts: 24
