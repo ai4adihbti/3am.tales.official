@@ -421,3 +421,14 @@ the writer put a frightened person there, and subtitles start only after the hoo
   same mystery as the first picture and line.
 - The picture check keeps 2 redraws for its second look (a redrawn bobblehead had gone out unchecked), flags
   oversized heads, and never asks for readable text on phones or signs.
+
+### v7.4.0 — art-style A/B test
+- Data from 16 reels: about 90% of viewers swipe away in the first ~2 s whatever the hook says (average watch is
+  ~10% of every reel, long or short). The next lever is the look itself: the bright cartoon style may read as
+  kids' content. Slots now alternate between the illustrated look and a dark cinematic film-still look
+  (`visuals.style_ab`, presets in `visuals.style_presets`, grade + grain included); a multi-part series keeps its
+  style. Every post records `style`; the Analyst logs average watch time and reach per style (`style_scores`).
+  Force a style for a run with the STYLE environment variable.
+- Cut 1 shows the threat even when the threat is a possessed friend or an impostor: the scariest close-up of
+  another person is used when the story has no entity character, and the Writer now gives such forms their own
+  entity character.

@@ -324,3 +324,19 @@ shuddh Hindi, not filmy dialogue-baazi. Match each character: young friends use 
 pagal hai kya); a mother speaks warm, simple Hindi (beta, chal, darr mat); a child speaks in short innocent
 sentences; an elder speaks slowly with old-fashioned words. Short lines, interruptions, half-sentences, real
 reactions."""
+
+
+VIDEO_STYLE_KEYS = ("grade", "grain")
+
+
+def apply_style(cfg: dict, name: str) -> str:
+    """Switch the look to a preset from visuals.style_presets (pictures, picture check and colour grade).
+    Unknown names keep the current look. Returns the name actually used."""
+    v = cfg["visuals"]
+    presets = v.get("style_presets") or {}
+    if name not in presets:
+        return v.get("style_name", "illustrated")
+    for k, val in (presets[name] or {}).items():
+        (cfg["video"] if k in VIDEO_STYLE_KEYS else v)[k] = val
+    v["style_name"] = name
+    return name

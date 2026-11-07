@@ -49,7 +49,10 @@ CHARACTER_SPEC = """"characters": [
                (e.g. 'maroon cotton saree with beige blouse, black hair in a low bun, small red bindi, glass bangles')",
       "personality": "how they talk and react",
       "is_entity": false}}
-  ],"""
+  ],
+  (a ghost, a possessed person, an impostor wearing a friend's face or a monster form of a character is its OWN
+  character entry with "is_entity": true, with the creepy look described, e.g. "Kabir's double: same face and
+  clothes, wide unblinking eyes, too-wide grin")"""
 
 BODY_SPEC = """"images": [
     {{"id": "I1", "framing": one of {framings},
@@ -403,14 +406,19 @@ def threat_first(shots: list[dict], entities: set[str]) -> bool:
     if not people or people & entities:
         return False                                   # already the threat (or an object)
     rank = {"scare": 0, "tense": 1, "uneasy": 2}
+    close = ("extreme_closeup", "closeup", "insert")
     best = None
     for i, sh in enumerate(shots[1:], 1):
         chars = set(sh.get("characters", []))
-        if chars and not chars & entities:
+        if chars & entities:
+            tier = 0                                   # the ghost / the possessed one
+        elif not chars and sh["framing"] not in ("establishing", "wide"):
+            tier = 1                                   # an object: the bleeding gramophone, the hand-print
+        elif chars and not chars & people and sh.get("mood") == "scare" and sh["framing"] in close:
+            tier = 2                                   # someone else's face at the scariest moment (the grinning double)
+        else:
             continue
-        if sh["framing"] in ("establishing", "wide") and not chars & entities:
-            continue
-        key = (0 if chars & entities else 1, rank.get(sh.get("mood"), 3), -i)
+        key = (tier, rank.get(sh.get("mood"), 3), -i)
         if best is None or key < best[0]:
             best = (key, i)
     if best is None:

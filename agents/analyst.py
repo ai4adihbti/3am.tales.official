@@ -113,6 +113,21 @@ def run(ctx: Context, memory: Memory) -> None:
         f["total"] += p["score"]
     memory.data["format_scores"] = {k: {"n": v["n"], "avg": round(v["total"] / v["n"], 2)} for k, v in fmt.items()}
 
+    # Art-style A/B test (v7.4.0): average watch seconds and reach per style, posts from 8 Nov on
+    sty: dict[str, dict] = {}
+    for p in measured:
+        if "style" not in p:
+            continue
+        m = p.get("metrics", {})
+        d = sty.setdefault(p["style"], {"n": 0, "watch": 0.0, "reach": 0.0})
+        d["n"] += 1
+        d["watch"] += float(m.get("avg_watch_s") or 0)
+        d["reach"] += float(m.get("reach") or 0)
+    memory.data["style_scores"] = {k: {"n": d["n"], "avg_watch_s": round(d["watch"] / d["n"], 1),
+                                       "avg_reach": round(d["reach"] / d["n"])} for k, d in sty.items()}
+    if sty:
+        log(NAME, f"art-style test: {memory.data['style_scores']}")
+
     ranked = sorted(measured, key=lambda p: p["score"], reverse=True)
     top, bottom = ranked[:3], ranked[-3:] if len(ranked) > 3 else []
 

@@ -103,6 +103,37 @@ visuals:
     low drifting ground mist, cool blue moonlight rim light on hair and faces, contrasted with warm
     golden-orange light from oil lamps, lanterns, diyas and open doorways
   day_palette: "soft warm evening light, golden hour, warm muted colours"
+  # A/B test of the look (v7.4.0). ~90% of viewers leave in the first ~2 s whatever the hook says; the bright
+  # cartoon look may read as "kids' content". Slots alternate between the illustrated look above and the
+  # presets below (day + slot parity), every post records its style, and the analyst compares watch time.
+  style_ab: ["illustrated", "cinematic"]
+  style_presets:
+    illustrated: {}                 # the settings above, unchanged
+    cinematic:
+      style_label: "dark cinematic"
+      style: >-
+        Cinematic film still from a dark Indian horror movie, photorealistic, shot on 35mm film, low-key lighting
+        with deep black shadows, a single practical light source, desaturated muted colours with a cold
+        blue-green tint, realistic Indian faces with natural skin texture and natural body proportions, shallow
+        depth of field, subtle film grain, unsettling composition with dark negative space, one single continuous
+        scene filling the whole frame, no comic panels, no split screen, no collage, no borders, no text,
+        no letters, no captions, no watermark, no logo
+      night_palette: >-
+        pitch-dark night, faint cold moonlight through mist, the only warm light a flickering lantern, diya or
+        phone torch, faces half lost in shadow, eyes catching the light
+      day_palette: "overcast grey dusk, dull cold light, muted colours"
+      style_check: >-
+        a cartoon, anime, comic or 2D illustrated look instead of a realistic cinematic film still, plastic
+        3D-render skin, or very blurry
+      target_look: >-
+        a realistic dark horror film still: deep shadows, one motivated light source, muted cold colours,
+        natural faces and proportions
+      grade: "eq=contrast=1.10:saturation=0.85:brightness=-0.02,vignette=PI/5"
+      grain: true
+  style_check: "photographic or 3D render instead of the 2D illustrated style, or very blurry"
+  target_look: >-
+    bold clean outlines, rich detail, a deep blue moonlit night contrasted with warm lantern light, and large
+    expressive eyes on emotional close-ups
   motion_strength: 0.10             # camera movement amount (0.06 subtle – 0.16 strong)
   depth_model: true                 # 3D parallax from a free open-source depth model (estimates if unavailable)
   atmosphere: true                  # drifting fog, floating dust/embers, lantern flicker

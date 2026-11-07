@@ -811,7 +811,7 @@ def _inspect(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path], 
     chars = {c["id"]: c for c in script["characters"]}
     expected = {im["id"]: {"shows": im["image"][:160], "visible": [chars[c]["name"] for c in im["characters"] if c in chars]}
                 for im in script["images"] if im["id"] in paths}
-    prompt = f"""You are the art director of an illustrated Indian story reel. The image shows a contact sheet:
+    prompt = f"""You are the art director of an Indian horror story reel. The image shows a contact sheet:
 top row = the character reference portraits (labelled with id and name); below = the illustrations, labelled I1, I2 …
 
 The story's setting: {script.get("setting") or "(not given)"}
@@ -836,9 +836,8 @@ Flag every problem a viewer would notice:
 - a comic-strip layout: several panels, a split screen, a collage or small inset pictures instead of ONE scene
 - a background that doesn't match the story's setting, or objects the story doesn't have (a car or steering wheel in
   a village story, hills or a pine forest in a plains village, modern things in an old setting)
-- photographic or 3D render instead of the 2D illustrated style, or very blurry
-- flat, dull or washed-out pictures: the target look is bold clean outlines, rich detail, a deep blue moonlit night
-  contrasted with warm lantern light, and large expressive eyes on emotional close-ups
+- {v.get("style_check") or "a look that doesn't match the reel's art style, or very blurry"}
+- flat, dull or washed-out pictures: the target look is {v.get("target_look") or "rich and detailed"}
 - anything gory or unsafe
 
 Return JSON: {{"redraw": [{{"id": "I4", "problem": "short", "fix": "one sentence to add to the drawing prompt"}}]}}

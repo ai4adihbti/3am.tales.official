@@ -24,7 +24,7 @@ import time
 from datetime import datetime, timedelta, timezone
 
 from agents import analyst, animator, caption, composer, cover, critic, editor, gpu, illustrator, publisher, qa, researcher, sound, upscaler, voice, writer, youtube
-from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, load_config, log
+from agents.common import ROOT, LLM, Context, LLMBlocked, LLMError, apply_style, load_config, log
 from agents.memory import Memory
 
 
@@ -108,6 +108,20 @@ def _slots(cfg: dict, now_ist: datetime) -> list[datetime]:
 
 def _window(cfg: dict) -> timedelta:
     return timedelta(hours=float(cfg.get("schedule", {}).get("start_window_hours", 5)))
+
+
+def _style_for(cfg: dict, now_utc: datetime) -> str:
+    """Which art style this slot uses: alternates by day and slot, so each style gets both times of day."""
+    ab = list(cfg["visuals"].get("style_ab") or [])
+    forced = os.environ.get("STYLE", "").strip()
+    if forced:
+        return forced
+    if len(ab) < 2:
+        return ab[0] if ab else "illustrated"
+    target = _post_target(cfg, now_utc)
+    slots = _slots(cfg, target)
+    idx = next((i for i, s in enumerate(slots) if s == target), 0)
+    return ab[(target.toordinal() + idx) % len(ab)]
 
 
 def _post_target(cfg: dict, now_utc: datetime) -> datetime:
@@ -286,7 +300,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.3.10 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.4.0 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -307,7 +321,7 @@ def main() -> int:
             return 0
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.3.10")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.4.0")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -413,7 +427,13 @@ def main() -> int:
     if total > 600:
         raise RuntimeError(f"Reel came out at {total:.0f}s, which is far too long; not posting it.")
 
-    # 6. illustrations: character portraits (kept for the series) → drawings → inspection → camera moves
+    # 6. the look: A/B test of art styles across slots (a multi-part series keeps the style it started with)
+    look = series.get("style") or _style_for(cfg, datetime.now(timezone.utc))
+    series["style"] = apply_style(cfg, look)
+    ctx.notes["style"] = series["style"]
+    log("Orchestrator", f"art style: {series['style']}")
+
+    # 6b. illustrations: character portraits (kept for the series) → drawings → inspection → camera moves
     budget = float(cfg.get("billing", {}).get("monthly_budget_usd", 9.0))
     spent = memory.month_spend()
     image_budget = max(0.0, budget - spent - 0.15)   # keep a little for this run's voices and writing
@@ -529,7 +549,8 @@ def main() -> int:
             "series_id": series["id"], "part": series["part"], "total_parts": series["total_parts"],
             "format": fmt["id"], "hook": script.get("hook", ""), "critic_score": review["score"],
             "voice_engine": ctx.notes.get("voice_engine", ""), "images": ctx.notes.get("image_providers", []),
-            "duration_s": total, "file": reel.name, "caption": cap, "qa": report}
+            "duration_s": total, "file": reel.name, "caption": cap, "qa": report,
+            "style": ctx.notes.get("style", "illustrated")}
     (out_dir / f"post-{stamp}.json").write_text(
         json.dumps({**post, "script": script, "review": review}, indent=2, ensure_ascii=False), encoding="utf-8")
     pics = out_dir / f"pictures-{stamp}"
