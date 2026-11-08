@@ -435,3 +435,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.4.1
 - The last subtitle never runs over the end card (it overlapped "The End" for ~0.5 s).
+
+### v7.4.2
+- Over-long hook text keeps a whole clause instead of being cut mid-sentence; the Critic takes 3 points off when one picture carries more than 4 cuts.

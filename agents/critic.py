@@ -90,8 +90,9 @@ Return JSON:
         for sh in shots:
             uses[sh["image_id"]] = uses.get(sh["image_id"], 0) + 1
         repeats = sum(1 for a, b in zip(shots, shots[1:]) if a["image_id"] == b["image_id"])
+        if max(uses.values(), default=0) > 4 or repeats > 2:
+            total -= 3                                 # one picture on screen for 15 s kills retention
         if max(uses.values(), default=0) > 3 or repeats > 1:
-            # feedback only (no penalty): the editor splits long lines anyway, and a missed post is worse
             notes.append("REPEATS: an image is reused too often or twice in a row; use new inserts "
                          "(hands, eyes, lantern, a clue) instead.")
         ratio = narr / len(lines) if lines else 0

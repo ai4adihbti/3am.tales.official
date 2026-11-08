@@ -64,7 +64,7 @@ BODY_SPEC = """"images": [
   "setting": "ONE fixed description of where this story happens, used for every picture's background: region, terrain,
               houses/buildings, trees, era (e.g. 'a small Bundelkhand village on flat dry plains: mud-brick houses with
               clay-tile roofs, neem and peepal trees, a stone stepwell, no hills, no pine forest, no vehicles')",
-  "hook_text": "2-5 word on-screen hook in Roman Hinglish for the first 3 seconds, a question or a shock
+  "hook_text": "2-5 word (max 35 letters) on-screen hook in Roman Hinglish for the first 3 seconds, a question or a shock
                 (e.g. 'Kuen se aayi uski awaaz…', 'Dadi 3 saal pehle mar chuki thi')",
   "cuts": [
     {{"image": "I1", "motion": one of {motions}, "mood": one of {moods},
@@ -359,7 +359,14 @@ def clean_hook(text) -> str:
     t = re.sub(r"\s+", " ", t).strip(" .,-")
     if len(t.split()) < 2:
         return ""
-    return t if len(t) <= 44 else t[:44].rsplit(" ", 1)[0] + "…"
+    if len(t) <= 44:
+        return t
+    # too long: keep a whole clause rather than cutting mid-sentence ("…janglon se wahi…")
+    for c in re.split(r"(?<=[,?!…])\s+", t):
+        c = c.strip(" ,")
+        if len(c.split()) >= 3 and len(c) <= 44:
+            return c
+    return t[:44].rsplit(" ", 1)[0] + "…"
 
 
 def has_cold_open(shots: list[dict]) -> bool:
