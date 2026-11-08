@@ -184,6 +184,10 @@ def build_overlay(ctx: Context, timeline: list[dict], speakers: list[str], lead:
                 if t < hook_until:
                     dur, t = dur - (hook_until - t), hook_until
                 end = t + dur if k < len(parts) - 1 else max(t + dur, min(nxt, t + dur + 0.6))
+                card_start = max(0.0, total - v["tail_seconds"] + 0.15)
+                if t >= card_start - 0.1:
+                    break                              # never print a subtitle over the end card
+                end = min(end, card_start - 0.05)
                 style = "Hook" if idx == 0 else f"S{order.get(ln['speaker'], 0)}"
                 ev.append(f"Dialogue: 0,{_ass_time(t)},{_ass_time(end)},{style},,0,0,0,,"
                           f"{{\\fscx92\\fscy92\\t(0,120,\\fscx100\\fscy100)}}{_esc(p.upper())}")

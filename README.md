@@ -432,3 +432,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 - Cut 1 shows the threat even when the threat is a possessed friend or an impostor: the scariest close-up of
   another person is used when the story has no entity character, and the Writer now gives such forms their own
   entity character.
+
+### v7.4.1
+- The last subtitle never runs over the end card (it overlapped "The End" for ~0.5 s).
