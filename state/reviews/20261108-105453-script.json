@@ -1,0 +1,20 @@
+{
+ "hook": "Amavasya ki raat, ghane janglon se wahi kata hua haath bahar aaya!",
+ "hook_text": "Amavasya ki raat, ghane janglon se wahi…",
+ "critic": 86,
+ "feedback": "Solid effort with strong visual motifs and high tension. However, to meet strict script rules: 1) Language mix: Write English loanwords in Roman script directly inside the Devanagari text (e.g., 'अमावस्या की रात, घने जंगलों से वही कटा हुआ hand बाहर आया!' or keep loanwords like 'torch' in English script inside Hindi text). 2) Voice: Cut 5 has Harpreet speak directly; ensure N handles almost all lines with characters speaking at most 1-2 times. 3) Length: Total cuts (15) are slightly under the 16-24 target range; add 2-3 visual cuts during the tension build-up to hit the pacing sweet spot.",
+ "lines": [
+  "Amavasya ki raat, ghane janglon se wahi kata hua haath bahar aaya!",
+  "Kabir ko nahi pata tha ki wo saaya kaun tha.",
+  "Gurdaspur ki is purani haveli mein har Amavasya ko ek ajeeb riwaaj nibhaya jata tha.",
+  "Kabir dil ka bahut saaf tha, lekin wo is purani andhviswasi pratha par bharosa nahi karta tha.",
+  "Beta mat jaa! Us saaye ko kheer nahi mili toh wo tujhe le jaayega!",
+  "Par Kabir torch aur garam kheer ka katora lekar sarhad ki taraf nikal pada.",
+  "Achanak dhund se ek bhayanak aur lamba kaala saaya bahar aaya!",
+  "Saaya kheer uthane laga, tabhi Kabir ki nazar uske haath par padi…",
+  "Uski beech ki ungli kati thi… bilkul Dadaji ke pachas saal pehle khoye bhai ki tarah!",
+  "Parivaar ki raksha ke liye unhone khud ko sarhad ka rakshak bana diya tha.",
+  "Wo koi shaitan nahi… unka apna dada tha jo aaj bhi pehra de raha tha.",
+  "Aur har Amavasya ki raat, ghane janglon se wahi kata hua haath kheer lene aata tha."
+ ]
+}
