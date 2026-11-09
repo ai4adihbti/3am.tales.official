@@ -553,7 +553,7 @@
         "avg_watch_s": 5.2
       },
       "score": 11.21,
-      "metrics_at": "2026-11-08T10:54:53+00:00"
+      "metrics_at": "2026-11-09T10:55:06+00:00"
     },
     {
       "title": "Malhar Ka Bhua Kuan — Part 1",
@@ -665,7 +665,7 @@
         "avg_watch_s": 5.0
       },
       "score": 21.36,
-      "metrics_at": "2026-11-08T10:54:53+00:00"
+      "metrics_at": "2026-11-09T10:55:06+00:00"
     },
     {
       "title": "Mithila ka Shraapit Pokhar — Part 1",
@@ -781,7 +781,7 @@
         "avg_watch_s": 4.3
       },
       "score": 8.12,
-      "metrics_at": "2026-11-08T10:54:53+00:00"
+      "metrics_at": "2026-11-09T10:55:06+00:00"
     },
     {
       "title": "Kasauli Ki Parchhai Gramophone — Part 1",
@@ -899,7 +899,7 @@
         "avg_watch_s": 3.2
       },
       "score": 41.86,
-      "metrics_at": "2026-11-08T10:54:53+00:00"
+      "metrics_at": "2026-11-09T10:55:06+00:00"
     },
     {
       "title": "Kasol Ki Raat Aur Safed Peepal — Part 1",
@@ -1000,7 +1000,19 @@
       "permalink": "https://www.instagram.com/reel/DfeN9t2AMvM/",
       "posted_at": "2026-11-08T07:47:09+00:00",
       "youtube_id": "rIEibvQ989o",
-      "youtube_url": "https://youtube.com/shorts/rIEibvQ989o"
+      "youtube_url": "https://youtube.com/shorts/rIEibvQ989o",
+      "metrics": {
+        "views": 169,
+        "reach": 143,
+        "likes": 2,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 2,
+        "avg_watch_s": 7.5
+      },
+      "score": 28.52,
+      "metrics_at": "2026-11-09T10:55:06+00:00"
     },
     {
       "title": "Gurdaspur Ka Amavas Kheer — Part 1",
@@ -1096,10 +1108,58 @@
       "posted_at": "2026-11-09T07:48:23+00:00",
       "youtube_id": "c0dw7JELpqU",
       "youtube_url": "https://youtube.com/shorts/c0dw7JELpqU"
+    },
+    {
+      "title": "Devgad Ghat Ki Aakhri Auto — Part 1",
+      "series_title": "Devgad Ghat Ki Aakhri Auto",
+      "series_id": "20261109-devgad-ghat-ki-aakhri-auto",
+      "part": 1,
+      "total_parts": 1,
+      "format": "family_bond",
+      "hook": "Devgad Ghat par raat do baje, saaya peeche pada tha...",
+      "critic_score": 87,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 64.135,
+      "file": "reel-20261109-105505.mp4",
+      "caption": "Raat ke 2 baje Ghat pe kiska haath pakda tha? | Bhoot ki kahani | Hindi horror story\n\nAisi raat mein agar phone pe aisa text aaye, toh tum kya karte? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #devgadghat #devchar #bhootikahani",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 64.2,
+        "loudness_lufs": -14.0,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I7",
+          "I2",
+          "I5",
+          "I2",
+          "I5"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4254,
+        "hq_images": 0,
+        "est_cost_usd": 0.06,
+        "month_spend_usd": 1.47
+      },
+      "style": "illustrated",
+      "media_id": "18507342319101592",
+      "permalink": "https://www.instagram.com/reel/Dfhpy1JFWKZ/",
+      "posted_at": "2026-11-09T15:47:10+00:00",
+      "youtube_id": "Bs9ymT9wJ_c",
+      "youtube_url": "https://youtube.com/shorts/Bs9ymT9wJ_c"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 3, \"avg\": 27.11}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize 'family_bond' and 'lok_katha' story types, as they significantly outperform 'purani_haveli' and 'village_secret' in overall engagement scores.\n- Hooks that pose an intriguing emotional or survival question (e.g., 'Who pulled Rohan from the jaws of death?') generate better initial traction than generic supernatural tropes like bleeding gramophones.\n- Keep horror reels longer and more atmospheric; shorter 40-50 second reels saw drop-offs at just 4-5 seconds, whereas 2-minute reels retained viewers for 12-19 seconds.\n- Avoid overused settings like 'purani_haveli' (average score 8.99), as the audience shows clear fatigue toward classic mansion haunted tropes compared to localized folklore.",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 4, \"avg\": 27.46}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize emotional stakes and folklore: Double down on 'family_bond' (top score 58.79) and 'lok_katha' themes, as narratives grounded in protective family dynamics or regional folklore drive the highest absolute watch times (12s–19s) and shares.\n- Abandon 'purani_haveli' settings: The haunted mansion/gramophone trope is severely underperforming (score 8.99), dropping viewers in just 4–5 seconds despite decent reach, signaling audience burnout with gothic clichés.\n- Lead with mystery-question hooks instead of instant gore: Hooks posing a high-stakes, specific mystery (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') retain viewers 3x longer than sensational, gore-heavy visuals (e.g., blood dripping from a gramophone).\n- Anchor settings in real, specific rural places: Audiences engage significantly more with named roads, ghats, and villages (Raniganj, Jamni gaon, Pangri Ghat) compared to generic remote hill or village tropes.\n- Fix video pacing to improve retention: Even top videos retain only 10-12% of total length; cut the 2–2.5 minute video runtimes down to 45–60 seconds to naturally boost retention percentage while maintaining the 15-20s narrative core.",
   "format_scores": {
     "family_bond": {
       "n": 5,
@@ -1110,8 +1170,8 @@
       "avg": 37.05
     },
     "village_secret": {
-      "n": 3,
-      "avg": 27.11
+      "n": 4,
+      "avg": 27.46
     },
     "purani_haveli": {
       "n": 2,
@@ -1140,11 +1200,12 @@
     "Kasol Ki Raat Aur Safed Peepal",
     "Birbhum ki Amavas Raat",
     "Gurdaspur Ka Amavas Kheer",
-    "Chettinad ki Brass Tijori"
+    "Chettinad ki Brass Tijori",
+    "Devgad Ghat Ki Aakhri Auto"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 1.41
+    "usd": 1.47
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1308,12 +1369,22 @@
       "entity": "Ancestral Soul Protector / Spirit of the Locked Safe",
       "protagonist": "Ananya, 24, a newlyweds' bahu visiting her husband's ancestral home",
       "emotion": "Guilt and a mother-in-law's unspoken protective sacrifice"
+    },
+    {
+      "title": "Devgad Ghat Ki Aakhri Auto",
+      "format": "family_bond",
+      "parts": 1,
+      "region": "Konkan Coast, Maharashtra",
+      "setting": "A pitch-black, rain-slicked coastal ghat road at 2 AM inside a lone auto-rickshaw.",
+      "entity": "Konkan Ghat Devchar (Shadow Spirit of the Cliffs) / Protective Mother's Spirit",
+      "protagonist": "Tanmay, 22, college student returning to his village with his mother",
+      "emotion": "A mother's ferocious, self-sacrificing love protecting her child beyond death"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "village_secret",
-    "target": 3
+    "format": "family_bond",
+    "target": 2
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -1325,7 +1396,13 @@
   },
   "cf_day": {
     "date": "2026-11-09",
-    "used": 3878
+    "used": 8132
   },
-  "style_scores": {}
+  "style_scores": {
+    "illustrated": {
+      "n": 1,
+      "avg_watch_s": 7.5,
+      "avg_reach": 143
+    }
+  }
 }
