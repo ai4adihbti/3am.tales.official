@@ -778,7 +778,19 @@ def quality_check(ctx: Context, studio: Studio, script: dict, refs: dict[str, Pa
     if fixed and budget - len(fixed) > 0:
         again = _inspect(ctx, studio, script, refs, paths, budget - len(fixed), second=True)
         # flagged in BOTH looks: the picture model keeps failing at it, and the last redraw is unchecked — don't use it
-        retire_images(script, [i for i in again if i in fixed])
+        twice = [i for i in again if i in fixed]
+        opener = script["shots"][0]["image_id"] if script.get("shots") else None
+        if opener in twice:
+            # the cold-open picture is the one that stops the scroll (9 Nov: the threat picture failed twice and a
+            # neighbouring scared face opened the reel instead): give it extra tries, each one checked
+            for _ in range(int(v.get("opener_rescues", 2))):
+                more = _inspect(ctx, studio, script, refs, paths, 1, second=True, only={opener})
+                if opener not in ctx.notes.get("last_flagged", [opener]):
+                    twice.remove(opener)               # the latest drawing passed its check
+                    log(NAME, f"{opener} (cold open) passed on an extra try")
+                    break
+                fixed += more
+        retire_images(script, twice)
         fixed += again
     ctx.notes["redrawn"] = fixed
     return fixed
@@ -806,7 +818,7 @@ def retire_images(script: dict, bad: list[str]) -> int:
 
 
 def _inspect(ctx: Context, studio: Studio, script: dict, refs: dict[str, Path], paths: dict[str, Path],
-             budget: int, second: bool) -> list[str]:
+             budget: int, second: bool, only: set | None = None) -> list[str]:
     v = ctx.cfg["visuals"]
     chars = {c["id"]: c for c in script["characters"]}
     expected = {im["id"]: {"shows": im["image"][:160], "visible": [chars[c]["name"] for c in im["characters"] if c in chars]}
@@ -847,8 +859,12 @@ At most {budget} items, worst first. Return an empty list if everything is fine.
                               mock={"redraw": []})
     except Exception as e:  # never let the inspection itself break the run
         log(NAME, f"quality check skipped ({str(e)[:120]})")
+        ctx.notes["last_flagged"] = sorted(only or [])   # unchecked: treat as still failing
         return []
     items = [x for x in (result.get("redraw") or []) if isinstance(x, dict) and x.get("id") in paths]
+    if only is not None:
+        items = [x for x in items if x["id"] in only]
+    ctx.notes["last_flagged"] = [x["id"] for x in items]
     items = items[:budget]
     if not items:
         log(NAME, "quality check: all illustrations passed")

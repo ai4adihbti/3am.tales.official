@@ -438,3 +438,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.4.2
 - Over-long hook text keeps a whole clause instead of being cut mid-sentence; the Critic takes 3 points off when one picture carries more than 4 cuts.
+
+### v7.4.3
+- The cold-open picture gets up to 2 extra checked redraws when it fails the picture check twice, instead of being swapped for a neighbouring picture (9 Nov: the threat picture was replaced by a scared face).
