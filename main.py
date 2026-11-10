@@ -300,7 +300,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.4.4 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.4.5 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -321,7 +321,7 @@ def main() -> int:
             return 0
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.4.4")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.4.5")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]

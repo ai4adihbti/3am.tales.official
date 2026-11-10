@@ -106,3 +106,20 @@ def upload(ctx: Context, video: Path, series: dict, caption: str) -> dict:
     url = f"https://youtube.com/shorts/{vid}"
     log(NAME, f"UPLOADED ✓ {url} ({meta['snippet']['title']})")
     return {"youtube_id": vid, "youtube_url": url}
+
+
+def stats(video_ids: list[str]) -> dict[str, dict]:
+    """Public numbers for our Shorts (views, likes, comments) — 1 quota unit per 50 videos."""
+    ids = [v for v in video_ids if v][:50]
+    if not ids or not ready():
+        return {}
+    r = requests.get("https://www.googleapis.com/youtube/v3/videos", timeout=30,
+                     params={"part": "statistics", "id": ",".join(ids)},
+                     headers={"Authorization": f"Bearer {_access_token()}"})
+    if r.status_code != 200:
+        raise YouTubeError(f"stats: HTTP {r.status_code} {r.text[:160]}")
+    out = {}
+    for it in r.json().get("items", []):
+        s = it.get("statistics", {})
+        out[it["id"]] = {k: int(s.get(k, 0) or 0) for k in ("viewCount", "likeCount", "commentCount")}
+    return out

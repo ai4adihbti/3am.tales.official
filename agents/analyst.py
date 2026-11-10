@@ -113,6 +113,20 @@ def run(ctx: Context, memory: Memory) -> None:
         f["total"] += p["score"]
     memory.data["format_scores"] = {k: {"n": v["n"], "avg": round(v["total"] / v["n"], 2)} for k, v in fmt.items()}
 
+    # YouTube Shorts: public views/likes/comments for the last 30 posts (cheap: one API call)
+    try:
+        from . import youtube
+        recent = [p for p in memory.posts[-30:] if p.get("youtube_id")]
+        yt = youtube.stats([p["youtube_id"] for p in recent])
+        for p in recent:
+            if p["youtube_id"] in yt:
+                p["youtube_stats"] = yt[p["youtube_id"]]
+        if yt:
+            total = sum(v["viewCount"] for v in yt.values())
+            log(NAME, f"YouTube: {total} views on the last {len(yt)} Shorts")
+    except Exception as e:  # never let this break the run
+        log(NAME, f"YouTube stats skipped ({str(e)[:100]})")
+
     # Art-style A/B test (v7.4.0): average watch seconds and reach per style, posts from 8 Nov on
     sty: dict[str, dict] = {}
     for p in measured:

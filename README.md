@@ -444,3 +444,4 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.4.4
 - Art-style test closed: the dark cinematic look lost (2 reels: 5.3 s average watch, 111 reach vs 7.5-9.9 s and 143-209 for the illustrated reels since 7 Nov). All reels use the illustrated look again; the preset stays in config.
+- v7.4.5: the Analyst records YouTube Shorts views/likes/comments per post (`youtube_stats`).
