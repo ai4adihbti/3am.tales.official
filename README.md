@@ -441,3 +441,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.4.3
 - The cold-open picture gets up to 2 extra checked redraws when it fails the picture check twice, instead of being swapped for a neighbouring picture (9 Nov: the threat picture was replaced by a scared face).
+
+### v7.4.4
+- Art-style test closed: the dark cinematic look lost (2 reels: 5.3 s average watch, 111 reach vs 7.5-9.9 s and 143-209 for the illustrated reels since 7 Nov). All reels use the illustrated look again; the preset stays in config.

@@ -106,7 +106,9 @@ visuals:
   # A/B test of the look (v7.4.0). ~90% of viewers leave in the first ~2 s whatever the hook says; the bright
   # cartoon look may read as "kids' content". Slots alternate between the illustrated look above and the
   # presets below (day + slot parity), every post records its style, and the analyst compares watch time.
-  style_ab: ["illustrated", "cinematic"]
+  # 10 Nov result: cinematic 2 reels avg 5.3 s watch / 111 reach vs illustrated (since the 7 Nov fixes) 7.5-9.9 s /
+  # 143-209 reach, and the dark pictures came out murky. The test is closed; illustrated only.
+  style_ab: ["illustrated"]
   style_presets:
     illustrated: {}                 # the settings above, unchanged
     cinematic:
