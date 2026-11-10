@@ -553,7 +553,7 @@
         "avg_watch_s": 5.2
       },
       "score": 11.21,
-      "metrics_at": "2026-11-09T10:55:06+00:00"
+      "metrics_at": "2026-11-10T10:58:13+00:00"
     },
     {
       "title": "Malhar Ka Bhua Kuan — Part 1",
@@ -665,7 +665,7 @@
         "avg_watch_s": 5.0
       },
       "score": 21.36,
-      "metrics_at": "2026-11-09T10:55:06+00:00"
+      "metrics_at": "2026-11-10T10:58:13+00:00"
     },
     {
       "title": "Mithila ka Shraapit Pokhar — Part 1",
@@ -781,7 +781,7 @@
         "avg_watch_s": 4.3
       },
       "score": 8.12,
-      "metrics_at": "2026-11-09T10:55:06+00:00"
+      "metrics_at": "2026-11-10T10:58:13+00:00"
     },
     {
       "title": "Kasauli Ki Parchhai Gramophone — Part 1",
@@ -899,7 +899,7 @@
         "avg_watch_s": 3.2
       },
       "score": 41.86,
-      "metrics_at": "2026-11-09T10:55:06+00:00"
+      "metrics_at": "2026-11-10T10:58:13+00:00"
     },
     {
       "title": "Kasol Ki Raat Aur Safed Peepal — Part 1",
@@ -1012,7 +1012,7 @@
         "avg_watch_s": 7.5
       },
       "score": 28.52,
-      "metrics_at": "2026-11-09T10:55:06+00:00"
+      "metrics_at": "2026-11-10T10:58:13+00:00"
     },
     {
       "title": "Gurdaspur Ka Amavas Kheer — Part 1",
@@ -1119,7 +1119,19 @@
       "permalink": "https://www.instagram.com/reel/Dfg1FsxCltp/",
       "posted_at": "2026-11-09T07:48:23+00:00",
       "youtube_id": "c0dw7JELpqU",
-      "youtube_url": "https://youtube.com/shorts/c0dw7JELpqU"
+      "youtube_url": "https://youtube.com/shorts/c0dw7JELpqU",
+      "metrics": {
+        "views": 128,
+        "reach": 107,
+        "likes": 2,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 2,
+        "avg_watch_s": 6.0
+      },
+      "score": 26.47,
+      "metrics_at": "2026-11-10T10:58:13+00:00"
     },
     {
       "title": "Devgad Ghat Ki Aakhri Auto — Part 1",
@@ -1214,10 +1226,56 @@
       "posted_at": "2026-11-10T07:47:12+00:00",
       "youtube_id": "tQJdhHCq1qk",
       "youtube_url": "https://youtube.com/shorts/tQJdhHCq1qk"
+    },
+    {
+      "title": "Gurgaon Bypass ki 2 AM Cab — Part 1",
+      "series_title": "Gurgaon Bypass ki 2 AM Cab",
+      "series_id": "20261110-gurgaon-bypass-ki-2-am-cab",
+      "part": 1,
+      "total_parts": 1,
+      "format": "shehar",
+      "hook": "Raat ke do baje cab ki driver seat bilkul khaali thi...",
+      "critic_score": 84,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 64.589,
+      "file": "reel-20261110-105813.mp4",
+      "caption": "Gurgaon Bypass ki 2 AM sunsan cab story | Bhoot ki kahani | Hindi horror story\n\nRaat ke 2 baje highway par stranded ho jate toh kya anjaan cab me baithte? 👀\n\nYe reel us dost ko bhejo jo kehta hai bhoot nahi hote 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #gurgaonhorror #raatkikahani",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 64.7,
+        "loudness_lufs": -14.0,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I1",
+          "I8",
+          "I6"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3144,
+        "hq_images": 0,
+        "est_cost_usd": 0.08,
+        "month_spend_usd": 1.61
+      },
+      "style": "cinematic",
+      "media_id": "18132103994493646",
+      "permalink": "https://www.instagram.com/reel/DfkOfLjjQlV/",
+      "posted_at": "2026-11-10T15:47:10+00:00",
+      "youtube_id": "zmZecqyJhL8",
+      "youtube_url": "https://youtube.com/shorts/zmZecqyJhL8"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 5, \"avg\": 26.44}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Focus on 'family_bond' and 'lok_katha' themes: Family bond stories score the highest overall (58.79 avg score), generating the highest total views (up to 196) and superior absolute watch times (12-16 seconds) compared to other themes.\n- Avoid the 'purani_haveli' theme entirely: It performs the worst by a wide margin (8.99 avg score) with critical drop-offs in retention, averaging only 4-5 seconds of watch time.\n- Hook with specific local settings and intriguing character-driven questions: Top performers anchor the story with real location names ('Raniganj', 'Chhatarpur') or high-stakes emotional questions ('who pulled Rohan from the jaws of death?').\n- Avoid generic haunted tropes: Audiences tune out quickly (4-5s watch time) on overused clichés like bleeding gramophones or mysterious knockings on doors ('Band Darwaza', 'Parchhai Gramophone').",
+  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.45}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize 'family_bond' and 'friends_dare' themes as they achieve the highest overall score averages (58.79 and 44.34), outperforming 'purani_haveli' (8.99).\n- Focus on intrigue-driven hooks featuring personal stakes (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') which generate longer watch times (16-19s) compared to generic jump-scares.\n- Avoid the 'purani_haveli' format entirely; it suffers from the lowest audience scores and terrible watch time retention (4.3s - 5.3s average).\n- Keep hooks grounded in specific location-based storytelling ('lok_katha' like Chhatarpur or Raniganj), which holds initial interest better than generic supernatural tropes.",
   "format_scores": {
     "family_bond": {
       "n": 5,
@@ -1228,8 +1286,8 @@
       "avg": 37.05
     },
     "village_secret": {
-      "n": 5,
-      "avg": 26.44
+      "n": 6,
+      "avg": 26.45
     },
     "purani_haveli": {
       "n": 2,
@@ -1260,11 +1318,12 @@
     "Gurdaspur Ka Amavas Kheer",
     "Chettinad ki Brass Tijori",
     "Devgad Ghat Ki Aakhri Auto",
-    "Ara Junction Ka Lal Signal"
+    "Ara Junction Ka Lal Signal",
+    "Gurgaon Bypass ki 2 AM Cab"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 1.53
+    "usd": 1.61
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1448,11 +1507,21 @@
       "entity": "Chhalava / Protective Father's Guardian Spirit",
       "protagonist": "Ananya, 19, college student traveling home with her father, Ramesh, 48",
       "emotion": "Unconditional fatherly protection and bitter-sweet sacrifice"
+    },
+    {
+      "title": "Gurgaon Bypass ki 2 AM Cab",
+      "format": "shehar",
+      "parts": 1,
+      "region": "Delhi-NCR (Gurgaon, Haryana)",
+      "setting": "A pitch-dark, deserted highway stretch near Cyber City Gurgaon at 2:30 AM ending outside a girls' PG gate.",
+      "entity": "Protective Brother's Guardian Spirit",
+      "protagonist": "Meher, 22, late-night call center worker returning to her PG",
+      "emotion": "Deep sibling bond and protective sacrifice from beyond death"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "family_bond",
+    "format": "shehar",
     "target": 2
   },
   "ig_token": {
@@ -1465,7 +1534,7 @@
   },
   "cf_day": {
     "date": "2026-11-10",
-    "used": 3087
+    "used": 6231
   },
   "style_scores": {
     "illustrated": {
@@ -1474,9 +1543,9 @@
       "avg_reach": 143
     },
     "cinematic": {
-      "n": 1,
-      "avg_watch_s": 4.6,
-      "avg_reach": 115
+      "n": 2,
+      "avg_watch_s": 5.3,
+      "avg_reach": 111
     }
   }
 }
