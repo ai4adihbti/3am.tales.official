@@ -113,6 +113,10 @@ RULES = """Rules:
 - "hook_text" is about what the first picture and first line show (the same mystery), not a different detail.
 - MAKE IT WORTH SENDING: the twist should make a viewer want to send it to a friend ("bhai ye dekh…") — a
   relatable fear (a late-night bus, a call from an old number, a grandmother's warning) with a clever reveal.
+- TURN TO THE VIEWER (this is what makes people send it): the very last line, after the twist, speaks to the
+  viewer about their own life tonight, a small warning or rule they will remember, tied to this story's fear and
+  echoing the cold open ("Aur haan… agar raat do baje tumhe bhi koi apne hi naam se pukare… jawab mat dena.").
+  Keep it under 18 words, mood "scare", on the threat picture.
 - No single line longer than 18 words (long sentences become long frozen pictures). {ending_rule}"""
 
 

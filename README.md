@@ -445,3 +445,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 ### v7.4.4
 - Art-style test closed: the dark cinematic look lost (2 reels: 5.3 s average watch, 111 reach vs 7.5-9.9 s and 143-209 for the illustrated reels since 7 Nov). All reels use the illustrated look again; the preset stays in config.
 - v7.4.5: the Analyst records YouTube Shorts views/likes/comments per post (`youtube_stats`).
+
+### v7.5.0 — built to be sent
+- Shares are 0 on every reel and they are the signal that pushes a reel past its first ~150 viewers. The last line now turns to the viewer with a warning about their own night, tied to the story (the line people quote when they send it), and the caption share line names the friend this story is for ("Ye reel us dost ko bhejo jo raat 2 baje akele cab leta hai").

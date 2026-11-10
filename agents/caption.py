@@ -31,10 +31,12 @@ Caption rules (Roman Hinglish, the way Indian Gen Z writes):
   " | Bhoot ki kahani | Hindi horror story". Max 110 characters. Do not write "Part 1/1" or "(fiction)".
 - Line 2: one question that makes people comment, about a choice the viewer would make
   (e.g. "Tum hote toh darwaza kholte ya nahi? 👀").
+- Line 3 (makes people SEND it): "Ye reel us dost ko bhejo jo ..." finished with someone specific to THIS
+  story's situation (e.g. "...jo raat 2 baje akele cab leta hai 👀", "...jo purane station pe ruk jaata hai").
 - 0-2 emojis total, no cringe.
 - Then {c['max_hashtags'] - len(c['core_hashtags'])} niche hashtags for this story (mix Hindi-English, e.g. #qabristan #bhootiyahaveli).
 
-Return JSON: {{"line1": "...", "line2": "...", "hashtags": ["#..."]}}"""
+Return JSON: {{"line1": "...", "line2": "...", "line3": "...", "hashtags": ["#..."]}}"""
 
     plain = {"line1": f"{title_part} | Bhoot ki kahani | Hindi horror story",
              "line2": "Tum hote toh kya karte? 👀",
@@ -58,6 +60,9 @@ Return JSON: {{"line1": "...", "line2": "...", "hashtags": ["#..."]}}"""
     line1 = str(r["line1"]).strip().replace("(fiction)", "").replace("Part 1/1", "").strip(" |")
     if multi and part_tag not in line1:
         line1 = f"{part_tag} · {line1}"
+    l3 = str(r.get("line3") or "").strip()
+    if l3.lower().startswith("ye reel us dost ko bhejo") and 25 <= len(l3) <= 140:
+        share = l3
     caption = (f"{line1}\n\n{str(r.get('line2') or plain['line2']).strip()}\n\n{share}\n{follow}\n\n"
                f"(kalpanik kahani)\n.\n.\n{' '.join(tags)}")
     log(NAME, f"caption ready ({len(tags)} hashtags)")
@@ -68,6 +73,6 @@ def _ask(ctx: Context, prompt: str, ch: dict, series: dict, part_tag: str) -> di
     return ctx.llm.json(prompt, temperature=0.8, mock={
         "line1": f"{series['title']} | {part_tag} — qabristan ka raaz (fiction)",
         "line2": "Tum hote toh andar jaate ya wapas bhaagte? 👀",
-        "line3": ch["cta"],
+        "line3": "Ye reel us dost ko bhejo jo raat ko akele qabristan ke paas se guzarta hai 👀",
         "hashtags": ["#qabristan", "#horrorseries", "#raatkikahani", "#desihorror"],
     })
