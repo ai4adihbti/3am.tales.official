@@ -189,8 +189,24 @@ def build_overlay(ctx: Context, timeline: list[dict], speakers: list[str], lead:
                     break                              # never print a subtitle over the end card
                 end = min(end, card_start - 0.05)
                 style = "Hook" if idx == 0 else f"S{order.get(ln['speaker'], 0)}"
-                ev.append(f"Dialogue: 0,{_ass_time(t)},{_ass_time(end)},{style},,0,0,0,,"
-                          f"{{\\fscx92\\fscy92\\t(0,120,\\fscx100\\fscy100)}}{_esc(p.upper())}")
+                words = _esc(p.upper()).split()
+                if v.get("word_highlight", True) and len(words) > 1 and end - t > 0.35:
+                    # premium-reel style: the word being spoken lights up (timed by its length within the chunk)
+                    sp_col = colors[order.get(ln["speaker"], 0) % len(colors)] if idx else v["hook_color"]
+                    hl = _ass_color("#FFD34D" if sp_col.upper() in ("#FFFFFF", "#FFF") else "#FFFFFF")
+                    wts = [len(w) + 2 for w in words]
+                    edges = [t]
+                    for w_ in wts:
+                        edges.append(edges[-1] + (end - t) * w_ / sum(wts))
+                    for j in range(len(words)):
+                        txt = " ".join(f"{{\\c{hl}}}{w}{{\\r}}" if q == j else w
+                                       for q, w in enumerate(words))
+                        pop = "{\\fscx92\\fscy92\\t(0,120,\\fscx100\\fscy100)}" if j == 0 else ""
+                        ev.append(f"Dialogue: 0,{_ass_time(edges[j])},{_ass_time(edges[j + 1])},{style},,0,0,0,,"
+                                  f"{pop}{txt}")
+                else:
+                    ev.append(f"Dialogue: 0,{_ass_time(t)},{_ass_time(end)},{style},,0,0,0,,"
+                              f"{{\\fscx92\\fscy92\\t(0,120,\\fscx100\\fscy100)}}{_esc(p.upper())}")
                 t += dur
 
     if hook_text and v.get("hook_text", True):

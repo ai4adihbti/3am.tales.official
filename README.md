@@ -456,3 +456,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.6.0 — searchable real places
 - New story type `asli_jagah` (boosted 2x): fictional stories set at real, famous haunted places young Indians search for (Bhangarh, Kuldhara, Dow Hill, Shaniwar Wada, Dumas Beach, Agrasen ki Baoli…), with the place name first in the hook, so reels and Shorts can also be found through search. Never names real living people or businesses, always labelled fiction.
+
+### v7.6.1 — premium subtitles
+- Word-by-word highlight: the word being spoken lights up (yellow on white lines, white on coloured lines), the look of premium story reels. `video.word_highlight: false` turns it off.
