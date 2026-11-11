@@ -453,3 +453,6 @@ the writer put a frightened person there, and subtitles start only after the hoo
 - Living characters are drawn with natural dark eyes (glowing cyan eyes on the hero made him look possessed).
 - Cut 1 can also take a medium shot of the threat figure (the faceless raincoat man) when the story has no entity character.
 - YouTube Shorts numbers: the upload login may not read stats (HTTP 403); add a free YouTube Data API key as the YT_API_KEY secret and the Analyst uses it.
+
+### v7.6.0 — searchable real places
+- New story type `asli_jagah` (boosted 2x): fictional stories set at real, famous haunted places young Indians search for (Bhangarh, Kuldhara, Dow Hill, Shaniwar Wada, Dumas Beach, Agrasen ki Baoli…), with the place name first in the hook, so reels and Shorts can also be found through search. Never names real living people or businesses, always labelled fiction.

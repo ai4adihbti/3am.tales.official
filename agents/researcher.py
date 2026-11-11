@@ -65,6 +65,7 @@ def choose_format(ctx: Context, memory: Memory) -> tuple[dict, int]:
             w *= 0.5 + sc["avg"] / best                                       # 0.5x … 1.5x by performance
         if f["id"] == main_id:
             w *= 1.6
+        w *= float(f.get("boost", 1.0))                                      # e.g. searchable real places
         weights.append(max(w, 0.05))
     choice = random.choices(cands, weights=weights, k=1)[0]
     target = random.randint(int(lo), int(hi))
@@ -172,7 +173,8 @@ What works in 1-minute horror reels (use these patterns, invent fresh content):
   the date on the ticket is 1998) — the kind people rewatch and tag friends on.
 Strong = a concrete Indian setting young Indians recognise, a local legend or rule with one unforgettable creepy
 image, 2-4 characters we care about, an emotional core, escalating events, and a twist that lands.
-Use fresh Indian place and character names (invent the village/town names); vary the region of India.
+Use fresh Indian place and character names (invent the village/town names unless the story type names a real
+place); vary the region of India.
 
 {_parts_rule(lo, hi)}
 

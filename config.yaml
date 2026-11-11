@@ -26,6 +26,10 @@ formats:
   - id: family_bond
     label: "Family bond, supernatural twist"
     brief: "A deeply emotional story between family members (maa-beta, papa-beti, dadi-pota, bhai-behen, a newly married couple) in an everyday Indian situation at night — a lonely highway, a hospital corridor, a village bus stop, a power cut at home. Something is quietly wrong; small details build a mystery; the twist is supernatural AND emotional (love, sacrifice, a promise, a goodbye). Gentle dread, not gore. Fiction."
+  - id: asli_jagah
+    boost: 2.0
+    label: "A real haunted place people search for"
+    brief: "Set at ONE real, famous haunted place in India that young Indians search for and argue about, named exactly — e.g. Bhangarh Fort (Rajasthan), Kuldhara village (Jaisalmer), Dow Hill and Victoria Boys School road (Kurseong), Shaniwar Wada (Pune), Dumas Beach (Surat), Agrasen ki Baoli (Delhi), Malcha Mahal (Delhi), Khooni Darwaza (Delhi), GP Block (Meerut), Tunnel 33 (Shimla), Lambi Dehar mines (Mussoorie), Jatinga (Assam), Mukesh Mills (Mumbai), Kalpa or Kasauli roads — pick one not used recently. Weave in the legend people already know (the curse of Bhangarh, the vanished Paliwals of Kuldhara, the headless boy of Dow Hill, 'Kaka mala vachva' at Shaniwar Wada…) and give it a fresh, personal twist through invented characters (young visitors, a guard, a family on a road trip). The logline and the first line start with the place name (e.g. 'Bhangarh ke andar shaam ke baad…'). Never name or accuse real living people, real hotels or businesses, and never say it really happened: it is a fictional story inspired by the legend. Fiction."
   - id: village_secret
     unlock_after: 2
     label: "Village / family secret"
