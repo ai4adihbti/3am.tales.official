@@ -448,3 +448,8 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.5.0 — built to be sent
 - Shares are 0 on every reel and they are the signal that pushes a reel past its first ~150 viewers. The last line now turns to the viewer with a warning about their own night, tied to the story (the line people quote when they send it), and the caption share line names the friend this story is for ("Ye reel us dost ko bhejo jo raat 2 baje akele cab leta hai").
+
+### v7.5.1
+- Living characters are drawn with natural dark eyes (glowing cyan eyes on the hero made him look possessed).
+- Cut 1 can also take a medium shot of the threat figure (the faceless raincoat man) when the story has no entity character.
+- YouTube Shorts numbers: the upload login may not read stats (HTTP 403); add a free YouTube Data API key as the YT_API_KEY secret and the Analyst uses it.

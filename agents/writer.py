@@ -425,7 +425,7 @@ def threat_first(shots: list[dict], entities: set[str]) -> bool:
             tier = 0                                   # the ghost / the possessed one
         elif not chars and sh["framing"] not in ("establishing", "wide"):
             tier = 1                                   # an object: the bleeding gramophone, the hand-print
-        elif chars and not chars & people and sh.get("mood") == "scare" and sh["framing"] in close:
+        elif chars and not chars & people and sh.get("mood") in ("scare", "tense") and sh["framing"] in close + ("medium",):
             tier = 2                                   # someone else's face at the scariest moment (the grinning double)
         else:
             continue

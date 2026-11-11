@@ -111,11 +111,16 @@ def upload(ctx: Context, video: Path, series: dict, caption: str) -> dict:
 def stats(video_ids: list[str]) -> dict[str, dict]:
     """Public numbers for our Shorts (views, likes, comments) — 1 quota unit per 50 videos."""
     ids = [v for v in video_ids if v][:50]
-    if not ids or not ready():
+    key = os.getenv("YT_API_KEY", "").strip()
+    if not ids or not (key or ready()):
         return {}
-    r = requests.get("https://www.googleapis.com/youtube/v3/videos", timeout=30,
-                     params={"part": "statistics", "id": ",".join(ids)},
-                     headers={"Authorization": f"Bearer {_access_token()}"})
+    params = {"part": "statistics", "id": ",".join(ids)}
+    if key:          # a plain API key reads public numbers; the upload login has no permission to read
+        params["key"] = key
+        headers = {}
+    else:
+        headers = {"Authorization": f"Bearer {_access_token()}"}
+    r = requests.get("https://www.googleapis.com/youtube/v3/videos", timeout=30, params=params, headers=headers)
     if r.status_code != 200:
         raise YouTubeError(f"stats: HTTP {r.status_code} {r.text[:160]}")
     out = {}

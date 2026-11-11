@@ -465,6 +465,8 @@ def shot_prompt(ctx: Context, shot: dict, chars: dict, ref_ids: list[str], limit
             head.append("Each character keeps the face, age, hair, skin tone and outfit of their reference image; only "
                         "pose, expression and angle change; references are for the people only, not the background")
         head.append(f"Exactly {len(people)} {'person' if len(people) == 1 else 'people'} in the picture")
+        if not any((chars.get(c) or {}).get("is_entity") for c in shot["characters"]):
+            head.append("Living people have natural dark brown eyes, never glowing or light-blue eyes")
     setting = no_text(ctx.notes.get("setting", ""))
     tail = ("One single scene, no panels, collage or double exposure. Every person fully inside the frame with a "
             "natural face and two normal hands, nothing merged into walls. Natural warm brown Indian skin in lantern "
