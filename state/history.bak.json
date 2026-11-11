@@ -553,7 +553,7 @@
         "avg_watch_s": 5.2
       },
       "score": 11.21,
-      "metrics_at": "2026-11-10T10:58:13+00:00"
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Malhar Ka Bhua Kuan — Part 1",
@@ -665,7 +665,7 @@
         "avg_watch_s": 5.0
       },
       "score": 21.36,
-      "metrics_at": "2026-11-10T10:58:13+00:00"
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Mithila ka Shraapit Pokhar — Part 1",
@@ -781,7 +781,7 @@
         "avg_watch_s": 4.3
       },
       "score": 8.12,
-      "metrics_at": "2026-11-10T10:58:13+00:00"
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Kasauli Ki Parchhai Gramophone — Part 1",
@@ -899,7 +899,7 @@
         "avg_watch_s": 3.2
       },
       "score": 41.86,
-      "metrics_at": "2026-11-10T10:58:13+00:00"
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Kasol Ki Raat Aur Safed Peepal — Part 1",
@@ -1012,7 +1012,7 @@
         "avg_watch_s": 7.5
       },
       "score": 28.52,
-      "metrics_at": "2026-11-10T10:58:13+00:00"
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Gurdaspur Ka Amavas Kheer — Part 1",
@@ -1121,8 +1121,8 @@
       "youtube_id": "c0dw7JELpqU",
       "youtube_url": "https://youtube.com/shorts/c0dw7JELpqU",
       "metrics": {
-        "views": 128,
-        "reach": 107,
+        "views": 129,
+        "reach": 108,
         "likes": 2,
         "comments": 0,
         "shares": 0,
@@ -1130,8 +1130,8 @@
         "total_interactions": 2,
         "avg_watch_s": 6.0
       },
-      "score": 26.47,
-      "metrics_at": "2026-11-10T10:58:13+00:00"
+      "score": 26.35,
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Devgad Ghat Ki Aakhri Auto — Part 1",
@@ -1237,7 +1237,19 @@
       "permalink": "https://www.instagram.com/reel/DfjXjejpU86/",
       "posted_at": "2026-11-10T07:47:12+00:00",
       "youtube_id": "tQJdhHCq1qk",
-      "youtube_url": "https://youtube.com/shorts/tQJdhHCq1qk"
+      "youtube_url": "https://youtube.com/shorts/tQJdhHCq1qk",
+      "metrics": {
+        "views": 121,
+        "reach": 99,
+        "likes": 0,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 0,
+        "avg_watch_s": 6.2
+      },
+      "score": 10.43,
+      "metrics_at": "2026-11-11T10:55:36+00:00"
     },
     {
       "title": "Gurgaon Bypass ki 2 AM Cab — Part 1",
@@ -1334,14 +1346,62 @@
       "posted_at": "2026-11-11T07:47:10+00:00",
       "youtube_id": "gEwEHLY_6Hk",
       "youtube_url": "https://youtube.com/shorts/gEwEHLY_6Hk"
+    },
+    {
+      "title": "Barmer Express Ka Berth 43 — Part 1",
+      "series_title": "Barmer Express Ka Berth 43",
+      "series_id": "20261111-barmer-express-ka-berth-43",
+      "part": 1,
+      "total_parts": 1,
+      "format": "safar",
+      "hook": "Raat ke teen baje, wo sirf use khana khilane aaya tha.",
+      "critic_score": 89,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 65.03,
+      "file": "reel-20261111-105535.mp4",
+      "caption": "Barmer Express ka Berth 43 ka ajeeb musafir | Bhoot ki kahani | Hindi horror story\n\nRaat ke 2 baje train mein koi anjaan khana offer kare toh khaoge?\n\nYe reel us dost ko bhejo jo raat ko akele train journey karta hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #trainjourneyhorror #barmerexpress #raatkasafar",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 65.1,
+        "loudness_lufs": -14.3,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I9",
+          "I1",
+          "I6",
+          "I9",
+          "I1"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3938,
+        "hq_images": 0,
+        "est_cost_usd": 0.09,
+        "month_spend_usd": 1.78
+      },
+      "style": "illustrated",
+      "media_id": "18455595976125092",
+      "permalink": "https://www.instagram.com/reel/DfmzSaMAeKt/",
+      "posted_at": "2026-11-11T15:47:09+00:00",
+      "youtube_id": "OV4HR6uQCpQ",
+      "youtube_url": "https://youtube.com/shorts/OV4HR6uQCpQ"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 147, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 6, \"avg\": 65.77}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.45}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize 'family_bond' (avg score 65.77) and local folklore ('lok_katha') settings over generic themes; everyday transport settings like late-night buses and autos drive the highest reach and retention.\n- Completely avoid 'purani_haveli' (avg score 8.99) and haunted object tropes, which consistently result in the lowest watch times (4-5s) and worst audience retention (8-10%).\n- Open with grounded, suspenseful hooks anchored to a specific time, real-sounding place, and creeping dread (e.g., 'Devgad Ghat par raat do baje...') rather than exaggerated gore or premature reveals ('khoon tapak raha tha', 'jaan bachai').\n- Tighten the format and pacing: drop-off happens within 5-12 seconds across all videos regardless of total length, so cut total durations closer to 30-45 seconds to drastically improve retention percentages.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 147, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.87}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.43}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize transit and rural settings: Haunted late-night journeys (Devgad Ghat auto, Raniganj bus) and regional folklore (Jamni gaon kuan) drive the highest retention (up to 19s) and top views, while 'purani_haveli' (old mansion) tropes consistently rank lowest (average score 8.99).\n- Hook with eerie situational atmosphere rather than forced, immediate gore: Atmospheric hooks setting a specific time and place ('Devgad Ghat par raat do baje...') engage viewers better than abrupt supernatural shocks ('taza khoon tapak raha tha', floating feet), which cause quick drop-offs within 4-6 seconds.\n- Lean into family-bond stakes and folk legends: Stories anchored in 'family_bond' score highest on average (57.87) and generate rare shares and saves; combined with 'lok_katha' (37.05), these themes outperform generic haunted house plots.\n- Pace specifically for the first 10-15 seconds: Across all reels, average watch percentage sits low (8-12%), meaning front-loading tension and delaying the supernatural reveal slightly is essential to prevent users from scrolling before the 10-second mark.",
   "format_scores": {
     "family_bond": {
-      "n": 6,
-      "avg": 65.77
+      "n": 7,
+      "avg": 57.87
     },
     "lok_katha": {
       "n": 4,
@@ -1349,7 +1409,7 @@
     },
     "village_secret": {
       "n": 6,
-      "avg": 26.45
+      "avg": 26.43
     },
     "purani_haveli": {
       "n": 2,
@@ -1382,11 +1442,12 @@
     "Devgad Ghat Ki Aakhri Auto",
     "Ara Junction Ka Lal Signal",
     "Gurgaon Bypass ki 2 AM Cab",
-    "Koramangala PG Ki 3 AM Delivery"
+    "Koramangala PG Ki 3 AM Delivery",
+    "Barmer Express Ka Berth 43"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 1.69
+    "usd": 1.78
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1590,12 +1651,22 @@
       "entity": "Living Person's Secret / Nishi Daak-style Phone Mimic Warning",
       "protagonist": "Rohan, 23, fresh software recruit staying alone in a new city away from his family",
       "emotion": "Deep fatherly protective instinct and shocking realization of isolation"
+    },
+    {
+      "title": "Barmer Express Ka Berth 43",
+      "format": "safar",
+      "parts": 1,
+      "region": "Thar Desert, Rajasthan (Barmer–Jodhpur desert stretch)",
+      "setting": "A rattling, dimly lit sleeper-class train compartment (coach S-4) cutting through pitch-dark sand dunes at 3:15 AM.",
+      "entity": "Bhatka Musafir / Living Person's Secret (Guilt & Guardian Spirit)",
+      "protagonist": "Vikram, 26, an estranged son traveling back to his village after 4 years of stubborn silence",
+      "emotion": "Deep filial guilt, unspoken reconciliation, and haunting grief"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "shehar",
-    "target": 2
+    "format": "safar",
+    "target": 3
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -1607,13 +1678,13 @@
   },
   "cf_day": {
     "date": "2026-11-11",
-    "used": 4372
+    "used": 8310
   },
   "style_scores": {
     "illustrated": {
-      "n": 2,
-      "avg_watch_s": 7.6,
-      "avg_reach": 136
+      "n": 3,
+      "avg_watch_s": 7.1,
+      "avg_reach": 124
     },
     "cinematic": {
       "n": 2,

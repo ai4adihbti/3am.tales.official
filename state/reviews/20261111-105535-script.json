@@ -1,0 +1,21 @@
+{
+ "hook": "Raat ke teen baje, wo sirf use khana khilane aaya tha.",
+ "hook_text": "Raat ke teen baje",
+ "critic": 89,
+ "feedback": "Solid execution of the 'Night Journey' format with strong emotional resonance. A few fine-tuning notes: 1) In Cut 8, Vikram says 'Bapu... mujhe aane mein bohot der ho gayi' before he even receives the death notification in Cut 10. While he might feel guilty about being away for 3 years, saying 'der ho gayi' slightly undercuts the surprise shock of the phone message. Change Cut 8's line to an apology for running away (e.g., 'बापू... मुझे माफ कर दो, मैं बिना बताए भाग गया था।') so the hospital message in Cut 10 hits with full devastating force. 2) Cut 15 warning ('...to pooch lena... wo zinda bhi",
+ "lines": [
+  "Raat ke teen baje, wo sirf use khana khilane aaya tha.",
+  "Lekin Vikram ko nahi pata tha ki wo kaun hai.",
+  "Barmer Express Thar ke sannaate ko cheerti hui bhaage jaa rahi thi.",
+  "Teen saal baad, Vikram apne pita se milne ghar laut raha tha.",
+  "Tabhi berth 43 par, pairon ke paas ek boodha aadmi baith gaya.",
+  "Bhookha bhaaga tha shahar... ab to kha le.",
+  "Baajre ki roti ka wo swaad, jo sirf uske Bapu banaate the.",
+  "Bapu... mujhe aane mein bohot der ho gayi.",
+  "Achanak Vikram ki jeb mein rakha phone zor se vibrate hua.",
+  "Behan ka message tha... Bapu ka dehant hospital mein do ghante pehle ho chuka tha.",
+  "Vikram ne saamne dekha... wo seat poori tarah khaali padi thi.",
+  "Wahaan sirf sookhi ret thi... aur garmagaram rotiyon ka dibba.",
+  "Safar mein agar koi apna bin bulaaye khaana de, to pooch lena... wo zinda bhi hai?"
+ ]
+}
