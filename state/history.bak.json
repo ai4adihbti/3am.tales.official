@@ -260,7 +260,7 @@
         "avg_watch_s": 19.1
       },
       "score": 71.02,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Almora Bypass ka Safed Dhund — Part 1",
@@ -315,10 +315,10 @@
         "shares": 0,
         "saved": 0,
         "total_interactions": 3,
-        "avg_watch_s": 11.3
+        "avg_watch_s": 11.4
       },
-      "score": 31.88,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "score": 31.95,
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Pangri Ghat ka Lal Lantern — Part 1",
@@ -375,7 +375,7 @@
         "avg_watch_s": 16.4
       },
       "score": 62.07,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 1",
@@ -435,7 +435,7 @@
         "avg_watch_s": 8.8
       },
       "score": 29.49,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Bishnupur ka Kali Kamra — Part 2",
@@ -497,7 +497,7 @@
         "avg_watch_s": 34.0
       },
       "score": 40.63,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Mikir Hills ka Band Darwaza — Part 1",
@@ -606,7 +606,7 @@
         "avg_watch_s": 4.1
       },
       "score": 27.14,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Bhandardara ki Akhri Rail — Part 1",
@@ -724,7 +724,7 @@
         "avg_watch_s": 7.5
       },
       "score": 28.67,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Mandawa Ki Parchhai Haveli — Part 1",
@@ -840,7 +840,7 @@
         "avg_watch_s": 5.3
       },
       "score": 9.87,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Orchha Kinare Ki Shraapit Baoli — Part 1",
@@ -958,7 +958,7 @@
         "avg_watch_s": 9.9
       },
       "score": 46.81,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Birbhum ki Amavas Raat — Part 1",
@@ -1062,7 +1062,7 @@
       "youtube_url": "https://youtube.com/shorts/MZaYBODl5ss",
       "metrics": {
         "views": 129,
-        "reach": 115,
+        "reach": 116,
         "likes": 2,
         "comments": 0,
         "shares": 0,
@@ -1071,7 +1071,7 @@
         "avg_watch_s": 4.6
       },
       "score": 22.36,
-      "metrics_at": "2026-11-10T03:54:35+00:00"
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Chettinad ki Brass Tijori — Part 1",
@@ -1179,7 +1179,19 @@
       "permalink": "https://www.instagram.com/reel/Dfhpy1JFWKZ/",
       "posted_at": "2026-11-09T15:47:10+00:00",
       "youtube_id": "Bs9ymT9wJ_c",
-      "youtube_url": "https://youtube.com/shorts/Bs9ymT9wJ_c"
+      "youtube_url": "https://youtube.com/shorts/Bs9ymT9wJ_c",
+      "metrics": {
+        "views": 147,
+        "reach": 129,
+        "likes": 5,
+        "comments": 0,
+        "shares": 1,
+        "saved": 1,
+        "total_interactions": 7,
+        "avg_watch_s": 7.7
+      },
+      "score": 100.59,
+      "metrics_at": "2026-11-11T03:55:33+00:00"
     },
     {
       "title": "Ara Junction Ka Lal Signal — Part 1",
@@ -1272,14 +1284,64 @@
       "posted_at": "2026-11-10T15:47:10+00:00",
       "youtube_id": "zmZecqyJhL8",
       "youtube_url": "https://youtube.com/shorts/zmZecqyJhL8"
+    },
+    {
+      "title": "Koramangala PG Ki 3 AM Delivery — Part 1",
+      "series_title": "Koramangala PG Ki 3 AM Delivery",
+      "series_id": "20261111-koramangala-pg-ki-3-am-delivery",
+      "part": 1,
+      "total_parts": 1,
+      "format": "shehar",
+      "hook": "Raat teen baje Rohan ne apni hi awaaz suni...",
+      "critic_score": 83,
+      "voice_engine": "sarvam",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 63.207,
+      "file": "reel-20261111-035532.mp4",
+      "caption": "Bangalore PG 3 AM fake delivery | Bhoot ki kahani | Hindi horror story\n\nRaat ko 3 baje papa ka call aaye toh gate khologe ya pehle check karoge?\n\nYe reel us dost ko bhejo jo PG me akele rehta hai aur late night parcel mangwata hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #bangalorehorror #pglifehorror",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 63.3,
+        "loudness_lufs": -14.3,
+        "voice_engine": "sarvam",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I4",
+          "I1",
+          "I8",
+          "I1",
+          "I1",
+          "I1",
+          "I4"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4372,
+        "hq_images": 0,
+        "est_cost_usd": 0.08,
+        "month_spend_usd": 1.69
+      },
+      "style": "illustrated",
+      "media_id": "18416925409087972",
+      "permalink": "https://www.instagram.com/reel/Dfl8WgDmaUK/",
+      "posted_at": "2026-11-11T07:47:10+00:00",
+      "youtube_id": "gEwEHLY_6Hk",
+      "youtube_url": "https://youtube.com/shorts/gEwEHLY_6Hk"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\n- [family_bond] \"Pangri Ghat ka Lal Lantern — Part 1\" · hook: \"Us raat Rohan ko maut ke munh se kisne kheencha?\" · views 196, shares 1, saves 0, comments 0, watched on average 16.4s of 151s (11%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 5, \"avg\": 58.79}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.45}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize 'family_bond' and 'friends_dare' themes as they achieve the highest overall score averages (58.79 and 44.34), outperforming 'purani_haveli' (8.99).\n- Focus on intrigue-driven hooks featuring personal stakes (e.g., 'Us raat Rohan ko maut ke munh se kisne kheencha?') which generate longer watch times (16-19s) compared to generic jump-scares.\n- Avoid the 'purani_haveli' format entirely; it suffers from the lowest audience scores and terrible watch time retention (4.3s - 5.3s average).\n- Keep hooks grounded in specific location-based storytelling ('lok_katha' like Chhatarpur or Raniganj), which holds initial interest better than generic supernatural tropes.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 147, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [village_secret] \"Mikir Hills ka Band Darwaza — Part 1\" · hook: \"Raat ke do baje, band darwaze par dastak hui...\" · views 25, shares 0, saves 0, comments 0, watched on average 5.2s of 46s (11%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 6, \"avg\": 65.77}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.45}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}}\nLessons:\n- Prioritize 'family_bond' (avg score 65.77) and local folklore ('lok_katha') settings over generic themes; everyday transport settings like late-night buses and autos drive the highest reach and retention.\n- Completely avoid 'purani_haveli' (avg score 8.99) and haunted object tropes, which consistently result in the lowest watch times (4-5s) and worst audience retention (8-10%).\n- Open with grounded, suspenseful hooks anchored to a specific time, real-sounding place, and creeping dread (e.g., 'Devgad Ghat par raat do baje...') rather than exaggerated gore or premature reveals ('khoon tapak raha tha', 'jaan bachai').\n- Tighten the format and pacing: drop-off happens within 5-12 seconds across all videos regardless of total length, so cut total durations closer to 30-45 seconds to drastically improve retention percentages.",
   "format_scores": {
     "family_bond": {
-      "n": 5,
-      "avg": 58.79
+      "n": 6,
+      "avg": 65.77
     },
     "lok_katha": {
       "n": 4,
@@ -1319,11 +1381,12 @@
     "Chettinad ki Brass Tijori",
     "Devgad Ghat Ki Aakhri Auto",
     "Ara Junction Ka Lal Signal",
-    "Gurgaon Bypass ki 2 AM Cab"
+    "Gurgaon Bypass ki 2 AM Cab",
+    "Koramangala PG Ki 3 AM Delivery"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 1.61
+    "usd": 1.69
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1517,6 +1580,16 @@
       "entity": "Protective Brother's Guardian Spirit",
       "protagonist": "Meher, 22, late-night call center worker returning to her PG",
       "emotion": "Deep sibling bond and protective sacrifice from beyond death"
+    },
+    {
+      "title": "Koramangala PG Ki 3 AM Delivery",
+      "format": "shehar",
+      "parts": 1,
+      "region": "Karnataka (Bengaluru city)",
+      "setting": "A dim, rain-soaked 4th-floor PG balcony in Koramangala at 3:15 AM overlooking a dead-end techie lane.",
+      "entity": "Living Person's Secret / Nishi Daak-style Phone Mimic Warning",
+      "protagonist": "Rohan, 23, fresh software recruit staying alone in a new city away from his family",
+      "emotion": "Deep fatherly protective instinct and shocking realization of isolation"
     }
   ],
   "followers": 1,
@@ -1533,19 +1606,19 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-10",
-    "used": 6231
+    "date": "2026-11-11",
+    "used": 4372
   },
   "style_scores": {
     "illustrated": {
-      "n": 1,
-      "avg_watch_s": 7.5,
-      "avg_reach": 143
+      "n": 2,
+      "avg_watch_s": 7.6,
+      "avg_reach": 136
     },
     "cinematic": {
       "n": 2,
       "avg_watch_s": 5.3,
-      "avg_reach": 111
+      "avg_reach": 112
     }
   }
 }
