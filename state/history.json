@@ -1466,10 +1466,59 @@
       "posted_at": "2026-11-12T08:32:58+00:00",
       "youtube_id": "T1cvngdtSA4",
       "youtube_url": "https://youtube.com/shorts/T1cvngdtSA4"
+    },
+    {
+      "title": "Kinnaur Ki Raat Ka Bus — Part 1",
+      "series_title": "Kinnaur Ki Raat Ka Bus",
+      "series_id": "20261112-kinnaur-ki-raat-ka-bus",
+      "part": 1,
+      "total_parts": 1,
+      "format": "safar",
+      "hook": "Yeh kaun hai?",
+      "critic_score": 74,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 64.94,
+      "file": "reel-20261112-142407.mp4",
+      "caption": "Kinnaur ki raat ka bus, Aarav ko milega ek ajeeb call? | Bhoot ki kahani | Hindi horror story\n\nAgar tumhe bus se utarna hota ya call ignore karna hota, tum kya karte? 👀\n\nYe reel us dost ko bhejo jo raat ke 2 baje akele bus stop pe khada rehta hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #kinnaurraat #midnightbus #horrorreel",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 65.0,
+        "loudness_lufs": -14.2,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I2",
+          "I9",
+          "I6",
+          "I9",
+          "I2",
+          "I9"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4312,
+        "hq_images": 0,
+        "est_cost_usd": 0.244,
+        "month_spend_usd": 2.1
+      },
+      "style": "illustrated",
+      "media_id": "18377142841246254",
+      "permalink": "https://www.instagram.com/reel/DfpYEpOjgbF/",
+      "posted_at": "2026-11-12T15:47:10+00:00",
+      "youtube_id": "y8BFsPOBiac",
+      "youtube_url": "https://youtube.com/shorts/y8BFsPOBiac"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.43}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}}\nLessons:\n- Prioritize travel and rural folklore settings ('family_bond' score 57.78, 'lok_katha' 19.1s retention); transit themes like lonely ghats, late-night buses, and cursed village wells consistently beat other premises.\n- Drop the 'purani_haveli' theme completely (lowest average score of 8.99 and shortest retention at 4-5s); viewers find old haunted mansion and cursed object tropes tired and unengaging.\n- Open with atmospheric dread grounded in a specific real place and time (e.g., 'Devgad Ghat par raat do baje...') rather than immediate, over-the-top supernatural shock hooks (e.g., floating feet or dripping blood), which trigger early drop-off.\n- Cut video lengths down significantly; while longer lore clips achieved higher absolute watch times (up to 19s), percentage retention remains critically low across the board (8-12%), meaning 50-150s formats are far too slow for Reels pacing.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.43}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}}\nLessons:\n- Prioritize 'family_bond' and 'shehar' themes as they generate the highest overall engagement scores, while avoiding 'purani_haveli' which yields the lowest performance.\n- Focus hooks on realistic travel and isolation settings (such as lonely ghats or late-night transport) rather than immediate supernatural gore, as subtle atmospheric tension keeps viewers watching longer.\n- Keep overall reel lengths calibrated to maximize relative watch time percentages, as longer storytelling (over 100s) achieved higher absolute watch times compared to ultra-short clips under 60s.\n- Avoid giving away major plot twists or resolutions directly in the hook (e.g., 'us laal haath ne Kabir ki jaan bachai'), as spoiling the mystery leads to early audience drop-off.",
   "format_scores": {
     "family_bond": {
       "n": 7,
@@ -1520,11 +1569,12 @@
     "Gurgaon Bypass ki 2 AM Cab",
     "Koramangala PG Ki 3 AM Delivery",
     "Barmer Express Ka Berth 43",
-    "Munnar Ghat Ki 3 AM Bolero"
+    "Munnar Ghat Ki 3 AM Bolero",
+    "Kinnaur Ki Raat Ka Bus"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 1.86
+    "usd": 2.1039
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1748,6 +1798,16 @@
       "entity": "Living Person's Secret / Ghost Vehicle Warning (Odiyan-inspired psychological illusion)",
       "protagonist": "Ashwin, 24, a stressed IT worker rushing home to his estranged sick father in Kochi",
       "emotion": "Deep guilt, yearning for reconciliation, and bone-chilling dread"
+    },
+    {
+      "title": "Kinnaur Ki Raat Ka Bus",
+      "format": "safar",
+      "parts": 1,
+      "region": "Himachal Pradesh",
+      "setting": "A rattling government bus climbing the snow‑kissed Kinnaur highway at 2:45 AM, fog hugging pine‑covered cliffs",
+      "entity": "Nisha Daak – a phantom night‑caller who whispers a traveler’s name before danger strikes",
+      "protagonist": "Aarav, 19, male, college student, son of a missing father",
+      "emotion": "longing for his mother and guilt over abandoning his estranged dad"
     }
   ],
   "followers": 1,
@@ -1765,7 +1825,7 @@
   },
   "cf_day": {
     "date": "2026-11-12",
-    "used": 3854
+    "used": 8166
   },
   "style_scores": {
     "illustrated": {

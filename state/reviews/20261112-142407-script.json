@@ -1,0 +1,22 @@
+{
+ "hook": "Yeh kaun hai?",
+ "hook_text": "Yeh kaun hai?",
+ "critic": 74,
+ "feedback": "1. Cut 1 (I9) is a strong hook, but cut 2 repeats the same image with a different line – consider replacing it with a new angle (e.g., a close‑up of the bus window with a faint reflection of the stranger’s face) to keep the viewer’s curiosity. 2. The driver’s dialogue (“Raat ka safar, dhyan se.”) feels a bit formal; a more colloquial line like “Bhai, raat ka safar dhyaan se kar.” would match his age and tone. 3. The narration line “Bansuri ki dhun, pine ki khushboo, wheel ghoomta.” is poetic but a bit detached; try something more grounded such as “Pine ki khushboo aur wheel ki ghoomti awaaz ha",
+ "lines": [
+  "Yeh kaun hai?",
+  "Par ye sab shuru hua aaj raat…",
+  "Kinnaur ki raat, 2:45 baje, bus pahadiyon se guzarti.",
+  "Driver bola, “Raat ka safar, dhyan se.”",
+  "Aarav maa ki tasveer dekh raha, bus ki khamoshi mein.",
+  "Phone par ajeeb number aaya: ‘Nisha Daak’.",
+  "“beta, chinta mat kar.”",
+  "Driver ne zor se kaha, “Call na kare,” stranger sir hila.",
+  "Bansuri ki dhun, pine ki khushboo, wheel ghoomta.",
+  "“Landslide aane wala hai, beta.”",
+  "Photo ki dhundhli tasveer mein uska baap dikha, awaaz: “Main hi tera baap hoon.”",
+  "Driver ne aankh milai, “Ab safe ho gaye,” hawa thandi.",
+  "Bus dhire dhire neeche girti, landslide se bacha liya.",
+  "Us raat ka darr, ab sach hai."
+ ]
+}
