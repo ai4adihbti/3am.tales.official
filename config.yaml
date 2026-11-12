@@ -70,7 +70,7 @@ story:
   max_reel_seconds: 175     # hard cap for the finished reel (YouTube Shorts must be 3:00 or less)
   min_cuts: 16              # ~2-3 s per cut, faster at the peaks
   max_cuts: 24
-  max_images: 9             # unique illustrations per reel (two reels a day share the free picture allowance)
+  max_images: 10            # unique illustrations per reel (two reels a day share the free picture allowance)
   parts_per_series: [1, 1]  # ONE complete story per reel: strangers never saw "Part 1", so parts lose them
   min_critic_score: 78
   close_enough_margin: 6    # a draft within this many points of the bar is used after the revisions

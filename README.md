@@ -459,3 +459,7 @@ the writer put a frightened person there, and subtitles start only after the hoo
 
 ### v7.6.1 — premium subtitles
 - Word-by-word highlight: the word being spoken lights up (yellow on white lines, white on coloured lines), the look of premium story reels. `video.word_highlight: false` turns it off.
+
+### v7.6.2 — more pictures, story quota protected
+- Up to 10 pictures per reel (was 9): the daily reservation for the second reel now assumes the usual ~3 redraws instead of the maximum, which left ~2,000 free neurons unused every day while one picture repeated 6-8 times.
+- The caption and the Analyst use Gemini "lite" models first, keeping the strong models' small free daily quota for the story (12 Nov: every strong model hit its daily cap before the 9 PM story and a weak backup wrote it).

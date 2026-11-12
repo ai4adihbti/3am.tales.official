@@ -70,7 +70,7 @@ Return JSON: {{"line1": "...", "line2": "...", "line3": "...", "hashtags": ["#..
 
 
 def _ask(ctx: Context, prompt: str, ch: dict, series: dict, part_tag: str) -> dict:
-    return ctx.llm.json(prompt, temperature=0.8, mock={
+    return ctx.llm.json(prompt, temperature=0.8, light=True, mock={
         "line1": f"{series['title']} | {part_tag} — qabristan ka raaz (fiction)",
         "line2": "Tum hote toh andar jaate ya wapas bhaagte? 👀",
         "line3": "Ye reel us dost ko bhejo jo raat ko akele qabristan ke paas se guzarta hai 👀",

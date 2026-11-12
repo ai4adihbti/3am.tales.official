@@ -166,7 +166,7 @@ Watch time (how much of the reel people watch) and shares matter most to Instagr
 
 {learnings}
 
-Return JSON: {{"lessons": ["...", "..."]}}""", temperature=0.4, mock={"lessons": []})
+Return JSON: {{"lessons": ["...", "..."]}}""", temperature=0.4, light=True, mock={"lessons": []})
         if summary.get("lessons"):
             learnings += "\nLessons:\n" + "\n".join("- " + l for l in summary["lessons"])
 

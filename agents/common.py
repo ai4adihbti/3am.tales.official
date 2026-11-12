@@ -195,11 +195,12 @@ class LLM:
         return None, "busy"
 
     def json(self, prompt: str, *, system: str = "", temperature: float = 0.9,
-             mock: dict | list | None = None, images: list | None = None, list_key: str = "") -> dict:
+             mock: dict | list | None = None, images: list | None = None, list_key: str = "",
+             light: bool = False) -> dict:
         """`images`: optional list of (mime_type, bytes) sent along with the prompt.
         Always returns a dict: if a model answers with a bare JSON list, it is wrapped as {list_key: [...]}
         (or, without list_key, its first object is used)."""
-        out = self._json(prompt, system=system, temperature=temperature, mock=mock, images=images)
+        out = self._json(prompt, system=system, temperature=temperature, mock=mock, images=images, light=light)
         if isinstance(out, list):
             if list_key:
                 return {list_key: out}
@@ -207,7 +208,7 @@ class LLM:
         return out if isinstance(out, dict) else {}
 
     def _json(self, prompt: str, *, system: str = "", temperature: float = 0.9,
-              mock: dict | list | None = None, images: list | None = None) -> dict | list:
+              mock: dict | list | None = None, images: list | None = None, light: bool = False) -> dict | list:
         if self.mock:
             if mock is None:
                 raise LLMError("No mock response supplied")
@@ -224,6 +225,12 @@ class LLM:
             # when Google is overloaded, wait for a strong model a little before settling for a "lite" one:
             # lite models write noticeably weaker stories
             pool = strong if (rnd < patience and strong) else list(self.models)
+            if light:
+                # small jobs (caption, stats summary) go to the "lite" models first: the strong models' small daily
+                # free quota is kept for the story (12 Nov: the 9 PM story was written by a weak backup because
+                # every strong model had hit its daily cap)
+                lite = [m for m in self.models if "lite" in m]
+                pool = lite + [m for m in self.models if m not in lite]
             # models that already failed to answer in time this run are tried last (saves ~3 min per call)
             pool = [m for m in pool if m not in self.slow] + [m for m in pool if m in self.slow]
             for model in pool:

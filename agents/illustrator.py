@@ -536,10 +536,13 @@ class Studio:
         self.quota_hit = False
         if not any(p.name == "cloudflare" for p in self.base):
             return n_images
-        daily = float(v.get("cloudflare_daily_neurons", 10000)) * 0.85     # safety margin on our estimate
+        daily = float(v.get("cloudflare_daily_neurons", 10000)) * 0.95     # our estimate matched real use within ~3%
         per = neurons(v["cloudflare_model"], v["width"], v["height"], 2)
         # keep enough for the reels still to come today (two reels a day share one free allowance)
-        keep = later_runs * (int(self.ctx.cfg["story"].get("max_images", 14)) + 2 + int(v.get("max_redraws", 6))) * per
+        # (a reel needs ~3 redraws on average; the old reservation assumed the maximum and left ~2,000 neurons unused
+        # every day while reels repeated one picture 6-8 times)
+        keep = later_runs * (int(self.ctx.cfg["story"].get("max_images", 14)) + 2
+                             + min(3, int(v.get("max_redraws", 6)))) * per
         left = max(0.0, daily - used_today - keep)
         if later_runs:
             log(NAME, f"keeping ~{keep:.0f} neurons for {later_runs} more reel(s) today")
