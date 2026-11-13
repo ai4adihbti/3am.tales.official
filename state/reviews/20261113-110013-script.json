@@ -1,0 +1,20 @@
+{
+ "hook": "Shaniwar Wada mein gunjti cheekh kiski thi?",
+ "hook_text": "Shaniwar Wada par kiski cheekh hai?",
+ "critic": 77,
+ "feedback": "1. DIALOGUE FORMAT ERROR: The 'hi' fields contain Roman script instead of proper Devanagari Hindi (e.g., 'Shaniwar Wada mein...' instead of 'शनिवार वाड़ा में...'). Ensure 'hi' uses Devanagari script while retaining English words like 'phone' or 'wallet' in English letters.\n2. EMOTIONAL CONNECTIONS: Sameer and Kabir's friendship is mentioned, but Cut 4 ('college fee tak Kabir ko lene ke liye de di thi') feels a bit unnatural in phrasing. Give Sameer 1 short line or visual detail showing his naive trust in Kabir early on so the betrayal hurts more.\n3. PACING & VISUAL MOTIF: Re-using Image I2 for",
+ "lines": [
+  "Shaniwar Wada mein gunjti cheekh kiski thi?",
+  "Sameer ko laga wo bhoot dhoond raha tha.",
+  "Shaniwar Wada ki poornima raat, Sameer aur uska sabse purana dost Kabir fort mein ghuse.",
+  "Sameer ne apni college fee tak Kabir ko lene ke liye de di thi.",
+  "Par Kabir ki nazar sirf Sameer ke purkhi gehne par thi.",
+  "Kabir... tune suna? Koi vachva pukarr raha hai!",
+  "Piche mudkar dekha toh Kabir nahi tha... bas zameen par ek tootka hua phone mila.",
+  "Upar fort ki deewar se Kabir uski pocket se nikala wallet gin raha tha.",
+  "Neeche dekha... toh pattharon par Sameer ka apna hi khoon se sana jism pada tha.",
+  "Dus minute pehle Kabir ne use deewar se dhakka diya tha.",
+  "Aur jo cheekh gunj rahi thi... wo kisi itihas ki nahi, Sameer ki apni thi!",
+  "Raat ko kisi sunsaan jagah jao... toh dekh lena, dost piche hai ya dhakka dene ke liye."
+ ]
+}
