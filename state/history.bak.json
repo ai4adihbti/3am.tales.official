@@ -1417,7 +1417,19 @@
       "permalink": "https://www.instagram.com/reel/DfmzSaMAeKt/",
       "posted_at": "2026-11-11T15:47:09+00:00",
       "youtube_id": "OV4HR6uQCpQ",
-      "youtube_url": "https://youtube.com/shorts/OV4HR6uQCpQ"
+      "youtube_url": "https://youtube.com/shorts/OV4HR6uQCpQ",
+      "metrics": {
+        "views": 252,
+        "reach": 233,
+        "likes": 3,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 3,
+        "avg_watch_s": 9.2
+      },
+      "score": 26.3,
+      "metrics_at": "2026-11-13T03:55:39+00:00"
     },
     {
       "title": "Munnar Ghat Ki 3 AM Bolero — Part 1",
@@ -1515,10 +1527,55 @@
       "posted_at": "2026-11-12T15:47:10+00:00",
       "youtube_id": "y8BFsPOBiac",
       "youtube_url": "https://youtube.com/shorts/y8BFsPOBiac"
+    },
+    {
+      "title": "Dow Hill Kurseong Ki 3 AM Ghanti — Part 1",
+      "series_title": "Dow Hill Kurseong Ki 3 AM Ghanti",
+      "series_id": "20261113-dow-hill-kurseong-ki-3-am-ghanti",
+      "part": 1,
+      "total_parts": 1,
+      "format": "asli_jagah",
+      "hook": "Achanak car ke sheeshe par ek bina sir ka saaya dikha!",
+      "critic_score": 86,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 80.84,
+      "file": "reel-20261113-035539.mp4",
+      "caption": "Dow Hill Kurseong haunted road secret | Bhoot ki kahani | Hindi horror story\n\nTum aisi sadak pe akele late night drive karte ya wapas bhaag jaate? 👀\n\nYe reel us dost ko bhejo jo raat 3 baje akele pahado pe ghumta hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #dowhillkurseong #bhootiyaharror #hindighorror",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 80.9,
+        "loudness_lufs": -15.2,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I6",
+          "I3"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3144,
+        "hq_images": 0,
+        "est_cost_usd": 0.137,
+        "month_spend_usd": 2.24
+      },
+      "style": "illustrated",
+      "media_id": "18074597666787693",
+      "permalink": "https://www.instagram.com/reel/DfrGAr5gY9X/",
+      "posted_at": "2026-11-13T07:47:08+00:00",
+      "youtube_id": "1F52cthl6eI",
+      "youtube_url": "https://youtube.com/shorts/1F52cthl6eI"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.43}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}}\nLessons:\n- Prioritize 'family_bond' and 'shehar' themes as they generate the highest overall engagement scores, while avoiding 'purani_haveli' which yields the lowest performance.\n- Focus hooks on realistic travel and isolation settings (such as lonely ghats or late-night transport) rather than immediate supernatural gore, as subtle atmospheric tension keeps viewers watching longer.\n- Keep overall reel lengths calibrated to maximize relative watch time percentages, as longer storytelling (over 100s) achieved higher absolute watch times compared to ultra-short clips under 60s.\n- Avoid giving away major plot twists or resolutions directly in the hook (e.g., 'us laal haath ne Kabir ki jaan bachai'), as spoiling the mystery leads to early audience drop-off.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.43}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 1, \"avg\": 26.3}}\nLessons:\n- Prioritize local folklore and family bond themes, as they achieve significantly higher engagement and watch-time scores compared to purani haveli narratives.\n- Use grounded, atmospheric hooks involving late-night travel or specific haunted landmarks (e.g., Ghats and wells) rather than overly surreal or abstract imagery to maintain viewer retention past the 10-second mark.\n- Keep overall reel duration tightly paced; extremely long videos (over 100 seconds) severely drop completion rates down to 10-12%, signaling the need for more concise storytelling.\n- Avoid high-fantasy or overly supernatural hooks right at the start, as they fail to secure initial average watch time compared to suspenseful setup hooks.",
   "format_scores": {
     "family_bond": {
       "n": 7,
@@ -1543,6 +1600,10 @@
     "shehar": {
       "n": 2,
       "avg": 48.28
+    },
+    "safar": {
+      "n": 1,
+      "avg": 26.3
     }
   },
   "series": null,
@@ -1570,11 +1631,12 @@
     "Koramangala PG Ki 3 AM Delivery",
     "Barmer Express Ka Berth 43",
     "Munnar Ghat Ki 3 AM Bolero",
-    "Kinnaur Ki Raat Ka Bus"
+    "Kinnaur Ki Raat Ka Bus",
+    "Dow Hill Kurseong Ki 3 AM Ghanti"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 2.1039
+    "usd": 2.2414
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1808,12 +1870,22 @@
       "entity": "Nisha Daak – a phantom night‑caller who whispers a traveler’s name before danger strikes",
       "protagonist": "Aarav, 19, male, college student, son of a missing father",
       "emotion": "longing for his mother and guilt over abandoning his estranged dad"
+    },
+    {
+      "title": "Dow Hill Kurseong Ki 3 AM Ghanti",
+      "format": "asli_jagah",
+      "parts": 1,
+      "region": "West Bengal (Kurseong, Darjeeling district)",
+      "setting": "The misty, pine-lined road between Dow Hill and Victoria Boys' School in Kurseong at 3:15 AM inside an old Maruti 800.",
+      "entity": "Headless Boy of Dow Hill / Protective Father's Ghost",
+      "protagonist": "Neel, 21, male, college student driving home",
+      "emotion": "Deep grief, son's longing, and heartbreaking protective love"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "safar",
-    "target": 3
+    "format": "asli_jagah",
+    "target": 2
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -1824,14 +1896,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-12",
-    "used": 8166
+    "date": "2026-11-13",
+    "used": 3144
   },
   "style_scores": {
     "illustrated": {
-      "n": 4,
-      "avg_watch_s": 7.7,
-      "avg_reach": 128
+      "n": 5,
+      "avg_watch_s": 8.0,
+      "avg_reach": 149
     },
     "cinematic": {
       "n": 3,
