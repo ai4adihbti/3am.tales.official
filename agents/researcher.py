@@ -93,11 +93,15 @@ def _diversity_rules(memory: Memory) -> str:
     recent = "\n".join(f"- \"{s.get('title')}\" [{s.get('format')}] · region: {s.get('region', '?')} · setting: "
                         f"{s.get('setting', '?')} · legend/entity: {s.get('entity', '?')} · hero: "
                         f"{s.get('protagonist', '?')} · emotion: {s.get('emotion', '?')}"
+                        + (f" · twist: {s['twist']}" if s.get("twist") else "")
                         for s in reversed(stories[-8:])) or "- (none yet)"
     return f"""Diversity (newest first):
 {recent}
 Rules: the new story must differ from the last 3 above in region, setting, kind of legend/entity and hero, and
-must not reuse their twist. {stage}"""
+must not reuse the twist or emotional engine of ANY of the last 6. In particular "a dead parent/relative's ghost
+protects or warns the hero" and "the hero is rushing to a sick or dead father" are worn out (used again and again
+in Nov): do not use them. Fresh engines: the hero IS the ghost, a rule broken, a living person's crime, a
+time slip, a possession, a curse passed on, a friend who was never there, a revenge, the viewer's own phone. {stage}"""
 
 
 def _parts_rule(lo: int, hi: int) -> str:

@@ -463,3 +463,7 @@ the writer put a frightened person there, and subtitles start only after the hoo
 ### v7.6.2 — more pictures, story quota protected
 - Up to 10 pictures per reel (was 9): the daily reservation for the second reel now assumes the usual ~3 redraws instead of the maximum, which left ~2,000 free neurons unused every day while one picture repeated 6-8 times.
 - The caption and the Analyst use Gemini "lite" models first, keeping the strong models' small free daily quota for the story (12 Nov: every strong model hit its daily cap before the 9 PM story and a weak backup wrote it).
+
+### v7.6.3
+- Story variety: the story log now keeps each twist, and the Researcher must not reuse the twist or emotional engine of any of the last 6 stories; the "dead father/relative protects the hero" engine (5 stories in a row) is banned for now.
+- The Writer is asked for the full number of different pictures (10, never fewer than 8), each reused at most twice.

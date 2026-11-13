@@ -96,6 +96,7 @@ class Memory:
         if series.get("part") == 1:
             self.data["story_log"] = (self.data["story_log"] + [{
                 "title": series["title"], "format": series.get("format"), "parts": series.get("total_parts"),
+                "twist": ((series.get("concept") or {}).get("final_twist") or "")[:160],
                 **(series.get("profile") or {})}])[-40:]
             self.data["last_voice_style"] = series.get("voice_style")
             if series.get("voice_style") == "narrator":

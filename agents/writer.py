@@ -72,9 +72,10 @@ BODY_SPEC = """"images": [
   ],"""
 
 RULES = """Rules:
-- {min_cuts}-{max_cuts} cuts, at most {max_images} images. A cut lasts as long as its line (1.5-8 s) or ~1.6 s if
-  silent (use 4-8 silent cuts for suspense: a reaction, an empty lane, a clue). Reuse images (motif wide shots,
-  close-ups); every image must be used at least once.
+- {min_cuts}-{max_cuts} cuts and {max_images} different images (never fewer than {max_images} minus 2: the same
+  picture coming back again and again looks cheap). A cut lasts as long as its line (1.5-8 s) or ~1.6 s if
+  silent (use 4-8 silent cuts for suspense: a reaction, an empty lane, a clue). An image may come back at most
+  twice; every image must be used at least once.
 - Total spoken length {min_s}-{max_s} seconds: roughly {min_w}-{max_w} words in total.
 - {voice_rule}
 - Reuse is limited: the motif wide shot appears at most 2 times, no other image more than 2 times, and never the
