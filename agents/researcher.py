@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import random
+import re
 
 from .common import SAFETY_RULES, Context, log
 from .memory import Memory
@@ -205,6 +206,14 @@ Return JSON:
         "outline": ["Friends decide to go; an old man warns them; a handprint appears. Cliffhanger: a figure behind them.",
                     "Inside the cemetery they find a grave with one of their names. Twist."],
         "final_twist": "The old man died years ago.", "why_it_will_work": "College dares are relatable."})
+    if worn_out(idea) and not ctx.mock:
+        # the "a dead relative was protecting the hero all along" twist came back 7 times in 9 days; ask once more
+        log(NAME, "idea reuses the worn-out 'dead relative protects' twist — asking for a different one")
+        again = ctx.llm.json(prompt + "\n\nREJECTED: your idea's twist was again 'a family member was already dead / "
+                             "a dead relative protects the hero'. That twist is BANNED. Return a completely different "
+                             "story with a different twist engine.", temperature=1.0, mock=idea)
+        if isinstance(again, dict) and again.get("title") and not worn_out(again):
+            idea = again
     total = idea.get("total_parts", 2)
     try:
         total = max(lo, min(hi, int(total)))
@@ -222,3 +231,15 @@ Return JSON:
               f'({idea.get("parts_reason", "")[:80]}) · {idea.get("region", "")} · '
               f'{"storyteller (" + series["narrator_gender"] + ")" if series["voice_style"] == "narrator" else "character dialogue"}')
     return series, fmt
+
+
+_KIN = re.compile(r"\b(dadi|dada|nani|nana|maa|mother|mom|papa|father|dad|bapu|baba|grand\w*|parent|chacha|bhai|"
+                  r"brother|sister|didi|wife|husband|beta|son|daughter)\b", re.I)
+_DEAD = re.compile(r"\b(already dead|was dead|died|dead|ghost|spirit|aatma|mar chuk\w*|mari|mara)\b", re.I)
+_GUARD = re.compile(r"\b(protect\w*|save[ds]?|saving|bacha\w*|warn\w*|guard\w*|to keep)\b", re.I)
+
+
+def worn_out(idea: dict) -> bool:
+    """True when the twist is 'a dead family member was protecting/saving/warning the hero'."""
+    t = " ".join(str(idea.get(k) or "") for k in ("final_twist", "entity", "emotion"))
+    return bool(_KIN.search(t) and _DEAD.search(t) and _GUARD.search(t))

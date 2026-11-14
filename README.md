@@ -467,3 +467,7 @@ the writer put a frightened person there, and subtitles start only after the hoo
 ### v7.6.3
 - Story variety: the story log now keeps each twist, and the Researcher must not reuse the twist or emotional engine of any of the last 6 stories; the "dead father/relative protects the hero" engine (5 stories in a row) is banned for now.
 - The Writer is asked for the full number of different pictures (10, never fewer than 8), each reused at most twice.
+
+### v7.6.4
+- Sarvam credits ran out (14 Nov), so the voice is Gemini TTS, which reads Hindi ~25% slower: reels drifted to 71-81 s (avg watch fell to ~4 s). Gemini voice is now played at 1.1x (`voice.gemini_tempo`) and the length estimate no longer assumes the faster Sarvam pace, so reels land near 60 s again.
+- The "dead relative was protecting the hero" twist is detected in the Researcher's idea and sent back once for a different story (it came back 7 times in 9 days despite the rule).

@@ -187,6 +187,7 @@ voice:
   sarvam_model: "bulbul:v3"
   sarvam_narrator: {male: "varun", female: "ritu"}   # try "priya", "neha" or "simran" for a different storyteller
   sarvam_narrator_pace: 0.9
+  gemini_tempo: 1.1                # Gemini TTS is slow for Hindi; 1.1x keeps reels near 60 s without sounding rushed
   sarvam_voices:
     child_boy:    ["aayan", "soham"]
     child_girl:   ["suhani", "kavya"]

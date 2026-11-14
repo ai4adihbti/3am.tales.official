@@ -534,5 +534,5 @@ def estimate_seconds(ctx: Context, script: dict) -> float:
     silent = sum(1 for sh in script["shots"] if not sh["lines"])
     # calibrated on real Sarvam runs (4-7 Nov): the old formula read ~15% long, so the Critic kept asking
     # writers to cut good-length stories down to choppy 30-second telegrams
-    return 0.85 * (word_count(script) / 2.3 + 0.3 * line_count(script)) \
+    return 1.0 * (word_count(script) / 2.3 + 0.3 * line_count(script)) \
         + silent * ctx.cfg["voice"]["silent_shot_seconds"]

@@ -270,7 +270,9 @@ def _perform_gemini(ctx: Context, script: dict, cast_map: dict) -> list:
                 raise
         n_req += 1
         wav = ctx.workdir / f"g_{len(pieces):03d}_48.wav"
-        _to_wav48(raw, wav)
+        tempo = float(ctx.cfg["voice"].get("gemini_tempo", 1.0))
+        # Gemini TTS reads Hindi ~25% slower than Sarvam did (14 Nov: a 53 s script became 68 s of voice)
+        _to_wav48(raw, wav, f"atempo={tempo:.3f}" if abs(tempo - 1.0) > 0.01 else "")
         dur = ffprobe_duration(wav)
         spans = _split_scene(lines, dur, _pauses(wav))
         pieces.append({"wav": wav, "items": [(si, ln, a, b) for (si, ln), (a, b) in zip(payload, spans)]})
