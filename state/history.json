@@ -1429,7 +1429,7 @@
         "avg_watch_s": 9.2
       },
       "score": 26.3,
-      "metrics_at": "2026-11-13T03:55:39+00:00"
+      "metrics_at": "2026-11-14T03:54:50+00:00"
     },
     {
       "title": "Munnar Ghat Ki 3 AM Bolero — Part 1",
@@ -1538,7 +1538,19 @@
       "permalink": "https://www.instagram.com/reel/DfpYEpOjgbF/",
       "posted_at": "2026-11-12T15:47:10+00:00",
       "youtube_id": "y8BFsPOBiac",
-      "youtube_url": "https://youtube.com/shorts/y8BFsPOBiac"
+      "youtube_url": "https://youtube.com/shorts/y8BFsPOBiac",
+      "metrics": {
+        "views": 124,
+        "reach": 119,
+        "likes": 2,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 2,
+        "avg_watch_s": 7.7
+      },
+      "score": 28.11,
+      "metrics_at": "2026-11-14T03:54:50+00:00"
     },
     {
       "title": "Dow Hill Kurseong Ki 3 AM Ghanti — Part 1",
@@ -1632,10 +1644,55 @@
       "posted_at": "2026-11-13T15:47:10+00:00",
       "youtube_id": "GpA3PxHJjgo",
       "youtube_url": "https://youtube.com/shorts/GpA3PxHJjgo"
+    },
+    {
+      "title": "Rathpur Ki Amavas Ki Lori — Part 1",
+      "series_title": "Rathpur Ki Amavas Ki Lori",
+      "series_id": "20261114-rathpur-ki-amavas-ki-lori",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Raat ke do baje, Peepal ke neeche Dadi loriyan gaa rahi thi…",
+      "critic_score": 89,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 71.22,
+      "file": "reel-20261114-035449.mp4",
+      "caption": "Rathpur ki amavas ki lori | Bhoot ki kahani | Hindi horror story\n\nTum apni dadi ko raat ko peepal ke niche gaate sunte toh kya karte? 👀\n\nYe reel us dost ko bhejo jo raat ko akeli aawazein sunkar bahar nikal jaata hai\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #peepaltree #amavas #darwnikahani",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 71.3,
+        "loudness_lufs": -14.2,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I9",
+          "I1"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3863,
+        "hq_images": 0,
+        "est_cost_usd": 0.075,
+        "month_spend_usd": 2.45
+      },
+      "style": "illustrated",
+      "media_id": "18111395306629377",
+      "permalink": "https://www.instagram.com/reel/Dftqu4REez8/",
+      "posted_at": "2026-11-14T07:47:08+00:00",
+      "youtube_id": "IxItv8ZbFhU",
+      "youtube_url": "https://youtube.com/shorts/IxItv8ZbFhU"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.38}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 2, \"avg\": 21.47}}\nLessons:\n- Focus on 'family_bond' and 'shehar' story types as they achieve the highest average engagement scores compared to 'purani_haveli'.\n- Keep hooks grounded in eerie locations and specific times (e.g., 'raat ke dhai baje') rather than overly surreal imagery to slightly improve watch time.\n- Reduce overall video length; current watch times average around 5-19 seconds for videos lasting 50-150 seconds, indicating severe drop-off.\n- Avoid starting with abstract or confusing twists that fail to immediately hook the viewer within the first 3 seconds.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [family_bond] \"Ara Junction Ka Lal Signal — Part 1\" · hook: \"Raat ke dhai baje, Papa ke pair zameen se do inch upar hawa mein tair rahe the!\" · views 121, shares 0, saves 0, comments 0, watched on average 6.2s of 60s (10%)\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 4, \"avg\": 37.05}, \"village_secret\": {\"n\": 6, \"avg\": 26.38}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 3, \"avg\": 23.68}}\nLessons:\n- Prioritize 'family_bond' themes as they achieve the highest average engagement scores, making them the most reliable story-type for retention.\n- Use location-based and time-specific hooks (e.g., specific ghats or roads at 2 AM) to drive higher watch times compared to abstract or supernatural shock hooks.\n- Keep total video lengths optimized, as extremely long videos (over 100 seconds) suffer from severe drop-offs with retention falling to around 10-12%.\n- Avoid 'purani_haveli' settings and overly graphic or confusing hooks, which resulted in the lowest watch times and poor audience engagement.",
   "format_scores": {
     "family_bond": {
       "n": 7,
@@ -1662,8 +1719,8 @@
       "avg": 48.28
     },
     "safar": {
-      "n": 2,
-      "avg": 21.47
+      "n": 3,
+      "avg": 23.68
     }
   },
   "series": null,
@@ -1693,11 +1750,12 @@
     "Munnar Ghat Ki 3 AM Bolero",
     "Kinnaur Ki Raat Ka Bus",
     "Dow Hill Kurseong Ki 3 AM Ghanti",
-    "Shaniwar Wada Ki Poornima Raat"
+    "Shaniwar Wada Ki Poornima Raat",
+    "Rathpur Ki Amavas Ki Lori"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 2.3779
+    "usd": 2.4532
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -1952,12 +2010,23 @@
       "entity": "Shraapit Cheekh / Ghostly Echo of Betrayal",
       "protagonist": "Sameer, 22, college student",
       "emotion": "Shocking betrayal and horror of self-realization"
+    },
+    {
+      "title": "Rathpur Ki Amavas Ki Lori",
+      "format": "lok_katha",
+      "parts": 1,
+      "twist": "Meera saved her brother by calling out, but in doing so, she unwittingly took the entity's place under the tree, leaving her shell behind speechless.",
+      "region": "Bundelkhand, Madhya Pradesh",
+      "setting": "A quiet moonlit village lane in Rathpur near an ancient Peepal tree and an old clay-brick house at 2:15 AM.",
+      "entity": "Daayan's Mimic Lori / Shadow Spirit",
+      "protagonist": "Meera, 19, elder sister protecting her 7-year-old brother Sonu",
+      "emotion": "Deep sibling protectiveness and tragic sacrifice"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "asli_jagah",
-    "target": 2
+    "format": "lok_katha",
+    "target": 3
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -1968,14 +2037,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-13",
-    "used": 7490
+    "date": "2026-11-14",
+    "used": 3863
   },
   "style_scores": {
     "illustrated": {
-      "n": 6,
+      "n": 7,
       "avg_watch_s": 7.6,
-      "avg_reach": 143
+      "avg_reach": 140
     },
     "cinematic": {
       "n": 3,
