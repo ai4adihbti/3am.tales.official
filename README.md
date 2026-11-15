@@ -475,3 +475,4 @@ the writer put a frightened person there, and subtitles start only after the hoo
 ### v7.6.5
 - Spoken length target 40-52 s (reels ~55-60 s): every reel over 70 s got 4 s or less of average watch (Shaniwar Wada 77 s: reach 36, 3.9 s).
 - The viewer warning must be specific to the story; the "naam se pukare… jawab mat dena" example was being copied into every ending. The sister-takes-the-entity's-place / peepal-calls-names engine is also marked worn out.
+- v7.6.6: length estimate calibrated on the 1.1x Gemini voice (a script estimated at 73 s became 53 s of voice; factor 0.8).
