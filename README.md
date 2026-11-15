@@ -471,3 +471,7 @@ the writer put a frightened person there, and subtitles start only after the hoo
 ### v7.6.4
 - Sarvam credits ran out (14 Nov), so the voice is Gemini TTS, which reads Hindi ~25% slower: reels drifted to 71-81 s (avg watch fell to ~4 s). Gemini voice is now played at 1.1x (`voice.gemini_tempo`) and the length estimate no longer assumes the faster Sarvam pace, so reels land near 60 s again.
 - The "dead relative was protecting the hero" twist is detected in the Researcher's idea and sent back once for a different story (it came back 7 times in 9 days despite the rule).
+
+### v7.6.5
+- Spoken length target 40-52 s (reels ~55-60 s): every reel over 70 s got 4 s or less of average watch (Shaniwar Wada 77 s: reach 36, 3.9 s).
+- The viewer warning must be specific to the story; the "naam se pukare… jawab mat dena" example was being copied into every ending. The sister-takes-the-entity's-place / peepal-calls-names engine is also marked worn out.

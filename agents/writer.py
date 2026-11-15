@@ -116,7 +116,9 @@ RULES = """Rules:
   relatable fear (a late-night bus, a call from an old number, a grandmother's warning) with a clever reveal.
 - TURN TO THE VIEWER (this is what makes people send it): the very last line, after the twist, speaks to the
   viewer about their own life tonight, a small warning or rule they will remember, tied to this story's fear and
-  echoing the cold open ("Aur haan… agar raat do baje tumhe bhi koi apne hi naam se pukare… jawab mat dena.").
+  echoing the cold open and specific to THIS story's object/place/time (a warning about a ringing landline, a
+  half-open almirah, a lift that stops on 13, a bus seat that's still warm…). Never reuse "naam se pukare… jawab
+  mat dena": it has been used too often.
   Keep it under 18 words, mood "scare", on the threat picture.
 - No single line longer than 18 words (long sentences become long frozen pictures). {ending_rule}"""
 
