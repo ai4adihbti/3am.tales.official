@@ -1,0 +1,20 @@
+{
+ "hook": "Raat do baje Dumas ki ret se ek aawaaz aayi...",
+ "hook_text": "Ret se aayi dost ki awaaz",
+ "critic": 86,
+ "feedback": "Solid reel script for Dumas Beach. Good hook and scary twist. A couple of minor visual/audio sync fixes will make it bulletproof:\n\n1. Cut 2 has C2 (Samir) speaking a line while I2 shows Aarav (C1). Switch the character in Cut 2's line to be an actual audio clip on the phone, or update the visual frame if it's Aarav listening to Samir's voice note.\n2. In Cut 3, the line says 'ye khel aadhe ghante pehle shuru hua', but later in Cut 11 the twist says the voice note is 3 years old ('teen saal purana'). Make sure the setup doesn't confuse the timeline—clarify that Aarav *received* the voice note 30",
+ "lines": [
+  "Raat do baje Dumas ki ret se ek aawaaz aayi...",
+  "Bhai bachale... ye ret kheench rahi hai!",
+  "Par ye khel aadhe ghante pehle shuru hua.",
+  "Aarav apne missing best friend Samir ko dhoondhne beach pahocha.",
+  "Samir shaam se gayab tha... bas ye last location thi.",
+  "Phone screen chamki... Samir ka panicked voice note aaya tha.",
+  "Kinare par Samir ki yellow sweatshirt adhi gadi mili.",
+  "Aur uske footprints achanak bilkul khatam the!",
+  "Tabhi timestamp chamka... wo voice note teen saal purana tha!",
+  "Samir kabhi aaya hi nahi... wo aawaaz ret ki thi!",
+  "Aarav ke pairon ke neeche se ret khisakne lagi.",
+  "Raat ko gayab dost ka call aaye... toh pehle confirm zaroor karna."
+ ]
+}
