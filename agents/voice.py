@@ -443,9 +443,20 @@ def perform(ctx: Context, script: dict) -> tuple[Path, list[dict], list[float], 
     joined = ctx.workdir / "voice_raw.wav"
     _concat(parts, joined, ctx.workdir)
     mastered = ctx.workdir / "voice.wav"
-    _run(["ffmpeg", "-y", "-v", "error", "-i", str(joined), "-af", MASTER_CHAIN,
+    # keep the reel near its target length: Gemini's pace varies run to run (a 61 s script became 69 s, another 73 s
+    # script 53 s), and every reel over ~70 s lost half its watch time. Speed up gently (max 1.12x), never slow down.
+    target = float(ctx.cfg["story"]["max_seconds"]) + 4.0
+    raw_len = ffprobe_duration(joined)
+    speed = min(1.12, raw_len / target) if raw_len > target else 1.0
+    chain = (f"atempo={speed:.3f}," if speed > 1.01 else "") + MASTER_CHAIN
+    _run(["ffmpeg", "-y", "-v", "error", "-i", str(joined), "-af", chain,
           "-ar", "48000", "-ac", "2", "-c:a", "pcm_s24le", str(mastered)])
     total = ffprobe_duration(mastered)
+    if speed > 1.01:
+        log(NAME, f"voice {raw_len:.1f}s > {target:.0f}s target: sped up {speed:.2f}x")
+        for ln in timeline:
+            ln["start"], ln["end"] = round(ln["start"] / speed, 3), round(ln["end"] / speed, 3)
+        shot_first = {k: v / speed for k, v in shot_first.items()}
 
     n = len(script["shots"])
     starts, prev = [], 0.0
