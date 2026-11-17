@@ -69,7 +69,7 @@ Return JSON:
     result["safety_issues"] = str(result.get("safety_issues") or "")
     notes = []
     if not ctx.mock:
-        if secs < s["min_seconds"] - 8 or secs > s["max_seconds"] + 15:
+        if secs < s["min_seconds"] - 8 or secs > s["max_seconds"] + 8:
             total -= 12
             notes.append(f"LENGTH: about {secs:.0f}s; it must be {s['min_seconds']}-{s['max_seconds']}s "
                          f"(roughly {int(s['min_seconds'] * 2.0)}-{int(s['max_seconds'] * 2.0)} spoken words).")
