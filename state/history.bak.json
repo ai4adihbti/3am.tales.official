@@ -1429,7 +1429,7 @@
         "avg_watch_s": 9.2
       },
       "score": 26.3,
-      "metrics_at": "2026-11-16T03:55:38+00:00"
+      "metrics_at": "2026-11-17T03:55:08+00:00"
     },
     {
       "title": "Munnar Ghat Ki 3 AM Bolero — Part 1",
@@ -1540,17 +1540,17 @@
       "youtube_id": "y8BFsPOBiac",
       "youtube_url": "https://youtube.com/shorts/y8BFsPOBiac",
       "metrics": {
-        "views": 124,
-        "reach": 119,
+        "views": 125,
+        "reach": 120,
         "likes": 2,
         "comments": 0,
         "shares": 0,
         "saved": 0,
         "total_interactions": 2,
-        "avg_watch_s": 7.7
+        "avg_watch_s": 7.6
       },
-      "score": 28.11,
-      "metrics_at": "2026-11-16T03:55:38+00:00"
+      "score": 27.83,
+      "metrics_at": "2026-11-17T03:55:08+00:00"
     },
     {
       "title": "Dow Hill Kurseong Ki 3 AM Ghanti — Part 1",
@@ -1657,17 +1657,17 @@
       "youtube_id": "GpA3PxHJjgo",
       "youtube_url": "https://youtube.com/shorts/GpA3PxHJjgo",
       "metrics": {
-        "views": 38,
-        "reach": 36,
+        "views": 40,
+        "reach": 37,
         "likes": 0,
         "comments": 0,
         "shares": 0,
         "saved": 0,
         "total_interactions": 0,
-        "avg_watch_s": 3.9
+        "avg_watch_s": 5.7
       },
-      "score": 5.13,
-      "metrics_at": "2026-11-16T03:55:38+00:00"
+      "score": 7.49,
+      "metrics_at": "2026-11-17T03:55:08+00:00"
     },
     {
       "title": "Rathpur Ki Amavas Ki Lori — Part 1",
@@ -1775,17 +1775,17 @@
       "youtube_id": "OxlFN8J_Dnw",
       "youtube_url": "https://youtube.com/shorts/OxlFN8J_Dnw",
       "metrics": {
-        "views": 139,
-        "reach": 136,
+        "views": 141,
+        "reach": 137,
         "likes": 3,
         "comments": 0,
         "shares": 0,
         "saved": 0,
         "total_interactions": 3,
-        "avg_watch_s": 5.9
+        "avg_watch_s": 6.5
       },
-      "score": 29.08,
-      "metrics_at": "2026-11-16T03:55:38+00:00"
+      "score": 29.52,
+      "metrics_at": "2026-11-17T03:55:08+00:00"
     },
     {
       "title": "Bhojpur Ka Ulti Chhaya Peepal — Part 1",
@@ -1893,7 +1893,19 @@
       "permalink": "https://www.instagram.com/reel/DfxGdkBCPkB/",
       "posted_at": "2026-11-15T15:47:11+00:00",
       "youtube_id": "qitqeWorLRY",
-      "youtube_url": "https://youtube.com/shorts/qitqeWorLRY"
+      "youtube_url": "https://youtube.com/shorts/qitqeWorLRY",
+      "metrics": {
+        "views": 148,
+        "reach": 136,
+        "likes": 2,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 2,
+        "avg_watch_s": 6.5
+      },
+      "score": 25.2,
+      "metrics_at": "2026-11-17T03:55:08+00:00"
     },
     {
       "title": "Khandala Ghat Ka Kilometer 47 — Part 1",
@@ -1990,10 +2002,58 @@
       "posted_at": "2026-11-16T15:47:06+00:00",
       "youtube_id": "9OxjKUVOlUU",
       "youtube_url": "https://youtube.com/shorts/9OxjKUVOlUU"
+    },
+    {
+      "title": "Tunnel 33 Ki 2 AM Whistle — Part 1",
+      "series_title": "Tunnel 33 Ki 2 AM Whistle",
+      "series_id": "20261117-tunnel-33-ki-2-am-whistle",
+      "part": 1,
+      "total_parts": 1,
+      "format": "asli_jagah",
+      "hook": "Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!",
+      "critic_score": 86,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 67.101,
+      "file": "reel-20261117-035507.mp4",
+      "caption": "Tunnel 33 ka rahasya | Bhoot ki kahani | Hindi horror story\n\nTum hote toh raat 2 baje tunnel me rukte ya bhaag jaate? 👀\n\nYe reel us dost ko bhejo jo akele train journey karta hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #tunnel33 #shimlaghost",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 67.2,
+        "loudness_lufs": -14.7,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I3",
+          "I9",
+          "I6",
+          "I3",
+          "I6"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4153,
+        "hq_images": 0,
+        "est_cost_usd": 0.134,
+        "month_spend_usd": 3.07
+      },
+      "style": "illustrated",
+      "media_id": "17978861505070468",
+      "permalink": "https://www.instagram.com/reel/Df1ZHmuHEkD/",
+      "posted_at": "2026-11-17T07:47:10+00:00",
+      "youtube_id": "iOP1jPyTHgU",
+      "youtube_url": "https://youtube.com/shorts/iOP1jPyTHgU"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 38, shares 0, saves 0, comments 0, watched on average 3.9s of 77s (5%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 7, \"avg\": 39.89}, \"village_secret\": {\"n\": 6, \"avg\": 26.38}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 2, \"avg\": 44.34}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 3, \"avg\": 23.68}, \"asli_jagah\": {\"n\": 2, \"avg\": 17.44}}\nLessons:\n- Setting choice heavily impacts engagement: 'family_bond' and 'lok_katha' story-types achieve significantly higher performance scores than 'purani_haveli' or 'asli_jagah'.\n- Effective hooks rely on specific time and location setups (e.g., 'Raat ke dhai baje, Raniganj ki is sunsaan sadak par') to ground the listener, yielding better average watch times compared to abstract questions.\n- Avoid overly long runtimes (over 100 seconds) when retention rates hover around 10-12%, as the steep drop-off hurts overall algorithmic distribution.\n- To improve share and save metrics, content needs to transition past standard atmospheric dread into high-stakes narrative twists that give viewers a compelling reason to distribute the reel.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 40, shares 0, saves 0, comments 0, watched on average 5.7s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 7, \"avg\": 39.96}, \"village_secret\": {\"n\": 6, \"avg\": 26.38}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 3, \"avg\": 37.96}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 3, \"avg\": 23.59}, \"asli_jagah\": {\"n\": 2, \"avg\": 18.62}}\nLessons:\n- Focus on travel and transit horror settings like ghats, lonely roads, and buses ('family_bond'), which achieve higher watch times compared to static locations like 'purani_haveli'.\n- Use time-specific and location-based hooks (e.g., 'Raat ke dhai baje...') to immediately establish dread and improve initial retention.\n- Avoid overly short or abrupt hooks that fail to capture curiosity, as seen in the poor watch times of 'asli_jagah' and 'purani_haveli'.\n- Keep overall video pacing tight, as excessively long runtimes (over 100 seconds) drastically drop average watch percentages down to 10-12%.",
   "format_scores": {
     "family_bond": {
       "n": 7,
@@ -2001,7 +2061,7 @@
     },
     "lok_katha": {
       "n": 7,
-      "avg": 39.89
+      "avg": 39.96
     },
     "village_secret": {
       "n": 6,
@@ -2012,8 +2072,8 @@
       "avg": 8.99
     },
     "friends_dare": {
-      "n": 2,
-      "avg": 44.34
+      "n": 3,
+      "avg": 37.96
     },
     "shehar": {
       "n": 2,
@@ -2021,11 +2081,11 @@
     },
     "safar": {
       "n": 3,
-      "avg": 23.68
+      "avg": 23.59
     },
     "asli_jagah": {
       "n": 2,
-      "avg": 17.44
+      "avg": 18.62
     }
   },
   "series": null,
@@ -2061,11 +2121,12 @@
     "Bhojpur Ka Ulti Chhaya Peepal",
     "Jalpaiguri Factory Ki 3 AM Counting",
     "Khandala Ghat Ka Kilometer 47",
-    "Dumas Beach Ki Kaali Ret"
+    "Dumas Beach Ki Kaali Ret",
+    "Tunnel 33 Ki 2 AM Whistle"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 2.9356
+    "usd": 3.07
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -2386,6 +2447,17 @@
       "entity": "Dumas Beach Shraapit Ret / Ash Phantom",
       "protagonist": "Aarav, 21, college student searching for his missing friend",
       "emotion": "Paralyzing dread and existential terror"
+    },
+    {
+      "title": "Tunnel 33 Ki 2 AM Whistle",
+      "format": "asli_jagah",
+      "parts": 1,
+      "twist": "Sahil finally lunges out of the stone portal into the cold mist, only to find the same arched stone entrance from where he entered—his phone flashlight illumina",
+      "region": "Himachal Pradesh (Barog, Shimla-Kalka Railway)",
+      "setting": "Inside the damp, pitch-black straight stone vault of Tunnel 33 on the Shimla-Kalka heritage track at 2:00 AM, lit only by a dying phone torch.",
+      "entity": "Tunnel 33 ka Phantom Surveyor / Infinite Rail Loop",
+      "protagonist": "Sahil, 23, travel vlogger trekking the heritage track on a midnight livestream dare",
+      "emotion": "Desperation to escape, broken arrogance, and chilling realization"
     }
   ],
   "followers": 1,
@@ -2402,14 +2474,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-16",
-    "used": 8842
+    "date": "2026-11-17",
+    "used": 4153
   },
   "style_scores": {
     "illustrated": {
-      "n": 12,
-      "avg_watch_s": 7.7,
-      "avg_reach": 130
+      "n": 13,
+      "avg_watch_s": 7.8,
+      "avg_reach": 131
     },
     "cinematic": {
       "n": 3,
