@@ -97,7 +97,9 @@ RULES = """Rules:
   * Cut 1 = a flash-forward to the most frightening moment of THIS part, and the picture shows THE THREAT, not the
     victim: the ghost's face in the window, a pale hand rising from the well, a red figure behind the door, eyes in
     the dark (characters = the entity or nobody). Never a crying or frightened face as cut 1 — every reel opening on
-    a sad face looks the same and people scroll past. extreme_closeup or closeup, mood "scare", motion "push_fast",
+    a sad face looks the same and people scroll past. If the threat is a ghost who looks like a normal person (a
+    dead brother, a friend), cut 1 must still LOOK wrong: glowing or pure-black eyes, a too-wide smile, a face half
+    in shadow, standing where no one could stand — never a plain sweet smile. extreme_closeup or closeup, mood "scare", motion "push_fast",
     with ONE gripping line of at most 10 words, spoken tensely — a shocking fact, a whispered warning or a question
     viewers need answered ("Us raat Meera ne apni hi awaaz suni… kuen ke andar se."). No "Ye kahani hai…", no
     greetings, no calm scenery first.
