@@ -41,7 +41,7 @@ FRAMING = {
     "closeup": "close-up of the face and shoulders filling the frame, large glossy expressive eyes with catchlights, "
                "emotion clearly readable, detailed hair strands",
     "extreme_closeup": "dramatic extreme close-up on the face and wide glistening eyes filling the frame, "
-                       "every eyelash drawn in detail, clear glistening tears if crying",
+                       "every eyelash drawn in detail",
     "object": "close-up insert shot of an object or detail, shallow depth of field",
     "over_shoulder": "over-the-shoulder shot",
 }
@@ -468,9 +468,14 @@ def shot_prompt(ctx: Context, shot: dict, chars: dict, ref_ids: list[str], limit
         if not any((chars.get(c) or {}).get("is_entity") for c in shot["characters"]):
             head.append("Living people have natural dark brown eyes, never glowing or light-blue eyes")
     setting = no_text(ctx.notes.get("setting", ""))
+    # tears only when the shot is about crying: mentioning them in every prompt put tears on every face, even on a
+    # smiling impostor (18 Nov)
+    crying = re.search(r"\b(cry|cries|crying|tear|tears|weep|sob|ro rah|roti|rote|aansu|aansoo|rona)\w*", 
+                       str(shot.get("image", "")), re.I)
+    tears = ("clear glistening tears, never black" if crying else "dry eyes, no tears")
     tail = ("One single scene, no panels, collage or double exposure. Every person fully inside the frame with a "
             "natural face and two normal hands, nothing merged into walls. Natural warm brown Indian skin in lantern "
-            "light (never grey or black skin); tears clear, never black. No text, letters, signboards or writing")
+            f"light (never grey or black skin); {tears}. No text, letters, signboards or writing")
     style = v["style"]
     palette = v["night_palette"] if shot.get("night", True) else v["day_palette"]
     fixed = ". ".join(head)

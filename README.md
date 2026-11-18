@@ -480,3 +480,4 @@ the writer put a frightened person there, and subtitles start only after the hoo
 - v7.6.8: the Critic penalises scripts estimated more than 8 s over the spoken target (was 15 s): writers kept handing in ~75 s scripts, and even the 1.12x voice fit left reels at 67 s.
 - v7.6.9: a ghost that looks like a normal person must still look wrong in cut 1 (glowing eyes, too-wide smile…), not a sweet smile; the Critic takes 6 points (was 3) when one picture carries more than 4 cuts (17 Nov: a stethoscope still life held the last 14 s).
 - v7.6.10: a flat white strip the picture model draws along an edge (like a photo print border) is cut away and the picture re-cropped to fill the frame.
+- v7.6.11: tears only in pictures whose description is about crying ("dry eyes, no tears" otherwise): the tear rule in every prompt had put tears on every face, even a grinning impostor.
