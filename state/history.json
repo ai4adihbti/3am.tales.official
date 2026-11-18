@@ -1429,7 +1429,7 @@
         "avg_watch_s": 9.2
       },
       "score": 26.3,
-      "metrics_at": "2026-11-17T03:55:08+00:00"
+      "metrics_at": "2026-11-18T03:54:44+00:00"
     },
     {
       "title": "Munnar Ghat Ki 3 AM Bolero — Part 1",
@@ -1550,7 +1550,7 @@
         "avg_watch_s": 7.6
       },
       "score": 27.83,
-      "metrics_at": "2026-11-17T03:55:08+00:00"
+      "metrics_at": "2026-11-18T03:54:44+00:00"
     },
     {
       "title": "Dow Hill Kurseong Ki 3 AM Ghanti — Part 1",
@@ -1667,7 +1667,7 @@
         "avg_watch_s": 5.7
       },
       "score": 7.49,
-      "metrics_at": "2026-11-17T03:55:08+00:00"
+      "metrics_at": "2026-11-18T03:54:44+00:00"
     },
     {
       "title": "Rathpur Ki Amavas Ki Lori — Part 1",
@@ -1785,7 +1785,7 @@
         "avg_watch_s": 6.5
       },
       "score": 29.52,
-      "metrics_at": "2026-11-17T03:55:08+00:00"
+      "metrics_at": "2026-11-18T03:54:44+00:00"
     },
     {
       "title": "Bhojpur Ka Ulti Chhaya Peepal — Part 1",
@@ -1905,7 +1905,7 @@
         "avg_watch_s": 6.5
       },
       "score": 25.2,
-      "metrics_at": "2026-11-17T03:55:08+00:00"
+      "metrics_at": "2026-11-18T03:54:44+00:00"
     },
     {
       "title": "Khandala Ghat Ka Kilometer 47 — Part 1",
@@ -2013,7 +2013,19 @@
       "permalink": "https://www.instagram.com/reel/DfzrQ4-nBQg/",
       "posted_at": "2026-11-16T15:47:06+00:00",
       "youtube_id": "9OxjKUVOlUU",
-      "youtube_url": "https://youtube.com/shorts/9OxjKUVOlUU"
+      "youtube_url": "https://youtube.com/shorts/9OxjKUVOlUU",
+      "metrics": {
+        "views": 114,
+        "reach": 106,
+        "likes": 1,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 1,
+        "avg_watch_s": 9.3
+      },
+      "score": 24.58,
+      "metrics_at": "2026-11-18T03:54:44+00:00"
     },
     {
       "title": "Tunnel 33 Ki 2 AM Whistle — Part 1",
@@ -2110,10 +2122,57 @@
       "posted_at": "2026-11-17T15:47:12+00:00",
       "youtube_id": "oSrOK2XgzMY",
       "youtube_url": "https://youtube.com/shorts/oSrOK2XgzMY"
+    },
+    {
+      "title": "Alappuzha Ka 2 AM Wedding Photo — Part 1",
+      "series_title": "Alappuzha Ka 2 AM Wedding Photo",
+      "series_id": "20261118-alappuzha-ka-2-am-wedding-photo",
+      "part": 1,
+      "total_parts": 1,
+      "format": "family_bond",
+      "hook": "Us raat me uski aankhen khali thi.",
+      "critic_score": 80,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 59.567,
+      "file": "reel-20261118-035443.mp4",
+      "caption": "Alappuzha ki raat aur ajeeb tasveer | Bhoot ki kahani | Hindi horror story\n\nTum apni nayi dulhan ka midnight polaroid lete aur shadow upright dikhti toh kya karte? 👀\n\nYe reel us dost ko bhejo jo raat ko chupke se purane waade yaad karta hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #alappuzha #bhootiyaharror #kahani",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 59.6,
+        "loudness_lufs": -13.9,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I8",
+          "I2",
+          "I2",
+          "I8"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4079,
+        "hq_images": 0,
+        "est_cost_usd": 0.143,
+        "month_spend_usd": 3.36
+      },
+      "style": "illustrated",
+      "media_id": "18185460583427556",
+      "permalink": "https://www.instagram.com/reel/Df396m4D9f6/",
+      "posted_at": "2026-11-18T07:47:09+00:00",
+      "youtube_id": "gdLxOKPRdZ4",
+      "youtube_url": "https://youtube.com/shorts/gdLxOKPRdZ4"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 40, shares 0, saves 0, comments 0, watched on average 5.7s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 7, \"avg\": 39.96}, \"village_secret\": {\"n\": 6, \"avg\": 26.38}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 4, \"avg\": 36.17}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 3, \"avg\": 23.59}, \"asli_jagah\": {\"n\": 2, \"avg\": 18.62}}\nLessons:\n- Focus on high-performing story types like 'family_bond' and 'lok_katha' which achieve significantly higher engagement scores compared to 'purani_haveli' or 'asli_jagah'.\n- Use location-based and time-specific hooks (e.g., specific ghats, desolate roads, and exact late-night hours) to slightly improve average watch duration.\n- Avoid overly complex or abstract hooks like mysterious gramophones or disembodied screams, as they result in much lower watch times (under 5 seconds on average).\n- Keep total video lengths optimized, as extreme durations (over 100 seconds) coupled with weak mid-video engagement drop retention down to 10-12%.",
+  "learnings": "Best performers:\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 148, shares 1, saves 1, comments 0, watched on average 7.7s of 64s (12%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\n- [lok_katha] \"Chhatarpur ka Ulti Pailo Kuan — Part 1\" · hook: \"Chhatarpur ke Jamni gaon mein ek aisa kuan hai...\" · views 136, shares 0, saves 1, comments 0, watched on average 19.1s of 158s (12%)\nWeakest performers:\n- [purani_haveli] \"Kasauli Ki Parchhai Gramophone — Part 1\" · hook: \"Bina electricity ke chal rahe gramophone se... taza khoon tapak raha tha.\" · views 129, shares 0, saves 0, comments 0, watched on average 5.3s of 54s (10%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 133, shares 0, saves 0, comments 0, watched on average 4.3s of 54s (8%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 40, shares 0, saves 0, comments 0, watched on average 5.7s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 7, \"avg\": 57.78}, \"lok_katha\": {\"n\": 7, \"avg\": 39.96}, \"village_secret\": {\"n\": 6, \"avg\": 26.38}, \"purani_haveli\": {\"n\": 2, \"avg\": 8.99}, \"friends_dare\": {\"n\": 4, \"avg\": 36.17}, \"shehar\": {\"n\": 2, \"avg\": 48.28}, \"safar\": {\"n\": 3, \"avg\": 23.59}, \"asli_jagah\": {\"n\": 3, \"avg\": 20.61}}\nLessons:\n- Focus on high-performing story types like 'family_bond' and 'lok_katha' which achieve significantly higher engagement scores compared to 'purani_haveli' or 'asli_jagah'.\n- Keep hooks grounded in specific, eerie settings and times (e.g., desolate roads at 2:30 AM) rather than abstract questions or bizarre imagery to retain viewer attention past the initial seconds.\n- Avoid excessively long formats (over 100 seconds) when retention rates hover around 10-12%, as the algorithm heavily penalizes low watch time percentages.\n- Eliminate weak narrative tropes like 'purani_haveli' and 'asli_jagah' which underperform significantly in average audience score metrics.",
   "format_scores": {
     "family_bond": {
       "n": 7,
@@ -2144,8 +2203,8 @@
       "avg": 23.59
     },
     "asli_jagah": {
-      "n": 2,
-      "avg": 18.62
+      "n": 3,
+      "avg": 20.61
     }
   },
   "series": null,
@@ -2183,11 +2242,12 @@
     "Khandala Ghat Ka Kilometer 47",
     "Dumas Beach Ki Kaali Ret",
     "Tunnel 33 Ki 2 AM Whistle",
-    "Tezpur Hospital Ka 2:45 AM Call"
+    "Tezpur Hospital Ka 2:45 AM Call",
+    "Alappuzha Ka 2 AM Wedding Photo"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 3.2126
+    "usd": 3.3553
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -2530,6 +2590,17 @@
       "entity": "Nishi Daak / Phantom Mimic of the ICU",
       "protagonist": "Kabir, 24, elder brother waiting for his critically injured 10-year-old brother Sunny",
       "emotion": "Deep sibling devotion, terrifying dread, and a shocking double-twist"
+    },
+    {
+      "title": "Alappuzha Ka 2 AM Wedding Photo",
+      "format": "family_bond",
+      "parts": 1,
+      "twist": "The real Kavya is still waiting at the temple across the river; the woman lying next to him on the bed slowly opens her eyes, whispering the exact broken vow he",
+      "region": "Kerala (Backwaters, Alappuzha)",
+      "setting": "An old wooden ancestral home (Tharavadu) near silent, dark backwaters during a power outage at 2:00 AM.",
+      "entity": "Yaksha / Shadow of a Broken Vow",
+      "protagonist": "Anand, 26, newly married groom",
+      "emotion": "Guilt, sudden realization, and inescapable supernatural retribution"
     }
   ],
   "followers": 1,
@@ -2546,14 +2617,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-17",
-    "used": 8691
+    "date": "2026-11-18",
+    "used": 4079
   },
   "style_scores": {
     "illustrated": {
-      "n": 14,
-      "avg_watch_s": 7.8,
-      "avg_reach": 140
+      "n": 15,
+      "avg_watch_s": 7.9,
+      "avg_reach": 138
     },
     "cinematic": {
       "n": 3,
