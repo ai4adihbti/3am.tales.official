@@ -220,7 +220,7 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
                 log(NAME, f"cut {i + 1}: moving clip unusable ({str(e)[:80]}); using a camera move")
         iid = shot["image_id"]
         if iid not in cache:
-            img = cv2.imread(str(image_paths[iid]), cv2.IMREAD_COLOR)
+            img = trim_bands(cv2.imread(str(image_paths[iid]), cv2.IMREAD_COLOR))
             img = cv2.resize(img, (SW, SH), interpolation=cv2.INTER_LANCZOS4)
             dm = depth.of(img, shot.get("framing", "medium"))
             used_model += depth.kind == "model"
@@ -295,3 +295,45 @@ def animate(ctx: Context, image_paths: dict[str, Path], shots: list[dict], durat
     log(NAME, f"{len(clips)} cuts animated in 3D ({'depth model' if used_model else 'depth estimates'}"
               f"{', fog + dust + flicker' if atmo else ''})")
     return clips
+
+
+def trim_bands(img: np.ndarray, max_frac: float = 0.25) -> np.ndarray:
+    """Cut away flat white strips the picture model sometimes draws along an edge (18 Nov: a white bar under a
+    picture, like a photo print), then crop to the original aspect so the frame is filled with picture."""
+    if img is None:
+        return img
+    h, w = img.shape[:2]
+    g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY).astype(np.float32)
+
+    def flat(v: np.ndarray) -> bool:
+        return v.std() < 6 and v.mean() > 215            # white only: dark edges are usually the night itself
+
+    top = 0
+    while top < h * max_frac and flat(g[top]):
+        top += 1
+    bot = h
+    while h - bot < h * max_frac and flat(g[bot - 1]):
+        bot -= 1
+    left = 0
+    while left < w * max_frac and flat(g[top:bot, left]):
+        left += 1
+    right = w
+    while w - right < w * max_frac and flat(g[top:bot, right - 1]):
+        right -= 1
+    # ignore hairlines; only act on a real band (> 1.5% of the side)
+    if max(top, h - bot) < h * 0.015 and max(left, w - right) < w * 0.015:
+        return img
+    core = img[top:bot, left:right]
+    ch, cw = core.shape[:2]
+    if ch < h * 0.5 or cw < w * 0.5:
+        return img
+    want = w / h                                        # crop the inside back to the frame's aspect
+    if cw / ch > want:
+        nw = int(ch * want)
+        x = (cw - nw) // 2
+        core = core[:, x:x + nw]
+    else:
+        nh = int(cw / want)
+        y = (ch - nh) // 2
+        core = core[y:y + nh]
+    return cv2.resize(core, (w, h), interpolation=cv2.INTER_LANCZOS4)
