@@ -481,3 +481,4 @@ the writer put a frightened person there, and subtitles start only after the hoo
 - v7.6.9: a ghost that looks like a normal person must still look wrong in cut 1 (glowing eyes, too-wide smile…), not a sweet smile; the Critic takes 6 points (was 3) when one picture carries more than 4 cuts (17 Nov: a stethoscope still life held the last 14 s).
 - v7.6.10: a flat white strip the picture model draws along an edge (like a photo print border) is cut away and the picture re-cropped to fill the frame.
 - v7.6.11: tears only in pictures whose description is about crying ("dry eyes, no tears" otherwise): the tear rule in every prompt had put tears on every face, even a grinning impostor.
+- v7.6.12: with hours to spare before posting, each request keeps waiting for a strong Gemini model by the clock (up to 30 min, never later than ~100 min before posting) instead of giving up after 12 rounds (19 Nov: Google was overloaded ~20 min and a backup wrote a thin 45 s story).

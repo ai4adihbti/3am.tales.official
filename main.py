@@ -300,7 +300,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.6.11 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.6.12 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -321,7 +321,7 @@ def main() -> int:
             return 0
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.6.11")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.6.12")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -364,6 +364,8 @@ def main() -> int:
     spare_min = _minutes_to_post(cfg, mode)
     if spare_min > 120:
         ctx.llm._cfg_llm["patience_rounds"] = 12          # up to ~9 min of waiting per request before backups
+        # …and by the clock: strong models only until ~100 min before posting (writing+pictures+video need ~75 min)
+        ctx.llm._cfg_llm["patience_until"] = time.time() + (spare_min - 100) * 60
         log("Orchestrator", f"{spare_min / 60:.1f} h before posting: waiting for the best writing models when busy")
 
     # 1. learn from past posts (a bonus: never a reason to fail)

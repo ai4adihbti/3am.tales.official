@@ -218,7 +218,16 @@ class LLM:
 
         errors: list[str] = []
         patience = int(self._cfg_llm.get("patience_rounds", 2))
-        for rnd in range(4 + patience):
+        # with hours to spare, keep waiting for a strong model by the clock (up to 30 min per request, never past
+        # the run's deadline): 19 Nov Google was overloaded for ~20 min and a backup wrote a thin 45 s story
+        until = min(float(self._cfg_llm.get("patience_until", 0)), time.time() + 1800)
+        rnd = -1
+        while True:
+            rnd += 1
+            if rnd >= patience and time.time() < until:
+                patience = rnd + 1                      # still within the patient window: another strong round
+            if rnd >= 4 + patience:
+                break
             # the strong Gemini models write far better stories than the backups (Groq, "lite"): wait for them first
             strong = [m for m in self.models if "lite" not in m and not m.startswith("groq:")
                       and (m not in self.slow or rnd % 4 == 3)]      # a model that timed out is retried only now and then
@@ -249,7 +258,7 @@ class LLM:
             if not self.models:
                 break
             wait = 45 if rnd < patience else 30 * (rnd - patience + 1)
-            log("Gemini", f"{'strong models' if pool is strong and rnd < patience else 'all models'} busy — "
+            log("Gemini", f"{'strong models' if rnd < patience else 'all models'} busy — "
                           f"waiting {wait}s before trying again")
             time.sleep(wait)
 
