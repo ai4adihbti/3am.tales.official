@@ -1429,7 +1429,7 @@
         "avg_watch_s": 9.4
       },
       "score": 26.52,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Munnar Ghat Ki 3 AM Bolero — Part 1",
@@ -1550,7 +1550,7 @@
         "avg_watch_s": 7.6
       },
       "score": 27.83,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Dow Hill Kurseong Ki 3 AM Ghanti — Part 1",
@@ -1664,10 +1664,10 @@
         "shares": 0,
         "saved": 0,
         "total_interactions": 0,
-        "avg_watch_s": 5.6
+        "avg_watch_s": 5.5
       },
-      "score": 7.36,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "score": 7.22,
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Rathpur Ki Amavas Ki Lori — Part 1",
@@ -1785,7 +1785,7 @@
         "avg_watch_s": 6.4
       },
       "score": 29.25,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Bhojpur Ka Ulti Chhaya Peepal — Part 1",
@@ -1905,7 +1905,7 @@
         "avg_watch_s": 6.8
       },
       "score": 25.64,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Khandala Ghat Ka Kilometer 47 — Part 1",
@@ -2022,10 +2022,10 @@
         "shares": 0,
         "saved": 0,
         "total_interactions": 1,
-        "avg_watch_s": 9.7
+        "avg_watch_s": 9.6
       },
-      "score": 25.18,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "score": 25.01,
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Tunnel 33 Ki 2 AM Whistle — Part 1",
@@ -2145,7 +2145,7 @@
         "avg_watch_s": 6.9
       },
       "score": 120.49,
-      "metrics_at": "2026-11-19T03:54:42+00:00"
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Alappuzha Ka 2 AM Wedding Photo — Part 1",
@@ -2252,7 +2252,19 @@
       "permalink": "https://www.instagram.com/reel/Df409CqjAu8/",
       "posted_at": "2026-11-18T15:47:07+00:00",
       "youtube_id": "hyRI3HC-l08",
-      "youtube_url": "https://youtube.com/shorts/hyRI3HC-l08"
+      "youtube_url": "https://youtube.com/shorts/hyRI3HC-l08",
+      "metrics": {
+        "views": 145,
+        "reach": 125,
+        "likes": 1,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 1,
+        "avg_watch_s": 8.4
+      },
+      "score": 21.07,
+      "metrics_at": "2026-11-20T03:55:00+00:00"
     },
     {
       "title": "Udaipur Ki 3 AM Aaina — Part 1",
@@ -2349,14 +2361,62 @@
       "posted_at": "2026-11-19T15:47:10+00:00",
       "youtube_id": "uSf_qsLkVQw",
       "youtube_url": "https://youtube.com/shorts/uSf_qsLkVQw"
+    },
+    {
+      "title": "Noida Sector 62 Ka 2 AM Wi-Fi — Part 1",
+      "series_title": "Noida Sector 62 Ka 2 AM Wi-Fi",
+      "series_id": "20261120-noida-sector-62-ka-2-am-wi-fi",
+      "part": 1,
+      "total_parts": 1,
+      "format": "shehar",
+      "hook": "Logout mat karna Rohan... aaj poori raat kaam baaki hai.",
+      "critic_score": 72,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 73.285,
+      "file": "reel-20261120-035500.mp4",
+      "caption": "Noida 2 AM Wi-Fi glitch | Bhoot ki kahani | Hindi horror story\n\nTum hote toh mare hue dost ka Wi-Fi connect karte ya bhaag jaate? 👀\n\nYe reel us dost ko bhejo jo raat 2 baje office me akele overtime karta hai\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #noidighost #midnightwifi",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 73.4,
+        "loudness_lufs": -15.1,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I6",
+          "I7",
+          "I3",
+          "I6",
+          "I7"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4419,
+        "hq_images": 0,
+        "est_cost_usd": 0.136,
+        "month_spend_usd": 3.91
+      },
+      "style": "illustrated",
+      "media_id": "17917225845559942",
+      "permalink": "https://www.instagram.com/reel/Df9HgM3kS5K/",
+      "posted_at": "2026-11-20T07:47:09+00:00",
+      "youtube_id": "wFpEyXx3kJs",
+      "youtube_url": "https://youtube.com/shorts/wFpEyXx3kJs"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.2s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.6s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 9, \"avg\": 60.12}, \"lok_katha\": {\"n\": 7, \"avg\": 39.96}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.78}, \"shehar\": {\"n\": 2, \"avg\": 48.48}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.91}}\nLessons:\n- Focus heavily on the 'family_bond' story type, as it drastically outperforms others with an average score of 60.12 compared to 'purani_haveli' at 9.73.\n- Keep hooks grounded in personal or urgent interactions (e.g., 'Bhaiya!' or late-night transport settings like Ghats and buses) to improve watch time, which peaks at 12.1s for relatable transit horror.\n- Avoid generic location-based hooks like 'Tunnel thirty-three mein...' or low-scoring categories like 'asli_jagah' and 'purani_haveli' which fail to retain viewers past 6 seconds.\n- Drastically shorten overall video lengths; current runtimes of 60 to 117 seconds suffer from severe drop-offs, yielding abysmally low watch completion rates of only 7% to 13%.",
+  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.2s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.5s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.22}, \"lok_katha\": {\"n\": 7, \"avg\": 39.96}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.78}, \"shehar\": {\"n\": 2, \"avg\": 48.48}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.83}}\nLessons:\n- Prioritize 'family_bond' and 'shehar' story types, as they significantly outperform other themes like 'purani_haveli' and 'asli_jagah' in overall audience score.\n- Keep total video duration tighter; extremely long videos (over 100 seconds) suffer from severe drop-offs, keeping watch time around 10% despite decent hooks.\n- Use direct, urgent, and personal dialogue hooks (e.g., 'Bhaiya!') rather than distant descriptive statements to slightly improve initial viewer retention.\n- Avoid generic or overly complex location-based hooks (like 'Tunnel thirty-three'), which yield lower average watch times and zero shares.",
   "format_scores": {
     "family_bond": {
-      "n": 9,
-      "avg": 60.12
+      "n": 10,
+      "avg": 56.22
     },
     "lok_katha": {
       "n": 7,
@@ -2384,7 +2444,7 @@
     },
     "asli_jagah": {
       "n": 4,
-      "avg": 17.91
+      "avg": 17.83
     }
   },
   "series": null,
@@ -2426,11 +2486,12 @@
     "Alappuzha Ka 2 AM Wedding Photo",
     "Fazilka Ki 2:15 AM Rasoi",
     "Udaipur Ki 3 AM Aaina",
-    "Bhopal Junction Ki 3:15 AM Passenger"
+    "Bhopal Junction Ki 3:15 AM Passenger",
+    "Noida Sector 62 Ka 2 AM Wi-Fi"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 3.7704
+    "usd": 3.9062
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
@@ -2817,12 +2878,23 @@
       "entity": "Platform Ka Purana Musafir / Time-Slip Passenger",
       "protagonist": "Sameer, 22, college student returning home alone via late-night train.",
       "emotion": "Urgent curiosity turning into terrifying time-displacement panic."
+    },
+    {
+      "title": "Noida Sector 62 Ka 2 AM Wi-Fi",
+      "format": "shehar",
+      "parts": 1,
+      "twist": "The video call on his screen isn't streaming from Tanya's empty desk—it is streaming from Rohan's own phone front camera, and the figure behind him is leaning i",
+      "region": "Uttar Pradesh (Noida IT Corridor)",
+      "setting": "A cold, fluorescent-lit, deserted cubicle bay on the 7th floor of an IT tech park at 2:15 AM.",
+      "entity": "Proxy-Pret / Digital Mimic of the Unsent Message",
+      "protagonist": "Rohan, 23, junior software engineer working alone on a late-night production deployment",
+      "emotion": "Isolation, guilt of ignoring a friend's call, and sheer paralyzing dread"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "rahasya",
-    "target": 2
+    "format": "shehar",
+    "target": 3
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -2833,14 +2905,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-19",
-    "used": 8473
+    "date": "2026-11-20",
+    "used": 4419
   },
   "style_scores": {
     "illustrated": {
-      "n": 18,
-      "avg_watch_s": 7.7,
-      "avg_reach": 135
+      "n": 19,
+      "avg_watch_s": 7.8,
+      "avg_reach": 134
     },
     "cinematic": {
       "n": 3,

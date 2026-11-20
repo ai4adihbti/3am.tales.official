@@ -1,0 +1,20 @@
+{
+ "hook": "Logout mat karna Rohan... aaj poori raat kaam baaki hai.",
+ "hook_text": "Mrit dost ka Wi-Fi connect hua?",
+ "critic": 72,
+ "feedback": "Solid, atmospheric urban horror reel. Cut 1 cold open with C3 whisper + I10 and immediate Cut 2 flash-back hook grabs attention instantly. Minor issues to fix: 1) In Cut 1 and Cut 14, the dialogue line is identical word-for-word ('Logout mat karna Rohan...'). In Cut 14, escalate the horror rather than verbatim repetition—e.g. have her say something colder or closer to his ear like '<whisper> Rohan... code push ho gaya, ab mud ke dekh. </whisper>'. 2) Pacing/Runtime: At 67 seconds, this exceeds the 40-52s reel sweet spot. Consolidate the silent reaction cuts at the end (cuts 13, 15, 16) down fr",
+ "lines": [
+  "Logout mat karna Rohan... aaj poori raat kaam baaki hai.",
+  "Us raat Rohan ka phone ek mrit ladki ke hotspot se jud gaya.",
+  "Ghadi mein theek do bajkar pandrah minute hue the.",
+  "Noida Sector 62 ki saatveen manzil par poora office bilkul sunsaan pada tha.",
+  "Rohan akela kaam kar raha tha, apni mrit dost Tanya ki yaadon se bhaagte hue.",
+  "Tabhi phone ki screen chamki... Tanya ke personal Wi-Fi se auto connect!",
+  "Par uska phone toh police custody mein band hai...",
+  "Tabhi office ki saari tubelights khataak se bujh gayin.",
+  "Aur laptop par Tanya ki khaali desk se video call aane lagi.",
+  "call khuli, toh camera Tanya ki desk nahi... khud Rohan ki peeth dikha raha tha!",
+  "Logout mat karna Rohan... aaj poori raat kaam baaki hai.",
+  "Raat do baje office mein anjaan hotspot dikhe, toh connect mat karna... wo peeche khade hain."
+ ]
+}
