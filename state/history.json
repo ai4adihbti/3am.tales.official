@@ -2540,10 +2540,55 @@
       "posted_at": "2026-11-21T10:43:40+00:00",
       "youtube_id": "DhYslfApIA8",
       "youtube_url": "https://youtube.com/shorts/DhYslfApIA8"
+    },
+    {
+      "title": "Satpura Ghat Ki 3 AM Bus — Part 1",
+      "series_title": "Satpura Ghat Ki 3 AM Bus",
+      "series_id": "20261121-satpura-ghat-ki-3-am-bus",
+      "part": 1,
+      "total_parts": 1,
+      "format": "safar",
+      "hook": "Is bus mein solah log nahi... sirf tum zinda ho!",
+      "critic_score": 87,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 60.128,
+      "file": "reel-20261121-114829.mp4",
+      "caption": "Satpura Ghat ki 3 AM bus ride | Bhoot ki kahani | Hindi horror story\n\nTum aisi raat mein stranger ke haath se ticket lete kya? 👀\n\nYe reel us dost ko bhejo jo raat 3 baje akele road trip pe nikal jaata hai\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #satpuraghat #bhootiyabus #midnighthorror",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 60.2,
+        "loudness_lufs": -14.5,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I4",
+          "I6"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 3613,
+        "hq_images": 0,
+        "est_cost_usd": 0.113,
+        "month_spend_usd": 4.22
+      },
+      "style": "illustrated",
+      "media_id": "17968482651219734",
+      "permalink": "https://www.instagram.com/reel/DgAjUPAE0ey/",
+      "posted_at": "2026-11-21T15:47:06+00:00",
+      "youtube_id": "WVVvTERQLZs",
+      "youtube_url": "https://youtube.com/shorts/WVVvTERQLZs"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.1s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 3, \"avg\": 44.46}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus on high-performing story types like 'family_bond' (avg score 56.18) rather than weaker formats like 'purani_haveli' (avg score 9.73).\n- Keep total video duration shorter or improve mid-video retention, as current watch time averages hover around a low 7 to 12 seconds for videos over 50 seconds.\n- Use direct, urgent conversational hooks such as 'Bhaiya!' or specific location-based setups like 'Devgad Ghat par raat do baje' to slightly improve initial viewer retention.\n- Avoid generic or purely rhetorical hooks like 'Shaniwar Wada mein gunjti cheekh kiski thi?', which correlate with the lowest watch times and view counts.",
+  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.1s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 3, \"avg\": 44.46}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Prioritize 'family_bond' story types, as they achieve the highest average score (56.18) compared to weaker formats like 'purani_haveli' (9.73).\n- Use direct, urgent, and conversational dialogue hooks like 'Bhaiya!' rather than abstract or descriptive questions to slightly improve initial watch time.\n- Avoid overly long runtimes (over 60 seconds) when retention is low (around 10-13%); tighter pacing is needed to boost watch time and algorithmic reach.\n- Focus on creating relatable, high-stakes personal scenarios over historical or generic location-based horror ('asli_jagah'), which showed weaker audience response.",
   "format_scores": {
     "family_bond": {
       "n": 10,
@@ -2624,25 +2669,16 @@
     "Bhopal Junction Ki 3:15 AM Passenger",
     "Noida Sector 62 Ka 2 AM Wi-Fi",
     "Mumbai Chawl Ki 3:15 AM Lift",
-    "Kolkata Metro Ka 2:45 AM Platform"
+    "Kolkata Metro Ka 2:45 AM Platform",
+    "Satpura Ghat Ki 3 AM Bus"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 4.1114
+    "usd": 4.2242
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
   "story_log": [
-    {
-      "title": "Kosi Gaon ka Safed Peepal",
-      "format": "lok_katha",
-      "parts": 1,
-      "region": "Eastern Uttar Pradesh",
-      "setting": "Navgarh village - mud-brick houses, misty mustard fields, and an ancient stepwell under a glowing full moon.",
-      "entity": "Nishi Daak (a midnight entity that calls children using a mother's voice)",
-      "protagonist": "Meera, 19, a protective elder sister living with her Dadi and 8-year-old brother, Chhotu.",
-      "emotion": "A sister's desperate bravery and a grandmother's tragic, protective secret."
-    },
     {
       "title": "Chhatarpur ka Ulti Pailo Kuan",
       "format": "lok_katha",
@@ -3048,11 +3084,22 @@
       "entity": "Cursed midnight train that traps the passenger’s soul",
       "protagonist": "Asha, 22, female engineering student working night shift at ticket counter",
       "emotion": "loneliness and yearning for a lost love"
+    },
+    {
+      "title": "Satpura Ghat Ki 3 AM Bus",
+      "format": "safar",
+      "parts": 1,
+      "twist": "Aarav gently unties her shawl, smiles, and steps into the fog with the conductor—and Simran turns around to see the rest of the bus berths completely empty.",
+      "region": "Madhya Pradesh (Satpura Ghats)",
+      "setting": "An old overnight private sleeper bus winding through the fog-laden Satpura Ghats at 3:00 AM.",
+      "entity": "Ghat Ka Raasta-Bhula Baap / Spirit of the Lost Guide",
+      "protagonist": "Simran, 23, elder sister traveling back home with her 17-year-old brother Aarav",
+      "emotion": "Sibling protection, grief denial, and bittersweet acceptance"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "shehar",
+    "format": "safar",
     "target": 3
   },
   "ig_token": {
@@ -3065,7 +3112,7 @@
   },
   "cf_day": {
     "date": "2026-11-21",
-    "used": 4418
+    "used": 8031
   },
   "style_scores": {
     "illustrated": {
