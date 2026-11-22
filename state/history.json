@@ -2491,7 +2491,19 @@
       "permalink": "https://www.instagram.com/reel/Df9-gU3FJ1o/",
       "posted_at": "2026-11-20T15:47:10+00:00",
       "youtube_id": "2oxktZ6fark",
-      "youtube_url": "https://youtube.com/shorts/2oxktZ6fark"
+      "youtube_url": "https://youtube.com/shorts/2oxktZ6fark",
+      "metrics": {
+        "views": 122,
+        "reach": 108,
+        "likes": 4,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 4,
+        "avg_watch_s": 5.3
+      },
+      "score": 41.86,
+      "metrics_at": "2026-11-22T03:55:19+00:00"
     },
     {
       "title": "Kolkata Metro Ka 2:45 AM Platform — Part 1",
@@ -2585,10 +2597,60 @@
       "posted_at": "2026-11-21T15:47:06+00:00",
       "youtube_id": "WVVvTERQLZs",
       "youtube_url": "https://youtube.com/shorts/WVVvTERQLZs"
+    },
+    {
+      "title": "Mandvi Highway Ki 2:30 AM Lift — Part 1",
+      "series_title": "Mandvi Highway Ki 2:30 AM Lift",
+      "series_id": "20261122-mandvi-highway-ki-2-30-am-lift",
+      "part": 1,
+      "total_parts": 1,
+      "format": "safar",
+      "hook": "Mirror mein driver missing tha, yaar!",
+      "critic_score": 84,
+      "voice_engine": "edge",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 59.188,
+      "file": "reel-20261122-035518.mp4",
+      "caption": "Raat 2:30 baje lift mat lena | Bhoot ki kahani | Hindi horror story\n\nDriver ne bola peeche mat dekhna, tum hote toh mirror mein dekhte ya nahi? 👀\n\nYe reel us dost ko bhejo jo raat ko highway pe akela gadi chalata hai 👀\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #mandvihighway #bhootiyahorror #raatkikahani",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Microsoft backup voices were used (Gemini/Sarvam voices unavailable)"
+        ],
+        "duration_s": 59.3,
+        "loudness_lufs": -14.2,
+        "voice_engine": "edge",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I8",
+          "I7",
+          "I9",
+          "I2",
+          "I9"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4320,
+        "hq_images": 0,
+        "est_cost_usd": 0.1,
+        "month_spend_usd": 4.32
+      },
+      "style": "illustrated",
+      "media_id": "18502156795128348",
+      "permalink": "https://www.instagram.com/reel/DgCRMI2lz1q/",
+      "posted_at": "2026-11-22T07:47:10+00:00",
+      "youtube_id": "PPdFIkBpVqI",
+      "youtube_url": "https://youtube.com/shorts/PPdFIkBpVqI"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.1s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 3, \"avg\": 44.46}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Prioritize 'family_bond' story types, as they achieve the highest average score (56.18) compared to weaker formats like 'purani_haveli' (9.73).\n- Use direct, urgent, and conversational dialogue hooks like 'Bhaiya!' rather than abstract or descriptive questions to slightly improve initial watch time.\n- Avoid overly long runtimes (over 60 seconds) when retention is low (around 10-13%); tighter pacing is needed to boost watch time and algorithmic reach.\n- Focus on creating relatable, high-stakes personal scenarios over historical or generic location-based horror ('asli_jagah'), which showed weaker audience response.",
+  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.1s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 4, \"avg\": 43.81}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus on 'family_bond' and urban storytelling themes, as they significantly outperform other categories like 'purani_haveli' and 'asli_jagah' in overall engagement scores.\n- Avoid overly long runtimes (over 60 seconds) when retention is low; viewers drop off drastically after 6-12 seconds, failing to complete the watch time needed for algorithm push.\n- Use direct, urgent, and personal hooks featuring immediate danger or sudden dialogue (e.g., 'Bhaiya!' or late-night specific locations) to slightly improve initial viewer retention over generic descriptive hooks.\n- Eliminate low-performing formats like 'purani_haveli' and 'asli_jagah' which yield very low average scores (under 20 points) and minimal shares or saves.",
   "format_scores": {
     "family_bond": {
       "n": 10,
@@ -2611,8 +2673,8 @@
       "avg": 36.73
     },
     "shehar": {
-      "n": 3,
-      "avg": 44.46
+      "n": 4,
+      "avg": 43.81
     },
     "safar": {
       "n": 3,
@@ -2670,25 +2732,16 @@
     "Noida Sector 62 Ka 2 AM Wi-Fi",
     "Mumbai Chawl Ki 3:15 AM Lift",
     "Kolkata Metro Ka 2:45 AM Platform",
-    "Satpura Ghat Ki 3 AM Bus"
+    "Satpura Ghat Ki 3 AM Bus",
+    "Mandvi Highway Ki 2:30 AM Lift"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 4.2242
+    "usd": 4.3242
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
   "story_log": [
-    {
-      "title": "Chhatarpur ka Ulti Pailo Kuan",
-      "format": "lok_katha",
-      "parts": 1,
-      "region": "Bundelkhand, Madhya Pradesh",
-      "setting": "Orachha-adjacent village of Jamni – mud-brick houses, dry canal, a moonlit ancient stepwell (kuan) surrounded by thick babool trees.",
-      "entity": "Pichhal-Pairi (the backward-footed entity of the stepwell)",
-      "protagonist": "Anandi, 20, a young newly-wed bahu",
-      "emotion": "A bride's selfless devotion and a mother-in-law's sacrifice."
-    },
     {
       "title": "Almora Bypass ka Safed Dhund",
       "format": "family_bond",
@@ -3095,6 +3148,17 @@
       "entity": "Ghat Ka Raasta-Bhula Baap / Spirit of the Lost Guide",
       "protagonist": "Simran, 23, elder sister traveling back home with her 17-year-old brother Aarav",
       "emotion": "Sibling protection, grief denial, and bittersweet acceptance"
+    },
+    {
+      "title": "Mandvi Highway Ki 2:30 AM Lift",
+      "format": "safar",
+      "parts": 1,
+      "twist": "Dev realizes the terrifying ghost on the highway wasn't chasing them from the dark road—the driver himself is the trapped phantom spirit, and Dev is trapped in ",
+      "region": "Gujarat (Kutch salt highway near Mandvi)",
+      "setting": "A single-lane asphalt road cutting through pitch-black salty wasteland in Kutch at 2:30 AM during a desolate truck ride.",
+      "entity": "Rann Ka Humsafar / The Living Fugitive's Trap",
+      "protagonist": "Dev, 21, college student hitchhiking on a goods truck to reach Bhuj",
+      "emotion": "Paranoia, survival instinct, and chilling betrayal"
     }
   ],
   "followers": 1,
@@ -3111,14 +3175,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-21",
-    "used": 8031
+    "date": "2026-11-22",
+    "used": 4320
   },
   "style_scores": {
     "illustrated": {
-      "n": 22,
-      "avg_watch_s": 8.0,
-      "avg_reach": 132
+      "n": 23,
+      "avg_watch_s": 7.9,
+      "avg_reach": 130
     },
     "cinematic": {
       "n": 3,
