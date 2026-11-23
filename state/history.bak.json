@@ -2503,7 +2503,7 @@
         "avg_watch_s": 5.3
       },
       "score": 41.86,
-      "metrics_at": "2026-11-22T03:55:19+00:00"
+      "metrics_at": "2026-11-23T03:55:42+00:00"
     },
     {
       "title": "Kolkata Metro Ka 2:45 AM Platform — Part 1",
@@ -2608,7 +2608,19 @@
       "permalink": "https://www.instagram.com/reel/DgAjUPAE0ey/",
       "posted_at": "2026-11-21T15:47:06+00:00",
       "youtube_id": "WVVvTERQLZs",
-      "youtube_url": "https://youtube.com/shorts/WVVvTERQLZs"
+      "youtube_url": "https://youtube.com/shorts/WVVvTERQLZs",
+      "metrics": {
+        "views": 196,
+        "reach": 181,
+        "likes": 0,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 0,
+        "avg_watch_s": 3.3
+      },
+      "score": 5.68,
+      "metrics_at": "2026-11-23T03:55:42+00:00"
     },
     {
       "title": "Mandvi Highway Ki 2:30 AM Lift — Part 1",
@@ -2709,10 +2721,56 @@
       "posted_at": "2026-11-22T15:47:06+00:00",
       "youtube_id": "NnAohOI9e9s",
       "youtube_url": "https://youtube.com/shorts/NnAohOI9e9s"
+    },
+    {
+      "title": "Palamau Ka Purana Mahua — Part 1",
+      "series_title": "Palamau Ka Purana Mahua",
+      "series_id": "20261123-palamau-ka-purana-mahua",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Raat ke do baje jangal se mare hue insaan ki awaaz aayi...",
+      "critic_score": 90,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 59.215,
+      "file": "reel-20261123-035541.mp4",
+      "caption": "Raat ke 2 baje maa ki aawaz | Bhoot ki kahani | Hindi horror story\n\nTum hote toh aadhi raat ko maa ki aawaz sunkar darwaza kholte ya nahi? 👀\n\nYe reel us dost ko bhejo jo raat ko akele purane gharon mein rukne ka risk leta hai\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #palamau #mahuatree",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 59.3,
+        "loudness_lufs": -13.9,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I10",
+          "I8",
+          "I6"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4012,
+        "hq_images": 0,
+        "est_cost_usd": 0.073,
+        "month_spend_usd": 4.55
+      },
+      "style": "illustrated",
+      "media_id": "18157399255490687",
+      "permalink": "https://www.instagram.com/reel/DgE18TbAg7V/",
+      "posted_at": "2026-11-23T07:47:09+00:00",
+      "youtube_id": "CmGno4iL6Pc",
+      "youtube_url": "https://youtube.com/shorts/CmGno4iL6Pc"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [asli_jagah] \"Tunnel 33 Ki 2 AM Whistle — Part 1\" · hook: \"Tunnel thirty-three mein raat do baje sirf ek whistle bajti hai!\" · views 113, shares 0, saves 0, comments 0, watched on average 6.1s of 67s (9%)\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 5, \"avg\": 43.78}, \"safar\": {\"n\": 3, \"avg\": 23.77}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus on 'family_bond' themes (average score 56.18), as emotional stakes clearly outperform all other story categories in engagement and shares.\n- Prioritize relatable, everyday transport settings like late-night buses, autos, and hospital calls over overused horror tropes like old mansions ('purani_haveli', score 9.73) or well-known real locations ('asli_jagah', score 17.76).\n- Use urgent, immediate conversational hooks (e.g., 'Bhaiya!') or explicit late-night time triggers ('Raat ke dhai baje...') to immediately secure early retention and boost watch time.\n- Avoid generic question hooks or spoiled resolution hooks (like mentioning who saved whom upfront), which reduce watch time down to 7%-9%.",
+  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\n- [safar] \"Satpura Ghat Ki 3 AM Bus — Part 1\" · hook: \"Is bus mein solah log nahi... sirf tum zinda ho!\" · views 196, shares 0, saves 0, comments 0, watched on average 3.3s of 60s (5%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 5, \"avg\": 43.78}, \"safar\": {\"n\": 4, \"avg\": 19.25}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus on 'family_bond' and 'shehar' story types, as they yield the highest average performance scores (56.18 and 43.78 respectively), while entirely avoiding 'purani_haveli' and 'asli_jagah' which perform poorly.\n- Keep total video duration shorter or improve the mid-video pacing, as current watch times struggle to exceed 12 seconds out of 60-plus second runtimes.\n- Use direct, urgent dialogue hooks like 'Bhaiya!' or specific time-and-place setups ('Devgad Ghat par raat do baje') to slightly boost initial retention compared to abstract rhetorical questions.",
   "format_scores": {
     "family_bond": {
       "n": 10,
@@ -2739,8 +2797,8 @@
       "avg": 43.78
     },
     "safar": {
-      "n": 3,
-      "avg": 23.77
+      "n": 4,
+      "avg": 19.25
     },
     "asli_jagah": {
       "n": 4,
@@ -2796,25 +2854,16 @@
     "Kolkata Metro Ka 2:45 AM Platform",
     "Satpura Ghat Ki 3 AM Bus",
     "Mandvi Highway Ki 2:30 AM Lift",
-    "Jaigarh Creek Ki 2:45 AM Ferry"
+    "Jaigarh Creek Ki 2:45 AM Ferry",
+    "Palamau Ka Purana Mahua"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 4.4789
+    "usd": 4.5515
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
   "story_log": [
-    {
-      "title": "Pangri Ghat ka Lal Lantern",
-      "format": "family_bond",
-      "parts": 1,
-      "region": "Konkan Region, Maharashtra",
-      "setting": "An isolated railway level-crossing surrounded by dense supari (areca nut) groves in Pangri village during heavy midnight monsoon rains.",
-      "entity": "Devachar (protective Konkan guardian entity) / Spirit of a loved one",
-      "protagonist": "Rohan, 22, grandson riding home on a scooter",
-      "emotion": "A grandmother's protective love transcending death"
-    },
     {
       "title": "Bishnupur ka Kali Kamra",
       "format": "village_secret",
@@ -3223,12 +3272,23 @@
       "entity": "Taran-Navik / Spirit ferryman of the Konkan backwaters",
       "protagonist": "Kabir, 22, college student returning to his coastal ancestral home",
       "emotion": "Guilt, brotherly love, and haunting realization"
+    },
+    {
+      "title": "Palamau Ka Purana Mahua",
+      "format": "lok_katha",
+      "parts": 1,
+      "twist": "The voice outside wasn't trying to harm Aarav—it was his real mother's spirit trying to rescue him from Dadi, who had bound his life to the village soil using d",
+      "region": "Jharkhand (Palamau forests)",
+      "setting": "A small mud-and-brick house at the edge of a dense Mahua forest under a huge full moon, with a flickering brass lantern on the verandah.",
+      "entity": "Mahua Ki Chhaya / Ghostly Call of the Lost Mother",
+      "protagonist": "Meera, 19, elder sister caring for her 6-year-old brother Aarav",
+      "emotion": "Sibling love, betrayal, and sudden terrifying horror"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "safar",
-    "target": 3
+    "format": "lok_katha",
+    "target": 2
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -3239,14 +3299,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-22",
-    "used": 9166
+    "date": "2026-11-23",
+    "used": 4012
   },
   "style_scores": {
     "illustrated": {
-      "n": 24,
-      "avg_watch_s": 8.0,
-      "avg_reach": 131
+      "n": 25,
+      "avg_watch_s": 7.8,
+      "avg_reach": 133
     },
     "cinematic": {
       "n": 3,
