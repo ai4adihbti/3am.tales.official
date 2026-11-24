@@ -156,11 +156,11 @@ visuals:
 # MODAL_TOKEN_SECRET exist. Anything that fails here falls back to the normal free pipeline automatically.
 gpu:
   enabled: true
-  pictures: true               # shots with characters drawn by Qwen-Image-Edit from the character portraits
-  motion: true                 # real character movement (Wan 2.2) on the most important cuts
+  pictures: false              # (the Qwen picture engine was removed: Chinese model)
+  motion: true                 # real movement (Lightricks LTX-Video, open weights) on the most important cuts
   motion_clips: 6              # how many cuts per reel get real movement (more = more GPU time)
   monthly_cap_usd: 27          # stop using Modal for the month at this estimate (free credit is $30)
-  est_seconds_per_clip: 90     # used for the budget check; the benchmark run measures the real number
+  est_seconds_per_clip: 40     # used for the budget check; the benchmark run measures the real number
 
 voice:
   # Engines are tried in this order; any without a key/quota is skipped automatically.

@@ -170,7 +170,7 @@ at most one full dry run and one preview per day. The schedule posts daily at ab
   `AIHORDE_API_KEY` for faster queues).
 - **GPU engine (Modal, free $30/month):** with the secrets `MODAL_TOKEN_ID` + `MODAL_TOKEN_SECRET`, shots with
   characters are drawn by Qwen-Image-Edit from the character portraits, and the 6 most important cuts get real
-  character movement (Wan 2.2). Monthly cap `gpu.monthly_cap_usd` (default $27). Run the workflow once in
+  real movement (Lightricks LTX-Video, open weights, Israel). Monthly cap `gpu.monthly_cap_usd` (default $27). Run the workflow once in
   **gpu_setup** mode first: it downloads the models and benchmarks the real cost per reel.
   Without the secrets, or if anything fails, reels are made exactly as before.
 
@@ -482,3 +482,11 @@ the writer put a frightened person there, and subtitles start only after the hoo
 - v7.6.10: a flat white strip the picture model draws along an edge (like a photo print border) is cut away and the picture re-cropped to fill the frame.
 - v7.6.11: tears only in pictures whose description is about crying ("dry eyes, no tears" otherwise): the tear rule in every prompt had put tears on every face, even a grinning impostor.
 - v7.6.12: with hours to spare before posting, each request keeps waiting for a strong Gemini model by the clock (up to 30 min, never later than ~100 min before posting) instead of giving up after 12 rounds (19 Nov: Google was overloaded ~20 min and a backup wrote a thin 45 s story).
+
+### v7.7.0 — real movement (needs a free Modal account)
+- The GPU engine now uses Lightricks LTX-Video 0.9.7 distilled (open weights, not a Chinese model) to turn the
+  6 most important pictures of each reel into ~4 s clips with real movement (a ghost turning, hair and dupatta in
+  the wind, mist, flickering lanterns) instead of a camera move over a still. The Qwen/Wan engine (Chinese
+  models) is removed. Off until the MODAL_TOKEN_ID / MODAL_TOKEN_SECRET secrets exist; capped at $27 of Modal's
+  free $30 a month; any failure falls back to camera moves. Run the workflow once with mode `gpu_setup` to
+  download the model and measure the real cost per reel.

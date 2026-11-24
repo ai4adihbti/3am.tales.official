@@ -1,9 +1,8 @@
 """GPU agent: uses the Modal GPU engine (gpu_app.py) when it's set up, and stays out of the way when it isn't.
 
-- Pictures: shots with characters are drawn by Qwen-Image-Edit from the character portraits (better faces and
-  consistency than the free Cloudflare model). Used as the first picture provider by the Illustrator.
-- Motion: the N most important shots become real moving clips (Wan 2.2 image-to-video). The Animator uses those
-  clips instead of camera moves for those shots.
+- Motion: the N most important shots become real moving clips (Lightricks LTX-Video image-to-video, open weights,
+  not a Chinese model). The Animator uses those clips instead of camera moves for those shots.
+- Pictures: still drawn by the free Cloudflare model (the old Qwen picture engine was removed: Chinese model).
 - Budget: Modal gives $30 of free GPU time a month. Every call's time is counted; once this month's estimate
   reaches `gpu.monthly_cap_usd`, the engine is skipped until next month (the reel is made the normal way).
 Needs the GitHub secrets MODAL_TOKEN_ID and MODAL_TOKEN_SECRET; without them nothing here runs.
@@ -83,7 +82,7 @@ class Engine:
 
     # ── pictures ─────────────────────────────────────────────────
     def picture_provider(self):
-        return ModalPictures(self) if self.on and self.cfg.get("pictures", True) else None
+        return None          # pictures stay with the free Cloudflare model (no non-Chinese edit model on Modal yet)
 
     # ── motion ───────────────────────────────────────────────────
     def pick_shots(self, shots: list[dict], durations: list[float]) -> list[int]:
@@ -103,7 +102,7 @@ class Engine:
             return {}
         try:
             import modal
-            wan = modal.Cls.from_name(APP, "WanI2V")()
+            wan = modal.Cls.from_name(APP, "LTXI2V")()
         except Exception as e:  # noqa: BLE001
             log(NAME, f"motion engine not reachable ({str(e)[:120]}); using camera moves")
             return {}
@@ -121,9 +120,9 @@ class Engine:
             if self._left() < per_clip * H100_PER_SECOND:
                 log(NAME, "monthly GPU budget nearly used; remaining shots keep camera moves")
                 break
-            prompt = (f"{sh['image']}. Subtle natural cinematic motion: {MOOD_MOTION.get(sh.get('mood'), MOOD_MOTION['calm'])}; "
-                      "hair and clothes move gently, slow camera push-in. Keep the 2D illustrated art style, "
-                      "the same faces, outfits and lighting.")
+            prompt = (f"{sh['image']}. {MOOD_MOTION.get(sh.get('mood'), MOOD_MOTION['calm'])}; hair and clothes "
+                      "move gently in the night wind, mist drifting, lantern light flickering, slow camera push-in. "
+                      "2D illustrated animation, the same faces, outfits, colours and lighting as the picture.")
             try:
                 data = self._call("motion", lambda: wan.animate.remote(Path(image_paths[iid]).read_bytes(),
                                                                          prompt[:1500], 1000 + i))
@@ -208,38 +207,37 @@ def setup_and_benchmark(ctx: Context, memory_data: dict, out_dir: Path) -> dict:
         {"id": "B2", "framing": "medium", "characters": ["C1"], "night": True, "mood": "scare",
          "image": "Meera standing in a narrow village lane at night holding a lantern, turning back in fear"},
     ]
-    pics = ModalPictures(eng)
     v = ctx.cfg["visuals"]
     timings = {"pictures_s": [], "clips_s": []}
-    for sh in shots:
+    for sh in shots:                                   # test pictures from the normal free provider
         t = time.time()
-        data = pics.generate(illustrator.shot_prompt(ctx, sh, {"C1": char}, ["C1"]), v["width"], v["height"],
-                             random.randint(1, 2**30), [portrait])
+        studio.draw(illustrator.shot_prompt(ctx, sh, {"C1": char}, ["C1"]), v["width"], v["height"],
+                    random.randint(1, 2**30), [portrait], out_dir / f"bench-{sh['id']}.png")
         timings["pictures_s"].append(round(time.time() - t, 1))
-        (out_dir / f"bench-{sh['id']}.png").write_bytes(data)
-    wan = modal.Cls.from_name(APP, "WanI2V")()
+    ltx = modal.Cls.from_name(APP, "LTXI2V")()
     for sh in shots:
         t = time.time()
-        prompt = f"{sh['image']}. Subtle natural cinematic motion: {MOOD_MOTION[sh['mood']]}; keep the 2D illustrated style."
-        clip = eng._call("bench", lambda: wan.animate.remote((out_dir / f"bench-{sh['id']}.png").read_bytes(), prompt, 7))
+        prompt = (f"{sh['image']}. {MOOD_MOTION[sh['mood']]}; hair and clothes move gently, mist drifting, "
+                  "lantern light flickering. 2D illustrated animation, same faces and colours as the picture.")
+        clip = eng._call("bench", lambda: ltx.animate.remote((out_dir / f"bench-{sh['id']}.png").read_bytes(), prompt, 7))
         timings["clips_s"].append(round(time.time() - t, 1))
         (out_dir / f"bench-{sh['id']}.mp4").write_bytes(clip)
     eng.finish()
-    # first call of each model includes loading it (a cold start); the second one is the steady speed
-    pic_s, clip_s = timings["pictures_s"][-1], timings["clips_s"][-1]
-    n_pics = int(ctx.cfg["story"].get("max_images", 18))
+    # the first clip includes loading the model (a cold start); the second one is the steady speed
+    clip_s = timings["clips_s"][-1]
     n_clips = int(ctx.cfg.get("gpu", {}).get("motion_clips", 6))
-    cold = (timings["pictures_s"][0] - pic_s) + (timings["clips_s"][0] - clip_s)
-    per_reel_s = cold + n_pics * pic_s + n_clips * clip_s
+    cold = timings["clips_s"][0] - clip_s
+    per_reel_s = cold + n_clips * clip_s
+    reels_month = 2 * 30
     report.update(ok=True, **timings, per_reel_minutes=round(per_reel_s / 60, 1),
                   per_reel_usd=round(per_reel_s * H100_PER_SECOND, 2),
-                  per_month_usd=round(per_reel_s * H100_PER_SECOND * 30, 1),
+                  per_month_usd=round(per_reel_s * H100_PER_SECOND * reels_month, 1),
                   benchmark_cost_usd=round(eng.run_cost, 2))
     (out_dir / "gpu-benchmark.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-    log(NAME, f"BENCHMARK: picture {pic_s}s, clip {clip_s}s (after loading) → one reel with {n_pics} pictures + "
-              f"{n_clips} moving cuts ≈ {per_reel_s / 60:.0f} min ≈ ${report['per_reel_usd']} → "
-              f"≈ ${report['per_month_usd']}/month (free credit: $30)")
-    if report["per_month_usd"] > 30:
-        log(NAME, "→ over the free $30: lower gpu.motion_clips in config.yaml (each clip ≈ "
-                  f"${clip_s * H100_PER_SECOND * 30:.2f}/month)")
+    log(NAME, f"BENCHMARK: clip {clip_s}s after a {cold:.0f}s model load → one reel with {n_clips} moving cuts "
+              f"≈ {per_reel_s / 60:.1f} min ≈ ${report['per_reel_usd']} → ≈ ${report['per_month_usd']}/month for "
+              f"{reels_month} reels (free credit: $30)")
+    if report["per_month_usd"] > 27:
+        log(NAME, "→ over the free credit: lower gpu.motion_clips in config.yaml (each clip ≈ "
+                  f"${clip_s * H100_PER_SECOND * reels_month:.2f}/month)")
     return report
