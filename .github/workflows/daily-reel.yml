@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "auto = make the reel now and post it at 9:17 PM IST (skips if today's reel already went out) · post = make and post now · preview = quick 30 s sample · dry_run = full reel, not posted · gpu_setup = GPU models (unused)"
+        description: "auto = make the reel now and post it at 9:17 PM IST (skips if today's reel already went out) · post = make and post now · preview = quick 30 s sample · dry_run = full reel, not posted · gpu_setup = test the free movement engine (Kaggle or Modal) on 3 sample pictures"
         type: choice
         options: [auto, post, preview, dry_run, gpu_setup]
         default: preview
@@ -99,6 +99,8 @@ jobs:
           AIHORDE_API_KEY: ${{ secrets.AIHORDE_API_KEY }}
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
           MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
           SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}

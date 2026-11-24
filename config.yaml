@@ -162,6 +162,17 @@ gpu:
   monthly_cap_usd: 27          # stop using Modal for the month at this estimate (free credit is $30)
   est_seconds_per_clip: 40     # used for the budget check; the benchmark run measures the real number
 
+kaggle:                        # free movement on Kaggle's T4 GPUs when Modal isn't set up
+  enabled: true
+  clips: 6                     # most important cuts that get real movement
+  timeout_min: 55              # give up and use camera moves after this
+  model: "Lightricks/LTX-Video-0.9.5"   # 2B open model from Lightricks (Israel); fits a free T4
+  dtype: fp16                  # T4 has no fast bf16; the notebook reports black frames if fp16 overflows
+  steps: 30
+  cfg: 3.0
+  width: 480
+  height: 832
+
 voice:
   # Engines are tried in this order; any without a key/quota is skipped automatically.
   #  gemini : Google Gemini TTS, expressive, free if your free tier includes it (uses GEMINI_API_KEY)

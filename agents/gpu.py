@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import io
 import os
+import shutil
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,6 +45,10 @@ class Engine:
         spend = self.mem.setdefault("modal_spend", {"month": _month(), "usd": 0.0})
         if spend.get("month") != _month():
             spend.update(month=_month(), usd=0.0)
+        from . import kaggle_motion
+        # free Kaggle GPUs: used for movement when Modal isn't set up
+        self.kaggle = (kaggle_motion.available() and not ctx.mock
+                       and bool((ctx.cfg.get("kaggle") or {}).get("enabled", True)))
         has_keys = bool(os.getenv("MODAL_TOKEN_ID") and os.getenv("MODAL_TOKEN_SECRET"))
         self.on = bool(self.cfg.get("enabled", True)) and has_keys and not ctx.mock
         cap = float(self.cfg.get("monthly_cap_usd", 27))
@@ -97,7 +102,9 @@ class Engine:
         return sorted(i for _, i in sorted(cands, reverse=True)[:n])
 
     def motion_clips(self, shots: list[dict], image_paths: dict[str, Path],
-                     durations: list[float]) -> dict[int, Path]:
+                     durations: list[float], minutes_left: float = 999.0) -> dict[int, Path]:
+        if not self.on and self.kaggle:
+            return self._kaggle_clips(shots, image_paths, durations, minutes_left)
         if not self.on or not self.cfg.get("motion", True) or "motion" in self.failed:
             return {}
         try:
@@ -136,6 +143,39 @@ class Engine:
             log(NAME, f"moving clip for cut {i + 1} ({sh.get('mood')}, {durations[i]:.1f}s)")
         if clips:
             log(NAME, f"{len(clips)} cuts have real character movement")
+        return clips
+
+
+    def _kaggle_clips(self, shots: list[dict], image_paths: dict[str, Path], durations: list[float],
+                      minutes_left: float) -> dict[int, Path]:
+        from . import kaggle_motion
+        kc = self.ctx.cfg.get("kaggle") or {}
+        # leave ~55 min after the clips come back for animation, music, render, QA and the upload
+        timeout = min(float(kc.get("timeout_min", 55)), minutes_left - 55)
+        if timeout < 15:
+            log(NAME, f"only {minutes_left:.0f} min before posting: no time for Kaggle movement today")
+            return {}
+        picks, jobs, seen = [], [], {}
+        for i in self.pick_shots(shots, durations)[: int(kc.get("clips", 6))]:
+            sh = shots[i]
+            iid = sh["image_id"]
+            picks.append(i)
+            if iid in seen:
+                continue
+            seen[iid] = f"c{len(jobs):02d}"
+            prompt = (f"{sh['image']}. {MOOD_MOTION.get(sh.get('mood'), MOOD_MOTION['calm'])}; hair and clothes move "
+                      "gently in the night wind, mist drifting, lantern light flickering, very slow camera push-in. "
+                      "2D illustrated animation, the same faces, outfits, colours and lighting as the picture.")
+            jobs.append({"name": seen[iid], "image": image_paths[iid], "prompt": prompt,
+                         "frames": 97 if durations[i] > 3.2 else 73, "seed": 1000 + i})
+        try:
+            got = kaggle_motion.animate(jobs, self.ctx.workdir, timeout, kc)
+        except Exception as e:  # noqa: BLE001 — never let the free GPU break a reel
+            log(NAME, f"Kaggle movement failed ({str(e)[:200]}); using camera moves")
+            return {}
+        clips = {i: got[seen[shots[i]["image_id"]]] for i in picks if seen[shots[i]["image_id"]] in got}
+        if clips:
+            log(NAME, f"{len(clips)} cuts have real movement (Kaggle)")
         return clips
 
 
@@ -184,8 +224,11 @@ def setup_and_benchmark(ctx: Context, memory_data: dict, out_dir: Path) -> dict:
     from . import illustrator
     report: dict = {"ok": False}
     eng = Engine(ctx, memory_data)
+    if not eng.on and eng.kaggle:
+        return kaggle_benchmark(ctx, eng, out_dir)
     if not eng.on:
-        log(NAME, "Modal isn't set up (add MODAL_TOKEN_ID and MODAL_TOKEN_SECRET as GitHub secrets)")
+        log(NAME, "neither Modal nor Kaggle is set up (add MODAL_TOKEN_ID + MODAL_TOKEN_SECRET, or "
+                  "KAGGLE_USERNAME + KAGGLE_KEY, as GitHub secrets)")
         return report
     import modal
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -240,4 +283,48 @@ def setup_and_benchmark(ctx: Context, memory_data: dict, out_dir: Path) -> dict:
     if report["per_month_usd"] > 27:
         log(NAME, "→ over the free credit: lower gpu.motion_clips in config.yaml (each clip ≈ "
                   f"${clip_s * H100_PER_SECOND * reels_month:.2f}/month)")
+    return report
+
+
+def kaggle_benchmark(ctx: Context, eng: "Engine", out_dir: Path) -> dict:
+    """Draws 3 test pictures with the free provider, animates them on Kaggle and keeps the clips in out/ (the run's
+    artifact) so they can be checked by eye. Nothing is posted."""
+    import json
+    import random
+
+    from . import illustrator, kaggle_motion
+    out_dir.mkdir(parents=True, exist_ok=True)
+    char = {"id": "C1", "name": "Meera", "gender": "female", "age": 17, "is_entity": False,
+            "look": "slim village girl, wheatish skin, long straight black hair, small black bindi, gold jhumkas, "
+                    "mustard-yellow cotton salwar kameez with small green prints and a dark green dupatta"}
+    ghost = {"id": "C2", "name": "Chudail", "gender": "female", "age": 40, "is_entity": True,
+             "look": "pale grey-skinned woman in a torn white saree, long wild black hair over her face, glowing white "
+                     "eyes, backwards feet"}
+    studio = illustrator.Studio(ctx)
+    v = ctx.cfg["visuals"]
+    shots = [
+        {"id": "B1", "framing": "closeup", "characters": ["C1"], "night": True, "mood": "scare",
+         "image": "Meera's terrified face in close-up, lantern light from below, blue moonlight behind her"},
+        {"id": "B2", "framing": "medium", "characters": ["C2"], "night": True, "mood": "scare",
+         "image": "the chudail standing under a huge peepal tree at night, hair blowing, glowing eyes"},
+        {"id": "B3", "framing": "wide", "characters": ["C1"], "night": True, "mood": "tense",
+         "image": "Meera walking down a narrow village lane at night holding a lantern, mist on the ground"},
+    ]
+    jobs = []
+    for sh in shots:
+        p = out_dir / f"bench-{sh['id']}.png"
+        studio.draw(illustrator.shot_prompt(ctx, sh, {"C1": char, "C2": ghost}, []), v["width"], v["height"],
+                    random.randint(1, 2**30), [], p)
+        jobs.append({"name": sh["id"], "image": p, "frames": 73, "seed": 7,
+                     "prompt": f"{sh['image']}. {MOOD_MOTION[sh['mood']]}; hair and clothes move in the night wind, "
+                               "mist drifting, lantern light flickering, very slow camera push-in. 2D illustrated "
+                               "animation, same faces and colours as the picture."})
+    t = time.time()
+    got = kaggle_motion.animate(jobs, ctx.workdir, float((ctx.cfg.get("kaggle") or {}).get("timeout_min", 55)) + 20,
+                                ctx.cfg.get("kaggle") or {})
+    for name, path in got.items():
+        shutil.copy(path, out_dir / f"bench-{name}.mp4")
+    report = {"ok": bool(got), "clips": len(got), "minutes": round((time.time() - t) / 60, 1)}
+    (out_dir / "kaggle-benchmark.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    log(NAME, f"KAGGLE BENCHMARK: {len(got)}/3 clips in {report['minutes']} min (see the run's artifact)")
     return report

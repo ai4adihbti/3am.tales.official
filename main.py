@@ -300,7 +300,7 @@ def main() -> int:
     ctx = Context(cfg=cfg, workdir=work, mock=args.mock, dry_run=dry)
     ctx.llm = LLM(cfg, mock=args.mock)
     if mode == "gpu_setup":
-        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.7.0 (nothing is posted)")
+        log("Orchestrator", "GPU SETUP + BENCHMARK · code v7.7.1 (nothing is posted)")
         mem = Memory()
         gpu.setup_and_benchmark(ctx, mem.data, out_dir)
         mem.save()
@@ -321,7 +321,7 @@ def main() -> int:
             return 0
     t0 = time.time()
     label = "MOCK" if args.mock else "PREVIEW" if preview else "DRY RUN" if dry else "LIVE"
-    log("Orchestrator", f"run {stamp} · {label} · code v7.7.0")
+    log("Orchestrator", f"run {stamp} · {label} · code v7.7.1")
 
     if not args.mock:
         missing = [k for k in ("GEMINI_API_KEY",) if not os.getenv(k)]
@@ -491,7 +491,9 @@ def main() -> int:
     illustrator.quality_check(ctx, studio, script, refs, image_paths)
     _record_cloudflare_use()
     image_paths = upscaler.upscale(ctx, image_paths)
-    motion = engine.motion_clips(script["shots"], image_paths, durations)
+    motion = engine.motion_clips(script["shots"], image_paths, durations,
+                                 minutes_left=(_minutes_to_post(cfg, mode) if mode == "auto" else
+                                               150.0 if mode == "dry_run" else 0.0) if not args.mock else 999.0)
     clips = animator.animate(ctx, image_paths, script["shots"], durations, motion)
     engine.finish()
 

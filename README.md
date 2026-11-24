@@ -490,3 +490,8 @@ the writer put a frightened person there, and subtitles start only after the hoo
   models) is removed. Off until the MODAL_TOKEN_ID / MODAL_TOKEN_SECRET secrets exist; capped at $27 of Modal's
   free $30 a month; any failure falls back to camera moves. Run the workflow once with mode `gpu_setup` to
   download the model and measure the real cost per reel.
+- v7.7.1: the movement engine also runs on **Kaggle's free GPUs** (about 30 GPU hours a week, no card) when Modal
+  isn't set up: the 6 most important pictures go to a private Kaggle notebook that runs Lightricks LTX-Video 0.9.5
+  (2B, open weights) on a T4 and sends back ~3 s moving clips; any failure or timeout (55 min) falls back to camera
+  moves. Needs the KAGGLE_USERNAME and KAGGLE_KEY secrets and a phone-verified Kaggle account. Test it with the
+  workflow mode `gpu_setup`: 3 sample clips land in the run's artifact.
