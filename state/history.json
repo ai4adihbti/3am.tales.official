@@ -2503,7 +2503,7 @@
         "avg_watch_s": 5.3
       },
       "score": 41.86,
-      "metrics_at": "2026-11-23T03:55:42+00:00"
+      "metrics_at": "2026-11-24T03:54:41+00:00"
     },
     {
       "title": "Kolkata Metro Ka 2:45 AM Platform — Part 1",
@@ -2620,7 +2620,7 @@
         "avg_watch_s": 3.3
       },
       "score": 5.68,
-      "metrics_at": "2026-11-23T03:55:42+00:00"
+      "metrics_at": "2026-11-24T03:54:41+00:00"
     },
     {
       "title": "Mandvi Highway Ki 2:30 AM Lift — Part 1",
@@ -2732,7 +2732,19 @@
       "permalink": "https://www.instagram.com/reel/DgDIBoIE8wM/",
       "posted_at": "2026-11-22T15:47:06+00:00",
       "youtube_id": "NnAohOI9e9s",
-      "youtube_url": "https://youtube.com/shorts/NnAohOI9e9s"
+      "youtube_url": "https://youtube.com/shorts/NnAohOI9e9s",
+      "metrics": {
+        "views": 119,
+        "reach": 112,
+        "likes": 0,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 0,
+        "avg_watch_s": 6.0
+      },
+      "score": 8.89,
+      "metrics_at": "2026-11-24T03:54:41+00:00"
     },
     {
       "title": "Palamau Ka Purana Mahua — Part 1",
@@ -2825,10 +2837,58 @@
       "posted_at": "2026-11-23T15:47:09+00:00",
       "youtube_id": "iVoBLJs9bGk",
       "youtube_url": "https://youtube.com/shorts/iVoBLJs9bGk"
+    },
+    {
+      "title": "Kullu Ki 3 AM Flashlight — Part 1",
+      "series_title": "Kullu Ki 3 AM Flashlight",
+      "series_id": "20261124-kullu-ki-3-am-flashlight",
+      "part": 1,
+      "total_parts": 1,
+      "format": "friends_dare",
+      "hook": "Kullu ke tower mein teen dost nahi... char saaye the!",
+      "critic_score": 83,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 53.815,
+      "file": "reel-20261124-035441.mp4",
+      "caption": "Kullu ke watchtower ka sach | Bhoot ki kahani | Hindi horror story\n\nTum hote toh 3 baje us dost ko wapas andar aane dete ya nahi? 👀\n\nYe reel us dost ko bhejo jo trip pe hamesha akela gayab ho jata hai\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #kulludiaries #bhootiyaraat",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 53.9,
+        "loudness_lufs": -14.7,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I6",
+          "I5",
+          "I9",
+          "I6",
+          "I9"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4530,
+        "hq_images": 0,
+        "est_cost_usd": 0.111,
+        "month_spend_usd": 4.81
+      },
+      "style": "illustrated",
+      "media_id": "18001705550826827",
+      "permalink": "https://www.instagram.com/reel/DgHarjpEVvK/",
+      "posted_at": "2026-11-24T07:47:10+00:00",
+      "youtube_id": "8WO2Wl_x8wk",
+      "youtube_url": "https://youtube.com/shorts/8WO2Wl_x8wk"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\n- [safar] \"Satpura Ghat Ki 3 AM Bus — Part 1\" · hook: \"Is bus mein solah log nahi... sirf tum zinda ho!\" · views 196, shares 0, saves 0, comments 0, watched on average 3.3s of 60s (5%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 5, \"avg\": 43.78}, \"safar\": {\"n\": 5, \"avg\": 19.19}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus on 'family_bond' themes, as they consistently generate the highest overall score (56.18 avg) and longest watch times, outperforming all other story types.\n- Use highly specific, relatable settings like late-night transit (buses, autos, hospital calls at specific times like 2:45 AM) to drive higher viewer retention and shares.\n- Avoid cliché haunted tropes like 'purani_haveli' (9.73 avg) and real-location mysteries like 'asli_jagah' (17.76 avg), which severely underperform in both retention rate and total score.\n- Keep hooks direct and emotionally immediate (e.g., 'Bhaiya!') rather than overly dramatic or action-spoilers (e.g., 'Is bus mein solah log nahi...'), which led to the lowest watch time retention (5%).\n- Pace the opening to retain viewers past the 5-second mark; weak performers lose the audience within 3-5 seconds, drastically dropping overall watch time percentage.",
+  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [purani_haveli] \"Mandawa Ki Parchhai Haveli — Part 1\" · hook: \"Us raat, us laal haath ne Kabir ki jaan bachai!\" · views 134, shares 0, saves 0, comments 0, watched on average 4.7s of 54s (9%)\n- [asli_jagah] \"Shaniwar Wada Ki Poornima Raat — Part 1\" · hook: \"Shaniwar Wada mein gunjti cheekh kiski thi?\" · views 41, shares 0, saves 0, comments 0, watched on average 5.4s of 77s (7%)\n- [safar] \"Satpura Ghat Ki 3 AM Bus — Part 1\" · hook: \"Is bus mein solah log nahi... sirf tum zinda ho!\" · views 196, shares 0, saves 0, comments 0, watched on average 3.3s of 60s (5%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 7, \"avg\": 39.94}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 4, \"avg\": 36.73}, \"shehar\": {\"n\": 5, \"avg\": 43.78}, \"safar\": {\"n\": 6, \"avg\": 17.48}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus on high-performing story types like 'family_bond' (avg score 56.18) and avoid low-performing ones like 'purani_haveli' and 'safar' which fail to retain viewers beyond a few seconds.\n- Keep hooks direct and situational (e.g., specific times and locations like 'Devgad Ghat par raat do baje') to slightly improve watch duration compared to abstract or overly dramatic questions.\n- Significantly shorten total video length; current reels over 50-100 seconds suffer from catastrophic drop-off, with average watch times stuck between 3 to 12 seconds.\n- Eliminate multi-part formats ('Part 1') if the initial hook and retention fail to convert views into shares and saves, as audiences drop off before the narrative develops.",
   "format_scores": {
     "family_bond": {
       "n": 10,
@@ -2855,8 +2915,8 @@
       "avg": 43.78
     },
     "safar": {
-      "n": 5,
-      "avg": 19.19
+      "n": 6,
+      "avg": 17.48
     },
     "asli_jagah": {
       "n": 4,
@@ -2914,25 +2974,16 @@
     "Mandvi Highway Ki 2:30 AM Lift",
     "Jaigarh Creek Ki 2:45 AM Ferry",
     "Palamau Ka Purana Mahua",
-    "Bundelkhand Ka Ulti Ghanti Peepal"
+    "Bundelkhand Ka Ulti Ghanti Peepal",
+    "Kullu Ki 3 AM Flashlight"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 4.6944
+    "usd": 4.8058
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
   "story_log": [
-    {
-      "title": "Mikir Hills ka Band Darwaza",
-      "format": "village_secret",
-      "parts": 1,
-      "region": "Assam (North-East India)",
-      "setting": "An old wooden ancestral bungalow near the dense tea gardens of Mikir Hills, misty 2:00 AM weather.",
-      "entity": "Jakh (Assamese treasure-guarding forest entity) / Protective Ancestral Curse",
-      "protagonist": "Priyam, 21, visiting his frail Kaka (paternal uncle)",
-      "emotion": "A uncle's silent sacrifice to protect his nephew from a family debt."
-    },
     {
       "title": "Malhar Ka Bhua Kuan",
       "format": "lok_katha",
@@ -3343,12 +3394,23 @@
       "entity": "Ghanti-Daayan / The Bell-Swapping Spirit",
       "protagonist": "Geeta, 20, newly-wed bahu",
       "emotion": "Guilt, intense terror, and horrific realization"
+    },
+    {
+      "title": "Kullu Ki 3 AM Flashlight",
+      "format": "friends_dare",
+      "parts": 1,
+      "twist": "Sahil died in a trekking accident in these woods three years ago, and Kabir and Dhruv had blocked out the trauma—the entity had been walking with them as 'Sahil",
+      "region": "Himachal Pradesh (Kullu Valley)",
+      "setting": "A pitch-black, freezing pine forest path leading to an abandoned British-era wooden watchtower at 3:00 AM.",
+      "entity": "Panchva Sathi / The Midnight Count Pret",
+      "protagonist": "Kabir, 22, college student on a night trek with two best friends",
+      "emotion": "Terror, betrayal, and chilling isolation"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "lok_katha",
-    "target": 2
+    "format": "friends_dare",
+    "target": 3
   },
   "ig_token": {
     "hash": "08dcf1e8582f",
@@ -3359,14 +3421,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-23",
-    "used": 8033
+    "date": "2026-11-24",
+    "used": 4530
   },
   "style_scores": {
     "illustrated": {
-      "n": 26,
-      "avg_watch_s": 7.8,
-      "avg_reach": 132
+      "n": 27,
+      "avg_watch_s": 7.7,
+      "avg_reach": 131
     },
     "cinematic": {
       "n": 3,
