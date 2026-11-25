@@ -1,0 +1,20 @@
+{
+ "hook": "Bhaiya... aapki bus to pandrah minute pehle gir chuki hai.",
+ "hook_text": "Bus 15 minute pehle gir chuki thi",
+ "critic": 79,
+ "feedback": "Solid work. The emotional twist is executed well and fits the night journey constraint perfectly. A few tiny notes: 1) Cut 1's hook line uses a character quote from the narrator ('Bhaiya... aapki bus...'), which works, but make sure the narrator's voice performance retains the eerie whisper texture. 2) Cut 8 repeats Image 8 right after Cut 6's silent scare; consider keeping the rhythm tight by avoiding unnecessary duplication of static beats. Overall, high retention potential with a very satisfying, heartbreaking ending. LENGTH: about 68s; it must be 40-52s (roughly 80-104 spoken words).",
+ "lines": [
+  "Bhaiya... aapki bus to pandrah minute pehle gir chuki hai.",
+  "Lekin Karan apni seat se nahi utha... par ye sab shuru hua raat teen baje.",
+  "Mokama Ghat ke sunsaan raste par 3:15 AM baje ek purani bus chal rahi thi.",
+  "Karan apni behen Pihu ko god mein liye ghar laut raha tha.",
+  "Conductor ne usse ticket ke paise lene se inkaar kar diya.",
+  "Bhaiya, uncle ke pair ulte hain... aur woh aapka naam le rahe hain.",
+  "Khidki ke bahar wahi purane ped baar-baar repeat ho rahe the.",
+  "Conductor ne Karan ke hath par ek purana card rakha.",
+  "Us par likha tha 'Accident Victim - 3:00 AM'.",
+  "Karan mar chuka tha... bas behen ko ghar chhodne ka vaada use roke tha.",
+  "Pihu ko safe jagah chhodkar, Karan ki aatma hamesha ke liye gayab ho gayi.",
+  "Raat ko 3:15 AM baje kisi sunsaan bus ki aakhri seat par mat baithna."
+ ]
+}
