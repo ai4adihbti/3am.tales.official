@@ -2503,7 +2503,7 @@
         "avg_watch_s": 5.3
       },
       "score": 41.86,
-      "metrics_at": "2026-11-26T04:04:06+00:00"
+      "metrics_at": "2026-11-27T03:55:00+00:00"
     },
     {
       "title": "Kolkata Metro Ka 2:45 AM Platform — Part 1",
@@ -2620,7 +2620,7 @@
         "avg_watch_s": 3.3
       },
       "score": 5.68,
-      "metrics_at": "2026-11-26T04:04:06+00:00"
+      "metrics_at": "2026-11-27T03:55:00+00:00"
     },
     {
       "title": "Mandvi Highway Ki 2:30 AM Lift — Part 1",
@@ -2744,7 +2744,7 @@
         "avg_watch_s": 6.0
       },
       "score": 8.89,
-      "metrics_at": "2026-11-26T04:04:06+00:00"
+      "metrics_at": "2026-11-27T03:55:00+00:00"
     },
     {
       "title": "Palamau Ka Purana Mahua — Part 1",
@@ -2860,7 +2860,7 @@
         "avg_watch_s": 3.7
       },
       "score": 6.25,
-      "metrics_at": "2026-11-26T04:04:06+00:00"
+      "metrics_at": "2026-11-27T03:55:00+00:00"
     },
     {
       "title": "Kullu Ki 3 AM Flashlight — Part 1",
@@ -2980,7 +2980,7 @@
         "avg_watch_s": 2.0
       },
       "score": 3.43,
-      "metrics_at": "2026-11-26T04:04:06+00:00"
+      "metrics_at": "2026-11-27T03:55:00+00:00"
     },
     {
       "title": "Osian Stepwell Ka 3 AM Flashlight — Part 1",
@@ -3088,7 +3088,19 @@
       "permalink": "https://www.instagram.com/reel/DgK2aOCstfR/",
       "posted_at": "2026-11-25T15:47:14+00:00",
       "youtube_id": "TRulWIwCh8E",
-      "youtube_url": "https://youtube.com/shorts/TRulWIwCh8E"
+      "youtube_url": "https://youtube.com/shorts/TRulWIwCh8E",
+      "metrics": {
+        "views": 301,
+        "reach": 265,
+        "likes": 5,
+        "comments": 0,
+        "shares": 0,
+        "saved": 0,
+        "total_interactions": 6,
+        "avg_watch_s": 6.8
+      },
+      "score": 27.4,
+      "metrics_at": "2026-11-27T03:55:00+00:00"
     },
     {
       "title": "Purulia Express Ka 2:15 AM Dabba — Part 1",
@@ -3181,10 +3193,58 @@
       "posted_at": "2026-11-26T15:47:09+00:00",
       "youtube_id": "XA4dKYeq7GQ",
       "youtube_url": "https://youtube.com/shorts/XA4dKYeq7GQ"
+    },
+    {
+      "title": "Ratnagiri Ka 3 AM Kuan — Part 1",
+      "series_title": "Ratnagiri Ka 3 AM Kuan",
+      "series_id": "20261127-ratnagiri-ka-3-am-kuan",
+      "part": 1,
+      "total_parts": 1,
+      "format": "lok_katha",
+      "hook": "Aai! Agar tum Rasoi mein ho... toh Kuan par kaun hai?",
+      "critic_score": 93,
+      "voice_engine": "gemini",
+      "images": [
+        "cloudflare"
+      ],
+      "duration_s": 59.253,
+      "file": "reel-20261127-035459.mp4",
+      "caption": "Ratnagiri ke us kuan ka sach | Bhoot ki kahani | Hindi horror story\n\nTum wahan hote toh bhai ke peeche jaate ya nahi? 👀\n\nYe reel us dost ko bhejo jo raat ko akela ghar se nikalta hai\nRoz 1 PM aur 9 PM nayi darawni kahani 🕯️ Follow karo\n\n(kalpanik kahani)\n.\n.\n#darawnikahani #hindistory #horrorstories #bhootiyakahani #hindihorrorstory #ratnagiri #devchar #horrortales",
+      "qa": {
+        "ok": true,
+        "errors": [],
+        "warnings": [],
+        "duration_s": 59.3,
+        "loudness_lufs": -14.5,
+        "voice_engine": "gemini",
+        "image_providers": [
+          "cloudflare"
+        ],
+        "redrawn": [
+          "I6",
+          "I1",
+          "I10",
+          "I6",
+          "I1"
+        ],
+        "gemini_images": 0,
+        "gpu_motion_clips": 0,
+        "modal_usd": 0.0,
+        "cloudflare_neurons": 4320,
+        "hq_images": 0,
+        "est_cost_usd": 0.083,
+        "month_spend_usd": 5.5
+      },
+      "style": "illustrated",
+      "media_id": "18036678623914842",
+      "permalink": "https://www.instagram.com/reel/DgPJEFyxaum/",
+      "posted_at": "2026-11-27T07:47:10+00:00",
+      "youtube_id": "Pb37KTK77to",
+      "youtube_url": "https://youtube.com/shorts/Pb37KTK77to"
     }
   ],
   "used_video_ids": [],
-  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [lok_katha] \"Bundelkhand Ka Ulti Ghanti Peepal — Part 1\" · hook: \"Us raat Geeta ne apni hi awaaz suni…\" · views 121, shares 0, saves 0, comments 0, watched on average 3.7s of 60s (6%)\n- [safar] \"Satpura Ghat Ki 3 AM Bus — Part 1\" · hook: \"Is bus mein solah log nahi... sirf tum zinda ho!\" · views 196, shares 0, saves 0, comments 0, watched on average 3.3s of 60s (5%)\n- [friends_dare] \"Shillong Hospital Ka 3 AM Live Stream — Part 1\" · hook: \"Screen par teen chehre the... par camera box char dikha raha tha.\" · views 119, shares 0, saves 0, comments 0, watched on average 2.0s of 60s (3%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 9, \"avg\": 38.6}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 7, \"avg\": 32.84}, \"shehar\": {\"n\": 5, \"avg\": 43.78}, \"safar\": {\"n\": 6, \"avg\": 17.48}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Focus heavily on the 'family_bond' story type, as it achieves the highest average score (56.18) compared to weaker formats like 'safar' (17.48) and 'village_secret' (26.41).\n- Use direct, urgent dialogue or immediate spatial hooks (like 'Bhaiya!' or specific remote locations at 2 AM) to keep average watch time above 10 seconds, avoiding abstract or slow introductory hooks.\n- Avoid overly complex or ambiguous hooks (such as ghost camera counts in 'friends_dare'), which lead to rapid drop-offs and extremely low watch times under 3 seconds.\n- Keep total video duration tighter or improve pacing, as current runtimes of 60 to 117 seconds suffer from low completion rates (10% to 13% watch time).",
+  "learnings": "Best performers:\n- [family_bond] \"Tezpur Hospital Ka 2:45 AM Call — Part 1\" · hook: \"Bhaiya!\" · views 138, shares 3, saves 0, comments 0, watched on average 6.9s of 59s (12%)\n- [family_bond] \"Devgad Ghat Ki Aakhri Auto — Part 1\" · hook: \"Devgad Ghat par raat do baje, saaya peeche pada tha...\" · views 150, shares 1, saves 1, comments 0, watched on average 8.1s of 64s (13%)\n- [family_bond] \"Choti Line Ki Akhri Bus — Part 1\" · hook: \"Raat ke dhai baje, Raniganj ki is sunsaan sadak par...\" · views 147, shares 0, saves 0, comments 0, watched on average 12.1s of 117s (10%)\nWeakest performers:\n- [lok_katha] \"Bundelkhand Ka Ulti Ghanti Peepal — Part 1\" · hook: \"Us raat Geeta ne apni hi awaaz suni…\" · views 121, shares 0, saves 0, comments 0, watched on average 3.7s of 60s (6%)\n- [safar] \"Satpura Ghat Ki 3 AM Bus — Part 1\" · hook: \"Is bus mein solah log nahi... sirf tum zinda ho!\" · views 196, shares 0, saves 0, comments 0, watched on average 3.3s of 60s (5%)\n- [friends_dare] \"Shillong Hospital Ka 3 AM Live Stream — Part 1\" · hook: \"Screen par teen chehre the... par camera box char dikha raha tha.\" · views 119, shares 0, saves 0, comments 0, watched on average 2.0s of 60s (3%)\nStory-type average SCORES (a points score, not seconds; higher is better): {\"family_bond\": {\"n\": 10, \"avg\": 56.18}, \"lok_katha\": {\"n\": 9, \"avg\": 38.6}, \"village_secret\": {\"n\": 6, \"avg\": 26.41}, \"purani_haveli\": {\"n\": 2, \"avg\": 9.73}, \"friends_dare\": {\"n\": 7, \"avg\": 32.84}, \"shehar\": {\"n\": 5, \"avg\": 43.78}, \"safar\": {\"n\": 7, \"avg\": 18.89}, \"asli_jagah\": {\"n\": 4, \"avg\": 17.76}, \"rahasya\": {\"n\": 2, \"avg\": 31.27}}\nLessons:\n- Prioritize the 'family_bond' story type, as it performs significantly better with an average score of 56.18 compared to weaker formats like 'safar' (18.89) and 'purani_haveli' (9.73).\n- Keep hooks direct and urgent (e.g., calling out 'Bhaiya!') to retain viewers longer, achieving watch times above 8-12 seconds rather than dropping below 4 seconds.\n- Avoid overly complex or slow narrative setups in the opening seconds, as demonstrated by the 'Shillong Hospital' hook which resulted in a dismal 2-second average watch time.\n- Structure stories to build tension quickly to improve the watch percentage, since current top performers still struggle to keep audiences past 13% of total reel length.",
   "format_scores": {
     "family_bond": {
       "n": 10,
@@ -3211,8 +3271,8 @@
       "avg": 43.78
     },
     "safar": {
-      "n": 6,
-      "avg": 17.48
+      "n": 7,
+      "avg": 18.89
     },
     "asli_jagah": {
       "n": 4,
@@ -3276,25 +3336,16 @@
     "Osian Stepwell Ka 3 AM Flashlight",
     "Mokama Ghat Ki 3:15 AM Bus",
     "Purulia Express Ka 2:15 AM Dabba",
-    "Thar Express Ki 3 AM Mahfil"
+    "Thar Express Ki 3 AM Mahfil",
+    "Ratnagiri Ka 3 AM Kuan"
   ],
   "spend": {
     "month": "2026-11",
-    "usd": 5.422
+    "usd": 5.5046
   },
   "last_voice_style": "narrator",
   "last_narrator_gender": "female",
   "story_log": [
-    {
-      "title": "Orchha Kinare Ki Shraapit Baoli",
-      "format": "friends_dare",
-      "parts": 1,
-      "region": "Bundelkhand, Madhya Pradesh",
-      "setting": "A crumbling, moonlit 16th-century stepwell (baoli) shrouded by wild banyan roots on the sunsaan banks of the Betwa river.",
-      "entity": "Chhalava / Shape-shifting spirit of the stepwell",
-      "protagonist": "Dhruv, 21, college student searching for his missing best friend",
-      "emotion": "Brotherly loyalty and tragic realization"
-    },
     {
       "title": "Kasol Ki Raat Aur Safed Peepal",
       "format": "friends_dare",
@@ -3711,11 +3762,22 @@
       "entity": "Kal ka Safar – a time‑slipping ghost passenger who appears to warn doomed travelers",
       "protagonist": "Meera, 28, solo female photographer heading to her cousin's wedding",
       "emotion": "Regret over a lost love and longing for closure"
+    },
+    {
+      "title": "Ratnagiri Ka 3 AM Kuan",
+      "format": "lok_katha",
+      "parts": 1,
+      "twist": "The figure outside wasn't trying to lure Chhotu into the well; she was the village spirit trying to return Chhotu's drowned body to the house before sunrise, wh",
+      "region": "Konkan (Maharashtra)",
+      "setting": "A red-tiled mud house in a coastal Konkan village, surrounded by dense betel-nut trees and an old stone stepwell under a bright full moon.",
+      "entity": "Devchar (the Konkan spirit that mimics household sounds to lure family members out)",
+      "protagonist": "Varun, 22, a college student returning home to his Dadi and 7-year-old brother, Chhotu",
+      "emotion": "Sibling protection, sudden heartbreak, and gut-wrenching realization"
     }
   ],
   "followers": 1,
   "format_block": {
-    "format": "safar",
+    "format": "lok_katha",
     "target": 3
   },
   "ig_token": {
@@ -3727,14 +3789,14 @@
     "usd": 0.0
   },
   "cf_day": {
-    "date": "2026-11-26",
-    "used": 7866
+    "date": "2026-11-27",
+    "used": 4320
   },
   "style_scores": {
     "illustrated": {
-      "n": 32,
+      "n": 33,
       "avg_watch_s": 7.6,
-      "avg_reach": 127
+      "avg_reach": 131
     },
     "cinematic": {
       "n": 3,
